@@ -1,0 +1,49 @@
+#device-page-table .ant-table-wrapper {
+    height: 100%;
+}
+
+#device-page-table .ant-table-thead tr th {
+    background: #212a35;
+    color: #fff;
+}
+
+#device-page-table .ant-table-body tr td {
+    background: #212a35;
+    color: #fff;
+}
+
+#device-page-table .ant-table-placeholder {
+    background: #212a35;
+    color: #fff;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+#device-page-table .ant-table-placeholder .ant-empty-description {
+    background: #212a35;
+    color: #fff;
+}
+
+#device-page-table .ant-spin-container {
+    height: 100%;
+}
+
+
+#device-page-table .ant-spin-nested-loading {
+    height: 100%;
+}
+
+#device-page-table .ant-spin-nested-loading {
+    background-color: #212a35;
+    color: #fff !important;
+}
+
+/*#device-page-table .ant-spin-container {*/
+/*display: flex;*/
+/*align-items: center;*/
+/*justify-content: center;*/
+/*}*/
+
+
+
+

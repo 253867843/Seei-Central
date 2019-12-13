@@ -1,0 +1,61 @@
+/*Modal弹窗, header背景颜色*/
+.add-group-modal-dcj div.ant-modal-header {
+    background-color: #212a35;
+}
+
+/*Modal弹窗, header右侧大叉*/
+.add-group-modal-dcj .ant-modal-close {
+    color: #fff;
+}
+
+/*Modal弹窗, header标题文本颜色*/
+.add-group-modal-dcj div.ant-modal-header .ant-modal-title {
+    color: #fff !important;
+}
+
+/*Modal弹窗, body背景颜色*/
+.add-group-modal-dcj div.ant-modal-body {
+    padding: 0;
+    /*background-color: rgb(53, 58, 64);*/
+    background-color: #212a35;
+}
+
+/*Modal弹窗, footer背景颜色*/
+.add-group-modal-dcj div.ant-modal-footer {
+    background-color: #343a41;
+}
+
+/*Form表单, label水平居中显示, 行高为40px*/
+.add-group-modal-dcj .ant-form-vertical .ant-form-item-label, .ant-col-24.ant-form-item-label, .ant-col-xl-24.ant-form-item-label {
+    text-align: center;
+    line-height: 40px;
+}
+
+/*Form表单, label文本颜色*/
+.add-group-modal-dcj .ant-form-item-label > label {
+    color: #fff;
+}
+
+/*Form表单, input输入框背景颜色, 文本输入颜色*/
+.add-group-modal-dcj input {
+    background: #212a35;
+    color: #fff;
+}
+
+
+/*对antd的组件css样式进行修改*/
+
+/*修改Avatar首字母的行高*/
+.ant-avatar-string {
+    line-height: 36px !important;
+}
+
+.ant-spin-nested-loading {
+    /*width: 100%;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+}
+
+/*.ant-modal-body {*/
+    /*width: 600px;*/
+/*}*/
