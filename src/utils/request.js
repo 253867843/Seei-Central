@@ -107,6 +107,7 @@ function handleErrorResponse(error, dispatch) {
   } else if (status >= 404 && status < 422) {
     dispatch(push('/exception/404'));
   } else if (status >= 500 && status <= 504) {
+
     dispatch(push('/exception/500'));
   }
 

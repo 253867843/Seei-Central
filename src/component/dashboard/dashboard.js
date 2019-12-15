@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {getGroupNameList} from '../../redux/index';
-import {getLocalStorage} from '../../utils/utils';
+import {getRouteParams} from '../../utils/utils';
 
 class dashboard extends React.Component {
   render() {
@@ -10,31 +10,10 @@ class dashboard extends React.Component {
     const groupNameListRaw = groupNameList.toJS();
     console.log('[dashboard]', groupNameListRaw);
     return (
-      <div>
-        {
-          this.callDefaultRoute(groupNameListRaw)
-        }
-      </div>
+      <Redirect to={getRouteParams('/homev2', groupNameListRaw)}/>
     )
-  }
 
-  // 访问默认路由
-  callDefaultRoute = (groupNameListRaw) => {
-    const selectedItem = getLocalStorage('selectedItem');
-    let targetId;
-    if (selectedItem) {
-      targetId = selectedItem;
-    } else {
-      const [first = {}] = groupNameListRaw;
-      targetId = first.group_id;
-    }
-    console.log('[targetId]', targetId);
-    return (
-      targetId
-        ? <Redirect to={`/homev2/${targetId}`}/>
-        : <Redirect to={`/homev2`}/>
-    )
-  };
+  }
 }
 
 const mapStateToProps = (state, props) => {

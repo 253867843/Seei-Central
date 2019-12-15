@@ -9,7 +9,11 @@ module.exports = override(
   }),
   addLessLoader({ // 自定义主题
     javascriptEnabled: true,
-    modifyVars: {'@primary-color': '#d9482f'},
+    modifyVars: {
+      // '@input-bg': 'green',
+      // '@radio-button-bg': '#212a35',
+      '@primary-color': '#d9482f',
+    },
   }),
   addDecoratorsLegacy()
 );

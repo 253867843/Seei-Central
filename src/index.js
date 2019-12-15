@@ -48,7 +48,8 @@ const AppProvider = (
           <Route path='/login' component={Login}/>
           <Route path='/home' component={Home}/>
           {/*+*/}
-          <Route path={['/homev2/:id', '/homev2']} component={HomeV2}/>
+          {/*<Route path={['/homev2/:id/:menu', '/homev2']} component={HomeV2}/>*/}
+          <Route path='/homev2/:menu' component={HomeV2}/>
           <Route path='/dashboard' component={DashBoard}/>
           <Route path='/exception/403' component={Page403}/>
           <Route path='/exception/404' component={Page404}/>

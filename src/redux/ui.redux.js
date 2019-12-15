@@ -11,6 +11,7 @@ const defaultState = Immutable.fromJS({
   deviceType: ['encode', 'wowza'], // encode, wowza
   selectedItem: '', // 导航条, <select>选中项, group_id
   selectedMenuItem: '', // <Menu>选中项, device/groups/server.js
+  selectedUnitItem: '', // 三级路由选中项(只有当二级路由是unit才有)
 });
 
 // action types
@@ -23,6 +24,7 @@ export const types = {
   CLEAR_DEVICE_TYPE: 'UI/CLEAR_DEVICE_TYPE', // 清空展示的设备类型
   SET_SELECTED_ITEM: 'UI/SET_SELECTED_ITEM', // 设置<select>选中项目
   SET_SELECTED_MENU_ITEM: 'UI/SET_SELECTED_MENU_ITEM', // 设置<Menu>选中项目
+  SET_SELECTED_UNIT_ITEM: 'UI/SET_SELECTED_UNIT_ITEM', // 设置三级路由选中项目
 };
 
 // action creators
@@ -53,6 +55,10 @@ export const actions = {
   }),
   setSelectedMenuItem: (current) => ({
     type: types.SET_SELECTED_MENU_ITEM,
+    current
+  }),
+  setSelectedUnitItem: (current) => ({
+    type: types.SET_SELECTED_UNIT_ITEM,
     current
   })
 };
@@ -99,6 +105,8 @@ export default (state = defaultState, action) => {
       return state.set('selectedItem', action.group_id); // 简单数据类型
     case types.SET_SELECTED_MENU_ITEM:
       return state.set('selectedMenuItem', action.current); // 简单数据类型
+    case types.SET_SELECTED_UNIT_ITEM:
+      return state.set('selectedUnitItem', action.current); // 简单数据类型
     case authTypes.LOGIN: // 登录成功
       return getLoginSelectedStatus(state, action.groupsIds); // 简单数据类型
     case userTypes.FETCH_USER_INFO: // 刷新页面

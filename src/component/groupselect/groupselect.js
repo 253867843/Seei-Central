@@ -11,18 +11,18 @@ import {
   UserMenu,
 } from './style.js';
 
+// utils
+import {getRouteParams} from '../../utils/utils';
+import apiPrefix from '../../apiPrefix';
+
 @withRouter
 class GroupSelect extends React.Component {
   render() {
-    // console.log('[GroupSelect]', this.props.id, this.props.grouplist);
-    const {id, grouplist, userRaw} = this.props;
-    const group = grouplist.reduce((ret, item) => {
-      if (item.group_id === id) {
-        ret['group_id'] = item.group_id;
-        ret['group'] = item.group;
-      }
-      return ret;
-    }, {});
+    // console.log('[GroupSelect]', this.props);
+    const {groupNameList, user, location: {state}} = this.props;
+    const groupNameListRaw = groupNameList.toJS();
+    const userRaw = user.toJS();
+    const {group} = state;
     const {username} = userRaw;
     return (
       <GroupSelectLayout id='navbar-select-div'>
@@ -32,8 +32,8 @@ class GroupSelect extends React.Component {
         <MainGroupSelect>
           <GroupSelectForm
             defaultGroup={group}
-            grouplist={grouplist}
-            onChange={this.handleChange}
+            grouplist={groupNameListRaw}
+            onChange={(v) => this.handleChange(v, groupNameListRaw)}
           />
         </MainGroupSelect>
 
@@ -45,8 +45,9 @@ class GroupSelect extends React.Component {
     )
   }
 
-  handleChange = (value) => {
-    this.props.history.push(`/homev2/${value}`);
+  handleChange = (value, namelist) => {
+    const rootUrl = apiPrefix.rootUrl();
+    this.props.history.push(getRouteParams(rootUrl, namelist, value));
   };
 }
 
@@ -59,7 +60,7 @@ const GroupSelectForm = Form.create({name: 'group_select_form'})(
       return (
         <div style={{width: '100%'}}>
           <Select size='large' onChange={onChange} notFoundContent='No Group'
-                  value={defaultGroup.group || 'Please add a group'}
+                  value={defaultGroup || 'Please add a group'}
                   style={{width: '100%'}}>
             {
               grouplist.map((item) => (
@@ -80,10 +81,3 @@ const GroupSelectForm = Form.create({name: 'group_select_form'})(
 );
 
 export default GroupSelect;
-
-/**
- * 用户组展示
- * 1.展示默认值 --- 完成
- * 2.能够切换 --- 完成
- * 3.切换能跳转路由 --- 完成
- * */

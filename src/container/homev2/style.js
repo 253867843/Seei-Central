@@ -43,26 +43,30 @@ export const HeaderNavbar = styled.div`
   padding: 16px 16px 16px 0;
   
   // 4个子菜单
-  ul {
+  ul.ant-menu.ant-menu-dark.ant-menu-root.ant-menu-horizontal {
     display: flex;
     flex-direction: row;
-    margin: 0;
-    padding: 0;
+    margin-bottom: 0;
+    padding-left: 0;
     list-style: none;
+    box-sizing: content-box;
     li {
       display: flex;
       flex-flow: row nowrap;
       justify-content: center;
       align-items: center;
-      width: 110px;
+      width: 110px !important;
       height: 58px;
       font-size: ${rootFontSize['--primary-font-size']};
       border-right: 1px solid ${rootColor['--border-color']};
       padding-right: 7px !important;
-      box-sizing: border-box;
+      // box-sizing: border-box;
       &:first-child {
          border-left: 1px solid ${rootColor['--border-color']};
       } 
+    }
+    .ant-menu-item {
+      padding: 0;
     }
   }
 `;
@@ -80,3 +84,4 @@ export const PageContent = styled.div`
 // 2.flex-flow(flex-direction/flex-wrap)
 // 3.justify-content
 // 4.align-items
+// 5.width/height: 100%;
