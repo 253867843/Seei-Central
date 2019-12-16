@@ -13,11 +13,12 @@ export const removeLocalStorage = (key) => {
   return localStorage.removeItem(key);
 };
 
-export const getRouteParams = (pathname = '/homev2', namelist = [], targetId, menu = 'unit', smenu = 'list') => {
+export const getRouteParams = (rootUrl = '/homev2', namelist = [], targetId, menu = 'unit', smenu = 'list') => {
   const selectedItem = getLocalStorage('selectedItem');
   const selectedMenuItem = getLocalStorage('selectedMenuItem');
   const selectedUnitItem = getLocalStorage('selectedUnitItem');
   // let targetId;
+  let pathname;
   let targetName;
   let targetMenu;
   let targetSMenu;
@@ -39,14 +40,13 @@ export const getRouteParams = (pathname = '/homev2', namelist = [], targetId, me
   // console.log('[target]', targetId, targetName);
 
   targetMenu = menu ? menu : selectedMenuItem;
-  pathname = pathname + '/' + targetMenu;
+  pathname = rootUrl + '/' + targetMenu;
   console.log('[pathname]', pathname);
 
   if (menu === 'unit') {
     targetSMenu = smenu ? smenu : selectedUnitItem;
+    pathname = pathname + '/' + targetSMenu;
   }
-
-  pathname = pathname + '/' + targetSMenu;
 
   return {
     pathname,

@@ -19,8 +19,8 @@ import apiPrefix from '../../apiPrefix';
 class GroupSelect extends React.Component {
   render() {
     // console.log('[GroupSelect]', this.props);
-    const {groupNameList, user, location: {state}} = this.props;
-    const groupNameListRaw = groupNameList.toJS();
+    const {nameList, user, location: {state}} = this.props;
+    const nameListRaw = nameList.toJS();
     const userRaw = user.toJS();
     const {group} = state;
     const {username} = userRaw;
@@ -32,8 +32,8 @@ class GroupSelect extends React.Component {
         <MainGroupSelect>
           <GroupSelectForm
             defaultGroup={group}
-            grouplist={groupNameListRaw}
-            onChange={(v) => this.handleChange(v, groupNameListRaw)}
+            grouplist={nameListRaw}
+            onChange={(v) => this.handleChange(v, nameListRaw)}
           />
         </MainGroupSelect>
 

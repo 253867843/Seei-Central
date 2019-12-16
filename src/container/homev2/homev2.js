@@ -31,6 +31,9 @@ import apiPrefix from '../../apiPrefix';
 // antd
 import {Icon, Menu} from 'antd';
 
+// context
+import {GroupParamsContext} from '../../context/group-params-context';
+
 // function Unit() {
 //   return (
 //     <div>Unit</div>
@@ -56,6 +59,10 @@ function Service() {
 }
 
 class HomeV2 extends React.Component {
+  state = {
+    test_group_id: '233333'
+  };
+
   // 二级路由
   getNavBarMenu = (group_id, menu) => {
     return group_id
@@ -87,11 +94,15 @@ class HomeV2 extends React.Component {
       : null
   };
 
+  /*
+  * 进入二级路由/三级路由, group_id必不为空
+  * */
   render() {
     console.log('[HomeV2]', this.props);
     const {group_id} = this.props.location.state;
     const {menu} = this.props.match.params;
     const rootUrl = apiPrefix.rootUrl();
+    const nameListRaw = this.props.nameList.toJS();
     const menuList = [
       {
         path: `${rootUrl}/unit`,
@@ -126,21 +137,23 @@ class HomeV2 extends React.Component {
         </HeaderNavbar>
 
         {/*二级路由*/}
-        <PageContent>
-          {
-            group_id
-              ? (
-                <Fragment>
-                  {
-                    menuList.map((v) => (
-                      <Route key={v.path} path={v.path} component={v.component}/>
-                    ))
-                  }
-                </Fragment>
-              )
-              : <NoGroupPage/>
-          }
-        </PageContent>
+        <GroupParamsContext.Provider value={{group_id, rootUrl, namelist: nameListRaw}}>
+          <PageContent>
+            {
+              group_id
+                ? (
+                  <Fragment>
+                    {
+                      menuList.map((v) => (
+                        <Route key={v.path} path={v.path} component={v.component}/>
+                      ))
+                    }
+                  </Fragment>
+                )
+                : <NoGroupPage/>
+            }
+          </PageContent>
+        </GroupParamsContext.Provider>
 
       </MainLayout>
     )
@@ -157,9 +170,9 @@ class HomeV2 extends React.Component {
   handleClick = (e) => {
     console.log('[切换二级路由]', e.key);
     const targetId = this.props.location.state.group_id;
-    const grouplist = this.props.groupNameList.toJS();
+    const nameListRaw = this.props.nameList.toJS();
     const rootUrl = apiPrefix.rootUrl();
-    this.props.history.push(getRouteParams(rootUrl, grouplist, targetId, e.key));
+    this.props.history.push(getRouteParams(rootUrl, nameListRaw, targetId, e.key));
     this.props.setSelectedMenuItem(e.key);
   };
 
@@ -182,7 +195,7 @@ class HomeV2 extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    groupNameList: getGroupNameList(state),
+    nameList: getGroupNameList(state),
     user: getLoggedUser(state),
     selectedMenuItem: getSelectedMenuItem(state),
   }
@@ -199,5 +212,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(HomeV2);
 /**
  * 1.没有数据界面
  * 2.有数据界面, 在手动规划路由, 参考woniu/dashboard.js定义的3个路由
+ * */
+
+/**
+ * homev2.js接收4个参数:
+ * 1.group
+ * 2.group_id
+ * 3.nameList
+ * 4.username
  * */
 
