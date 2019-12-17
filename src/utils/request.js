@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {push} from 'connected-react-router';
-import {notification ,message} from 'antd';
+import {notification, message} from 'antd';
 import isEmpty from 'lodash/isEmpty';
 import codeMessage from './codeMessage';
 
@@ -20,7 +20,7 @@ const httpMessage = {
 function getAxios(url, dispatch) {
   return axios.get(url)
     .then((response) => {
-      console.log('[request.js response]', response);
+      // console.log('[request.js response]', response);
       return handleResponse(response, dispatch);
     })
     .catch((error) => {
@@ -72,7 +72,7 @@ function handleResponse(response, dispatch) {
 
     return {...response.data};
   } else {
-    console.log('[请求验证码]', response.data);
+    // console.log('[请求验证码]', response.data);
     // 请求验证码, 返回没有code和info字段
     return {vcode: response.data};
   }

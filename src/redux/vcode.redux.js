@@ -32,7 +32,7 @@ export const actions = {
           // -
           // console.log('[vcode.redux fetchVerifyCode]', res);
           // +
-          console.log('[vcode.redux fetchVerifyCode]', data);
+          // console.log('[vcode.redux fetchVerifyCode]', data);
           // -
           // if (res.status === 200) {
           // +

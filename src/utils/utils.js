@@ -14,7 +14,7 @@ export const removeLocalStorage = (key) => {
 };
 
 export const getRouteParams = (rootUrl = '/homev2', namelist = [], targetId, menu = 'unit', smenu = 'list') => {
-  console.log('[路径参数制作]');
+  // console.log('[路径参数制作]');
   const selectedItem = getLocalStorage('selectedItem');
   const selectedMenuItem = getLocalStorage('selectedMenuItem');
   const selectedUnitItem = getLocalStorage('selectedUnitItem');

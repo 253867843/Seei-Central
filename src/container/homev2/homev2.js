@@ -25,7 +25,7 @@ import {
 } from './style.js';
 
 //utils
-import {setLocalStorage, getRouteParams} from '../../utils/utils';
+import {setLocalStorage, getRouteParams, getLocalStorage} from '../../utils/utils';
 import isEmpty from 'lodash/isEmpty';
 import apiPrefix from '../../apiPrefix';
 
@@ -53,9 +53,10 @@ function Service() {
   )
 }
 
-class HomeV2 extends React.Component {
+class HomeV2 extends React.PureComponent {
   state = {
-    test_group_id: '233333'
+    group: '',
+    group_id: '',
   };
 
   // 二级路由
@@ -93,7 +94,7 @@ class HomeV2 extends React.Component {
   * 进入二级路由/三级路由, group_id必不为空
   * */
   render() {
-    console.log('[HomeV2]', this.props);
+    // console.log('[HomeV2]', this.props);
     const {group_id} = this.props.location.state;
     const {menu} = this.props.match.params;
     const rootUrl = apiPrefix.rootUrl();
@@ -121,6 +122,7 @@ class HomeV2 extends React.Component {
         <HeaderLogo>
           <img src={require('../../images/logo.png')} alt=''/>
         </HeaderLogo>
+
         <HeaderNavbar>
           {/*二级菜单*/}
           {this.getNavBarMenu(group_id, menu)}
@@ -156,7 +158,6 @@ class HomeV2 extends React.Component {
 
   // 切换标签页面
   handleClick = (e) => {
-    console.log('[切换二级路由]', e.key);
     const targetId = this.props.location.state.group_id;
     const nameListRaw = this.props.nameList.toJS();
     const rootUrl = apiPrefix.rootUrl();
@@ -166,24 +167,37 @@ class HomeV2 extends React.Component {
 
   componentDidMount() {
     const {group, group_id} = this.props.location.state;
-    console.log('[homev2 componentDidMount]', group, group_id);
     if (!isEmpty(group) && !isEmpty(group_id)) {
       this.props.fetchGroupInfo({group, group_id});
+      this.setState({group, group_id});
     }
 
+    // 添加监听(浏览器关闭或刷新时)
     window.addEventListener('beforeunload', this.beforeunload);
   }
 
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    console.log('[shouldComponentUpdate nextProps]', nextProps);
+    console.log('[shouldComponentUpdate nextState]', nextState);
+    return true;
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log('[componentDidUpdate]', prevProps, prevState);
-    const {group, group_id} = this.props.location.state;
-    console.log('[homev2 componentDidUpdate]', group, group_id);
-    // if (!isEmpty(group) && !isEmpty(group_id)) {
-    //   this.props.fetchGroupInfo({group, group_id});
+    // console.log('[componentDidUpdate]');
+    // console.log('[componentDidUpdate prevProps]', prevProps);
+    // console.log('[componentDidUpdate prevState]', prevState);
+    // console.log('[componentDidUpdate snapshot]', snapshot);
+    // const {group, group_id} = this.props.location.state; // 当前
+    // console.log('[componentDidUpdate]', prevState, group_id);
+    // if (prevState.group_id !== group_id) {
+    //   console.log('[执行请求组方法]');
+    //   this.props.fetchGroupInfo(group, group_id);
+    //   this.setState({group, group_id});
     // }
   }
 
   componentWillUnmount() {
+    // 删除监听
     window.removeEventListener('beforeunload', this.beforeunload);
   }
 

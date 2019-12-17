@@ -412,6 +412,7 @@ const allIds = (state = Immutable.fromJS([]), action) => {
   switch (action.type) {
     case usersTypes.FETCH_USER_INFO:
     case authTypes.LOGIN:
+      // console.log('[!!!!!!!!!]', action.groupsIds);
       return Immutable.List(action.groupsIds);
     case authTypes.LOGOUT:
       return Immutable.List();
