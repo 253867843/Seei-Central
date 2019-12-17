@@ -2,29 +2,28 @@ import React from 'react';
 import {Route} from 'react-router-dom';
 
 // 自定义组件
+import Unitnavbar from '../unitnavbar/unitnavbar';
+import UnitOperator from '../unitoperator/unitoperator';
 import UnitList from '../unitlist/unitlist';
+import UnitMultiView from '../unitmultiview/unitmultiview';
+import UnitFileUpload from '../unitfileupload/unitfileupload';
+import UnitMap from '../unitmap/unitmap';
 
 // utils
 import apiPrefix from '../../apiPrefix';
 
 // styled-components
-import {ThirdDashBoardLayout} from './style';
+import {
+  ThirdDashBoardLayout,
+  UnitLayout,
+  UnitNavBarHeader,
+  UnitNavBarHeaderLeft,
+  UnitNavBarHeaderRight,
+  UnitPageContent,
+} from './style';
 
-// function UnitList() {
-//   return (<h1>UnitList</h1>)
-// }
-
-function UnitMultiView() {
-  return (<h1>UnitMultiView</h1>)
-}
-
-function UnitFileUpload() {
-  return (<h1>UnitFileUpload</h1>)
-}
-
-function UnitMap() {
-  return (<h1>UnitMap</h1>)
-}
+// antd
+import {Button} from 'antd';
 
 class Unit extends React.Component {
   render() {
@@ -36,32 +35,63 @@ class Unit extends React.Component {
         path: `${rootUrl}${secondaryUrl}/list`,
         text: '设备 > 设备列表',
         component: UnitList,
+        value: 'list',
+        type: 'menu',
         hasFilter: true,
       },
       {
         path: `${rootUrl}${secondaryUrl}/multiview`,
         text: '设备 > 多画面',
-        component: UnitMultiView
+        component: UnitMultiView,
+        value: 'multiview',
+        type: 'form',
       },
       {
         path: `${rootUrl}${secondaryUrl}/file_upload`,
         text: '设备 > 文件上传',
-        component: UnitFileUpload
+        component: UnitFileUpload,
+        value: 'file_upload',
+        type: 'upload',
       },
       {
         path: `${rootUrl}${secondaryUrl}/map`,
         text: '设备 > 地图',
         component: UnitMap,
+        value: 'map',
+        type: 'environment',
         hasFilter: true
       }
     ];
     return (
       <ThirdDashBoardLayout>
-        {
-          unitlist.map((v) => (
-            <Route key={v.path} path={v.path} render={() => <v.component text={v.text}/>}/>
-          ))
-        }
+        <UnitLayout>
+          <UnitNavBarHeader>
+
+            {/*导航栏*/}
+            <UnitNavBarHeaderLeft>
+              <Unitnavbar data={unitlist}/>
+            </UnitNavBarHeaderLeft>
+
+            {/*添加设备/刷新*/}
+            <UnitNavBarHeaderRight>
+              <UnitOperator/>
+            </UnitNavBarHeaderRight>
+
+          </UnitNavBarHeader>
+
+          <UnitPageContent>
+            {
+              unitlist.map((v) => (
+                <Route
+                  key={v.path}
+                  path={`${v.path}`}
+                  component={v.component}
+                />
+              ))
+            }
+          </UnitPageContent>
+
+        </UnitLayout>
       </ThirdDashBoardLayout>
     )
   }

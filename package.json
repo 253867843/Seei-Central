@@ -81,5 +81,5 @@
       "react-app"
     ]
   },
-  "proxy": "http://localhost:6060"
+  "proxy": "http://localhost:9000"
 }

@@ -1,6 +1,138 @@
 const express = require('express');
 const Router = express.Router();
 
+// 模拟请求组信息
+Router.post('/method/getGroupInfo', function (req, res) {
+  const {group, group_id} = req.body;
+  console.log('[group, group_id]', group, group_id);
+  let ret = {};
+  if (group === 'group_test1') {
+    ret = {
+      status: true,
+      msg: '获取组信息成功',
+      code: '20000',
+      data: {
+        group_id: 'sd0abd9249451d0fdbf0e1406f5d9e6a',
+        group: 'group_test',
+        encodeDevices: [
+          {
+            id: 'f0abd9249451d0fdbf0e1406f5d9e87',
+            domain: '127.0.0.1',
+            port: 8000,
+            auth: '4a0abd9249451d0fdbf0e1406f5d9e6a',
+            recvServicePort: 10000,
+            state: "normal",
+            eMessage: ''
+          }
+        ],
+        recvStreamServices: [
+          {
+            id: 'b0abd9249451d0fdbf0e1406f5d9e31',
+            domain: '127.0.0.1',
+            port: 8087,
+            state: "normal",
+            eMessage: ''
+          }
+        ],
+        dState: 'offline',
+        status: true,
+        eMessage: '',
+        description: ''
+      },
+      info: {
+        "type": "tip",
+        "title": "获取组信息成功",
+        "info": "获取组信息成功",
+        "note": "获取组信息成功",
+        "steps": "获取组信息步骤"
+      }
+    }
+  } else if (group === 'group_test2') {
+    ret = {
+      status: true,
+      msg: '获取组信息成功',
+      code: '20000',
+      data: {
+        group_id: 'sd0abd9249451d0fdbf0e1406f5d9e6b',
+        group: 'group_test',
+        encodeDevices: [
+          {
+            id: 'f0abd9249451d0fdbf0e1406f5d9e87',
+            domain: '127.0.0.1',
+            port: 8000,
+            auth: '4a0abd9249451d0fdbf0e1406f5d9e6b',
+            recvServicePort: 10000,
+            state: "normal",
+            eMessage: ''
+          }
+        ],
+        recvStreamServices: [
+          {
+            id: 'b0abd9249451d0fdbf0e1406f5d9e32',
+            domain: '127.0.0.2',
+            port: 8087,
+            state: "normal",
+            eMessage: ''
+          }
+        ],
+        dState: 'offline',
+        status: true,
+        eMessage: '',
+        description: ''
+      },
+      info: {
+        "type": "tip",
+        "title": "获取组信息成功",
+        "info": "获取组信息成功",
+        "note": "获取组信息成功",
+        "steps": "获取组信息步骤"
+      }
+    }
+  } else if (group === 'group_test3') {
+    ret = {
+      status: true,
+      msg: '获取组信息成功',
+      code: '20000',
+      data: {
+        group_id: 'sd0abd9249451d0fdbf0e1406f5d9e6c',
+        group: 'group_test',
+        encodeDevices: [
+          {
+            id: 'f0abd9249451d0fdbf0e1406f5d9e87',
+            domain: '127.0.0.1',
+            port: 8000,
+            auth: '4a0abd9249451d0fdbf0e1406f5d9e6c',
+            recvServicePort: 10000,
+            state: "normal",
+            eMessage: ''
+          }
+        ],
+        recvStreamServices: [
+          {
+            id: 'b0abd9249451d0fdbf0e1406f5d9e33',
+            domain: '127.0.0.1',
+            port: 8087,
+            state: "normal",
+            eMessage: ''
+          }
+        ],
+        dState: 'offline',
+        status: true,
+        eMessage: '',
+        description: ''
+      },
+      info: {
+        "type": "tip",
+        "title": "获取组信息成功",
+        "info": "获取组信息成功",
+        "note": "获取组信息成功",
+        "steps": "获取组信息步骤"
+      }
+    }
+  }
+  return res.json(ret);
+});
+
 // 模拟获取用户信息
 Router.post('/users/userInfo', function (req, res) {
   console.log('[模拟获取用户信息]');

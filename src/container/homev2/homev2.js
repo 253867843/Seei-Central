@@ -1,12 +1,13 @@
 import React, {Fragment} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Link, Route, useLocation} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 
-// selector
+// actions/selector
 import {getGroupNameList} from '../../redux/index';
 import {getLoggedUser} from '../../redux/auth.redux';
 import {actions as uiActions, getSelectedMenuItem} from '../../redux/ui.redux';
+import {actions as groupActions} from '../../redux/groups.redux';
 
 // 自定义组件
 import GroupSelect from '../../component/groupselect/groupselect';
@@ -33,12 +34,6 @@ import {Icon, Menu} from 'antd';
 
 // context
 import {GroupParamsContext} from '../../context/group-params-context';
-
-// function Unit() {
-//   return (
-//     <div>Unit</div>
-//   )
-// }
 
 function Files() {
   return (
@@ -159,13 +154,6 @@ class HomeV2 extends React.Component {
     )
   }
 
-  componentDidMount() {
-    const {group, group_id} = this.props.location.state;
-    if (!isEmpty(group) && isEmpty(group_id)) {
-      // this.props
-    }
-  }
-
   // 切换标签页面
   handleClick = (e) => {
     console.log('[切换二级路由]', e.key);
@@ -177,7 +165,22 @@ class HomeV2 extends React.Component {
   };
 
   componentDidMount() {
+    const {group, group_id} = this.props.location.state;
+    console.log('[homev2 componentDidMount]', group, group_id);
+    if (!isEmpty(group) && !isEmpty(group_id)) {
+      this.props.fetchGroupInfo({group, group_id});
+    }
+
     window.addEventListener('beforeunload', this.beforeunload);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('[componentDidUpdate]', prevProps, prevState);
+    const {group, group_id} = this.props.location.state;
+    console.log('[homev2 componentDidUpdate]', group, group_id);
+    // if (!isEmpty(group) && !isEmpty(group_id)) {
+    //   this.props.fetchGroupInfo({group, group_id});
+    // }
   }
 
   componentWillUnmount() {
@@ -203,7 +206,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    ...bindActionCreators(uiActions, dispatch)
+    ...bindActionCreators(uiActions, dispatch),
+    ...bindActionCreators(groupActions, dispatch)
   }
 };
 

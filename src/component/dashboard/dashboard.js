@@ -12,7 +12,6 @@ class dashboard extends React.Component {
     return (
       <Redirect to={getRouteParams('/homev2', groupNameListRaw)}/>
     )
-
   }
 }
 
