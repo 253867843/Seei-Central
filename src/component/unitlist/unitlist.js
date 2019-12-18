@@ -2,6 +2,8 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 
 // 自定义组件
+import GridTable from '../gridtable/gridtable';
+import GridCard from '../gridcard/gridcard';
 
 // antd
 import {Radio, Icon, Button, Table} from 'antd';
@@ -17,6 +19,18 @@ import {
 
 // utils
 
+// function TableGrid() {
+//   return (
+//     <div>TableGrid</div>
+//   )
+// }
+
+// function CardGrid() {
+//   return (
+//     <div>CardGrid</div>
+//   )
+// }
+
 @withRouter
 class UnitList extends React.Component {
   render() {
@@ -25,15 +39,17 @@ class UnitList extends React.Component {
       <UnitListLayout>
         <UnitDetailsLayout>
 
-          UnitList
-
           <UnitListPageContentTable>
+
+            <GridTable/>
 
           </UnitListPageContentTable>
 
           <Divider/>
 
           <UnitListPageContentCard>
+
+            <GridCard/>
 
           </UnitListPageContentCard>
 

@@ -3,6 +3,10 @@ export const rootColor = {
   '--bg-first-color': '#343a41',
   '--bg-second-color': '#212a35',
   '--bg-third-color': '#161b21',
+  '--table-thread-color': '#a5b2c7',
+  '--border-bottom-color': '#545860',
+  '--bg-btn-offline': '#43464d',
+  '--bg-btn-online': '#28b73d'
 };
 
 export const rootFontSize = {
