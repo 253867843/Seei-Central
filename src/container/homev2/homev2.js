@@ -53,7 +53,7 @@ function Service() {
   )
 }
 
-class HomeV2 extends React.PureComponent {
+class HomeV2 extends React.Component {
   state = {
     group: '',
     group_id: '',
@@ -79,7 +79,7 @@ class HomeV2 extends React.PureComponent {
           </Menu.Item>
           <Menu.Item key='manage'>
             <Icon type='setting'/>
-            Groups
+            组
           </Menu.Item>
           <Menu.Item key='service'>
             <Icon type="cloud-server"/>
@@ -119,6 +119,7 @@ class HomeV2 extends React.PureComponent {
     ];
     return (
       <MainLayout>
+
         <HeaderLogo>
           <img src={require('../../images/logo.png')} alt=''/>
         </HeaderLogo>
@@ -166,35 +167,29 @@ class HomeV2 extends React.PureComponent {
   };
 
   componentDidMount() {
+    console.log('[componentDidMount]');
     const {group, group_id} = this.props.location.state;
     if (!isEmpty(group) && !isEmpty(group_id)) {
       this.props.fetchGroupInfo({group, group_id});
-      this.setState({group, group_id});
+      // this.setState({group, group_id});
     }
 
     // 添加监听(浏览器关闭或刷新时)
     window.addEventListener('beforeunload', this.beforeunload);
   }
 
-  // shouldComponentUpdate(nextProps, nextState, nextContext) {
-  //   console.log('[shouldComponentUpdate nextProps]', nextProps);
-  //   console.log('[shouldComponentUpdate nextState]', nextState);
-  //   return true;
-  // }
-  //
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   // console.log('[componentDidUpdate]');
-  //   // console.log('[componentDidUpdate prevProps]', prevProps);
-  //   // console.log('[componentDidUpdate prevState]', prevState);
-  //   // console.log('[componentDidUpdate snapshot]', snapshot);
-  //   // const {group, group_id} = this.props.location.state; // 当前
-  //   // console.log('[componentDidUpdate]', prevState, group_id);
-  //   // if (prevState.group_id !== group_id) {
-  //   //   console.log('[执行请求组方法]');
-  //   //   this.props.fetchGroupInfo(group, group_id);
-  //   //   this.setState({group, group_id});
-  //   // }
-  // }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const {group_id: currentGroupId, group: currentGroup} = this.props.location.state; // 切换后id和name
+    const {group_id: prevGroupId} = prevProps.location.state; // 切换前id
+    if (currentGroupId !== prevGroupId && this.state.group_id !== currentGroupId) {
+      this.props.fetchGroupInfo({group: currentGroup, group_id: currentGroupId});
+      this.setState({group_id: currentGroupId});
+    }
+    /*
+    * 刷新后, this.state重置.
+    * 但this.props.location.state.group_id仍旧保存(使用了connected-react-router中间件)
+    * */
+  }
 
   componentWillUnmount() {
     // 删除监听

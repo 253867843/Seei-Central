@@ -19,22 +19,10 @@ import {
 
 // utils
 
-// function TableGrid() {
-//   return (
-//     <div>TableGrid</div>
-//   )
-// }
-
-// function CardGrid() {
-//   return (
-//     <div>CardGrid</div>
-//   )
-// }
-
 @withRouter
 class UnitList extends React.Component {
   render() {
-    // console.log('[UnitList]', this.props);
+    console.log('[UnitList]', this.props);
     return (
       <UnitListLayout>
         <UnitDetailsLayout>

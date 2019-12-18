@@ -15,12 +15,14 @@ export const types = {
 export const actions = {
     fetchUserInfo: () => {
       return (dispatch) => {
+        // -
         dispatch(appActions.startRequest());
         // -
         // axios.post(url.getUserInfo())
         // +
         postAxios(url.getUserInfo(), dispatch)
           .then((data) => {
+              // -
               dispatch(appActions.finishRequest());
               // -
               // console.log('[users.redux fetchUserInfo]', res);

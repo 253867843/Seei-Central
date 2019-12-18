@@ -82,7 +82,7 @@ export const ScrollArea = styled.div`
 `;
 
 export const StreamVideo = styled.div`
-  position: relative;
+  position: relative !important;
   width: 100%;
   height: 170px;
   min-height: 170px;
@@ -107,6 +107,7 @@ export const Setting = styled.div`
   min-height: 320px;
   margin-bottom: 16px;
   background-color: ${rootColor['--bg-first-color']};
+  flex-shrink: 0;
 `;
 
 export const SettingLayout = styled.div`
@@ -138,9 +139,27 @@ export const MarginLeftAuto = styled.div`
 `;
 
 export const InfoLayout = styled.div`
-  display: flex;
   width: 100%;
-  // height: 100%;
-  height: 800px;
-  background-color: blue;
+  height: 100%;
+  .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+    border-radius: 0;
+    background-color: ${rootColor['--bg-second-color']};
+    color: #fff;
+  }
+  
+  .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+    color: #d9482f; 
+  }
+  
+  .ant-tabs-nav .ant-tabs-tab .anticon {
+    margin-right: 0;
+  }
+`;
+
+export const TabDetails = styled.div`
+   display: flex;
+   flex-direction: column;
+   padding-left: 0;
+   margin-bottom: 0;
+   min-height: 300px;
 `;

@@ -22,10 +22,12 @@ export const types = {
 export const actions = {
   login: ({user, password, verifyCode}) => {
     return (dispatch) => {
-      dispatch(appActions.startRequest());
+      // -
+      // dispatch(appActions.startRequest());
       postAxios(url.login(), {user, password, verifyCode}, dispatch)
         .then((data) => {
-          dispatch(appActions.finishRequest());
+          // -
+          // dispatch(appActions.finishRequest());
           // console.log('[auth.redux login]', data);
           if (!data.error) {
             if (data.status) {

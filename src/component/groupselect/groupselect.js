@@ -18,12 +18,12 @@ import apiPrefix from '../../apiPrefix';
 @withRouter
 class GroupSelect extends React.Component {
   render() {
-    // console.log('[GroupSelect]', this.props);
     const {nameList, user, location: {state}} = this.props;
     const nameListRaw = nameList.toJS();
     const userRaw = user.toJS();
     const {group} = state;
     const {username} = userRaw;
+    // console.log('[GroupSelect]', nameListRaw);
     return (
       <GroupSelectLayout id='navbar-select-div'>
 
@@ -57,7 +57,7 @@ const GroupSelectForm = Form.create({name: 'group_select_form'})(
   class extends React.Component {
     render() {
       const {defaultGroup, grouplist, onChange} = this.props;
-      // console.log('[defaultValue]', defaultGroup.group);
+      // console.log('[defaultValue]', grouplist);
       return (
         <div style={{width: '100%'}}>
           <Select size='large' onChange={onChange} notFoundContent='No Group'

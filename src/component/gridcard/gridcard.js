@@ -17,12 +17,14 @@ import {
   StatusButtonLayout,
   MarginLeftAuto,
   InfoLayout,
+  TabDetails
 } from './style';
 
-import {Icon, Button} from 'antd';
+import {Icon, Button, Tabs} from 'antd';
 
 class GridCard extends React.Component {
   render() {
+    const {TabPane} = Tabs;
     return (
       <CardSideBar>
         <UnitDetails>
@@ -36,7 +38,7 @@ class GridCard extends React.Component {
             <IconButton style={{width: '30px'}}>
               <Icon type='setting' theme='filled'></Icon>
             </IconButton>
-            <Icon type='ellipsis' rotate={90}/>
+            <Icon type='more'/>
 
           </Header>
 
@@ -82,7 +84,68 @@ class GridCard extends React.Component {
             </Setting>
 
             <InfoLayout>
-              123
+              <Tabs type='card'>
+                <TabPane tab={
+                  <span>
+                    <Icon type='global'></Icon>
+                  </span>
+                } key='1'>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    <TabDetails>
+                      123
+                    </TabDetails>
+                  </div>
+                </TabPane>
+
+                <TabPane tab={
+                  <span>
+                    <Icon type='picture'></Icon>
+                  </span>
+                } key='2'>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    <TabDetails>
+                      123
+                    </TabDetails>
+                  </div>
+                </TabPane>
+
+                <TabPane tab={
+                  <span>
+                      <Icon type='upload'></Icon>
+                    </span>
+                } key='3'>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    <TabDetails>
+                      123
+                    </TabDetails>
+                  </div>
+                </TabPane>
+
+                <TabPane tab={
+                  <span>
+                    <Icon type='file'></Icon>
+                  </span>
+                } key='4'>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    <TabDetails>
+                      123
+                    </TabDetails>
+                  </div>
+                </TabPane>
+
+              </Tabs>
             </InfoLayout>
           </ScrollArea>
 

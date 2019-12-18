@@ -13,7 +13,7 @@ Router.post('/method/getGroupInfo', function (req, res) {
       code: '20000',
       data: {
         group_id: 'sd0abd9249451d0fdbf0e1406f5d9e6a',
-        group: 'group_test',
+        group: 'group_test1',
         encodeDevices: [
           {
             id: 'f0abd9249451d0fdbf0e1406f5d9e87',
@@ -54,10 +54,10 @@ Router.post('/method/getGroupInfo', function (req, res) {
       code: '20000',
       data: {
         group_id: 'sd0abd9249451d0fdbf0e1406f5d9e6b',
-        group: 'group_test',
+        group: 'group_test2',
         encodeDevices: [
           {
-            id: 'f0abd9249451d0fdbf0e1406f5d9e87',
+            id: 'f0abd9249451d0fdbf0e1406f5d9e88',
             domain: '127.0.0.1',
             port: 8000,
             auth: '4a0abd9249451d0fdbf0e1406f5d9e6b',
@@ -95,10 +95,10 @@ Router.post('/method/getGroupInfo', function (req, res) {
       code: '20000',
       data: {
         group_id: 'sd0abd9249451d0fdbf0e1406f5d9e6c',
-        group: 'group_test',
+        group: 'group_test3',
         encodeDevices: [
           {
-            id: 'f0abd9249451d0fdbf0e1406f5d9e87',
+            id: 'f0abd9249451d0fdbf0e1406f5d9e89',
             domain: '127.0.0.1',
             port: 8000,
             auth: '4a0abd9249451d0fdbf0e1406f5d9e6c',

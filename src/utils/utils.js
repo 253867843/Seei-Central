@@ -63,6 +63,8 @@ export const getRouteParams = (rootUrl = '/homev2', namelist = [], targetId, men
 /**
  * 一级路由优先级: targetId > selectedItem > namelist首选项
  * 二级路由优先级:
+ *
+ * 简化路由的传递参数: getRouteParams(路径1, 路径2, 路径3, 路径4, ...)
  * */
 
 /**

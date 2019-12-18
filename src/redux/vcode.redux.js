@@ -21,14 +21,16 @@ export const types = {
 export const actions = {
   fetchVerifyCode: () => {
     return (dispatch) => {
-      dispatch(appActions.startRequest());
+      // -
+      // dispatch(appActions.startRequest());
       // -
       // axios.get(url.getVerifyCode(), {responseType: 'blob', emulateJSON: true})
       // +
       // {responseType: 'blob', emulateJSON: true}在axios配置文件中实现
       getAxios(url.getVerifyCode(), dispatch)
         .then((data) => {
-          dispatch(appActions.finishRequest());
+          // -
+          // dispatch(appActions.finishRequest());
           // -
           // console.log('[vcode.redux fetchVerifyCode]', res);
           // +

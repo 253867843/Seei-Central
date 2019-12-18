@@ -81,11 +81,13 @@ export const actions = {
   },
   fetchGroupInfo: ({group, group_id}) => { // 查看Group(操作: 覆盖)
     return (dispatch) => {
-      dispatch(appActions.startRequest());
+      // -
+      // dispatch(appActions.startRequest());
       // axios.post(url.fetchGroupInfo(), {group, group_id})
       postAxios(url.fetchGroupInfo(), {group, group_id}, dispatch)
         .then((data) => {
-          dispatch(appActions.finishRequest());
+          // -
+          // dispatch(appActions.finishRequest());
           // console.log('[groups.redux fetchGroupInfo]', res);
           console.log('[groups.redux fetchGroupInfo]', data);
           // if (res.status && res.data.status) {
