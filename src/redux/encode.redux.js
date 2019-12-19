@@ -65,6 +65,7 @@ export const getEncodeIdsByGroup = (state, groupId) => state.getIn(['encodes', '
 // 获取某个encode
 export const getEncodeById = (state, id) => state.getIn(['encodes', 'byId', id]);
 
+
 /**
  * encodes: {
  *    byId: {

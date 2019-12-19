@@ -29,7 +29,7 @@ class UnitList extends React.Component {
 
           <UnitListPageContentTable>
 
-            <GridTable/>
+            <GridTable location={this.props.location}/>
 
           </UnitListPageContentTable>
 

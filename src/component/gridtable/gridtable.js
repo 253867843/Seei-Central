@@ -1,4 +1,7 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {createSelector} from 'reselect';
 
 // antd
 import {Table} from 'antd';
@@ -8,6 +11,10 @@ import {
   GridPosition,
   TableBg,
 } from './style';
+
+
+// reselect
+import {makeUnitList} from '../../selectors/listselector';
 
 class GridTable extends React.Component {
 
@@ -155,6 +162,7 @@ class GridTable extends React.Component {
     return (
       <GridTableLayout>
         <GridPosition>
+          {this.props.unitlist}
           <TableBg>
             <Table
               dataSource={dataSource}
@@ -168,7 +176,20 @@ class GridTable extends React.Component {
   }
 }
 
-export default GridTable;
+const mapStateToProps = (state, props) => {
+  // console.log(props.location.state.group_id);
+  const getUnitList = makeUnitList();
+  return {
+    // unitlist: getUnitList(state, props)
+    unitlist: getUnitList(state, props)
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GridTable);
 
 /**
  * 四级路由
