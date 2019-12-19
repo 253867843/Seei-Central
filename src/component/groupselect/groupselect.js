@@ -48,7 +48,7 @@ class GroupSelect extends React.Component {
   handleChange = (value, namelist) => {
     // console.log('[更换组]');
     const rootUrl = apiPrefix.rootUrl();
-    this.props.history.push(getRouteParams(rootUrl, namelist, value));
+    this.props.history.push(getRouteParams(namelist, value)(rootUrl));
   };
 }
 

@@ -32,9 +32,6 @@ import apiPrefix from '../../apiPrefix';
 // antd
 import {Icon, Menu} from 'antd';
 
-// context
-import {GroupParamsContext} from '../../context/group-params-context';
-
 function Files() {
   return (
     <div>Files</div>
@@ -135,23 +132,21 @@ class HomeV2 extends React.Component {
         </HeaderNavbar>
 
         {/*二级路由*/}
-        <GroupParamsContext.Provider value={{group_id, rootUrl, namelist: nameListRaw}}>
-          <PageContent>
-            {
-              group_id
-                ? (
-                  <Fragment>
-                    {
-                      menuList.map((v) => (
-                        <Route key={v.path} path={v.path} component={v.component}/>
-                      ))
-                    }
-                  </Fragment>
-                )
-                : <NoGroupPage/>
-            }
-          </PageContent>
-        </GroupParamsContext.Provider>
+        <PageContent>
+          {
+            group_id
+              ? (
+                <Fragment>
+                  {
+                    menuList.map((v) => (
+                      <Route key={v.path} path={v.path} component={v.component}/>
+                    ))
+                  }
+                </Fragment>
+              )
+              : <NoGroupPage/>
+          }
+        </PageContent>
 
       </MainLayout>
     )
@@ -162,12 +157,13 @@ class HomeV2 extends React.Component {
     const targetId = this.props.location.state.group_id;
     const nameListRaw = this.props.nameList.toJS();
     const rootUrl = apiPrefix.rootUrl();
-    this.props.history.push(getRouteParams(rootUrl, nameListRaw, targetId, e.key));
+    const redirectTo = getRouteParams(nameListRaw, targetId)(rootUrl, e.key);
+    this.props.history.push(redirectTo);
     this.props.setSelectedMenuItem(e.key);
   };
 
   componentDidMount() {
-    console.log('[componentDidMount]');
+    // console.log('[componentDidMount]');
     const {group, group_id} = this.props.location.state;
     if (!isEmpty(group) && !isEmpty(group_id)) {
       this.props.fetchGroupInfo({group, group_id});

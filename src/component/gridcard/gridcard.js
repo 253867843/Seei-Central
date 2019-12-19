@@ -25,6 +25,8 @@ import {Icon, Button, Tabs} from 'antd';
 class GridCard extends React.Component {
   render() {
     const {TabPane} = Tabs;
+    const record = this.props.record;
+    console.log('[record]', record);
     return (
       <CardSideBar>
         <UnitDetails>

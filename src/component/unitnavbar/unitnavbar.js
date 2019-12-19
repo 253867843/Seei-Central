@@ -1,9 +1,6 @@
 import React, {Fragment} from 'react';
 import {withRouter} from 'react-router-dom';
 
-// context全局
-import {GroupParamsContext} from '../../context/group-params-context';
-
 // antd
 import {Button, Icon, Radio} from 'antd';
 
@@ -11,38 +8,34 @@ import {Button, Icon, Radio} from 'antd';
 import {ButtonLayout, SearchBar, SearchBox, SearchLayout, TitleLayout} from './style';
 import {getRouteParams} from "../../utils/utils";
 
+// utils
+import apiPrefix from '../../apiPrefix';
+
 @withRouter
 class Unitnavbar extends React.Component {
   render() {
-    // console.log('[Unitnavbar]', this.props.data);
+    // console.log('[Unitnavbar]', this.props);
     const data = this.props.data;
     const pathname = this.props.location.pathname;
     const {text, value} = data.filter((v) => v.path === pathname)[0];
-    // console.log('[text]', text, value);
     return (
       <Fragment>
-        <GroupParamsContext.Consumer>
-          {
-            ({group_id, rootUrl, namelist}) => (
-              // 按钮
-              <ButtonLayout>
-                <Radio.Group
-                  size='large'
-                  buttonStyle='solid'
-                  onChange={(v) => this.handleChange(v, {group_id, rootUrl, namelist})}
-                >
-                  {
-                    data.map((v) => (
-                      <Radio.Button value={v.value} key={v.value} checked={pathname === v.path}>
-                        <Icon type={v.type}/>
-                      </Radio.Button>
-                    ))
-                  }
-                </Radio.Group>
-              </ButtonLayout>
-            )
-          }
-        </GroupParamsContext.Consumer>
+        {/* 按钮 */}
+        <ButtonLayout>
+          <Radio.Group
+            size='large'
+            buttonStyle='solid'
+            onChange={this.handleChange}
+          >
+            {
+              data.map((v) => (
+                <Radio.Button value={v.value} key={v.value} checked={pathname === v.path}>
+                  <Icon type={v.type}/>
+                </Radio.Button>
+              ))
+            }
+          </Radio.Group>
+        </ButtonLayout>
 
         {/*标题*/}
         <TitleLayout>
@@ -71,9 +64,12 @@ class Unitnavbar extends React.Component {
     )
   }
 
-  handleChange = (v, {group_id, rootUrl, namelist}) => {
-    // console.log('[unitlist value]', v.target.value, group_id, rootUrl, namelist);
-    this.props.history.push(getRouteParams(rootUrl, namelist, group_id, 'unit', v.target.value));
+  handleChange = (v) => {
+    const group_id = this.props.location.state.group_id;
+    const rootUrl = apiPrefix.rootUrl();
+    const nameList = this.props.nameList;
+    console.log('[handleChange]', group_id, rootUrl, nameList);
+    this.props.history.push(getRouteParams(nameList, group_id)(rootUrl, 'unit', v.target.value));
     // 实现点击事件
   };
 }

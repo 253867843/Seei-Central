@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 // 自定义组件
 import Unitnavbar from '../unitnavbar/unitnavbar';
@@ -22,16 +23,16 @@ import {
   UnitPageContent,
 } from './style';
 
-// antd
-import {Button} from 'antd';
+// reselect
+import makeGroupList from '../../selectors/groupselector';
 
 class Unit extends React.Component {
   render() {
-    // console.log('[Unit]', this.props);
+    // console.log('[Unit]', this.props.groupList);
     const rootUrl = apiPrefix.rootUrl(); // 主路由
     const secondaryUrl = apiPrefix.secondaryUrl(); // 次级路由
     // 三级路由
-    const unitlist = [
+    const unitList = [
       {
         path: `${rootUrl}${secondaryUrl}/list`,
         text: '设备 > 设备列表',
@@ -70,7 +71,7 @@ class Unit extends React.Component {
 
             {/*导航栏*/}
             <UnitNavBarHeaderLeft>
-              <Unitnavbar data={unitlist}/>
+              <Unitnavbar data={unitList} nameList={this.props.groupList}/>
             </UnitNavBarHeaderLeft>
 
             {/*添加设备/刷新*/}
@@ -82,7 +83,7 @@ class Unit extends React.Component {
 
           <UnitPageContent>
             {
-              unitlist.map((v) => (
+              unitList.map((v) => (
                 <Route
                   key={v.path}
                   path={`${v.path}`}
@@ -98,7 +99,17 @@ class Unit extends React.Component {
   }
 }
 
-export default Unit;
+const mapStateToProps = (state, props) => {
+  const getGroupList = makeGroupList();
+  return {
+    groupList: getGroupList(state, props),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Unit);
 
 /**
  * 先不考虑过滤sidebar

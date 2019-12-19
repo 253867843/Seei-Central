@@ -58,7 +58,7 @@ Router.post('/method/getGroupInfo', function (req, res) {
         encodeDevices: [
           {
             id: 'f0abd9249451d0fdbf0e1406f5d9e88',
-            domain: '127.0.0.1',
+            domain: '127.0.0.2',
             port: 8000,
             auth: '4a0abd9249451d0fdbf0e1406f5d9e6b',
             recvServicePort: 10000,
@@ -99,7 +99,7 @@ Router.post('/method/getGroupInfo', function (req, res) {
         encodeDevices: [
           {
             id: 'f0abd9249451d0fdbf0e1406f5d9e89',
-            domain: '127.0.0.1',
+            domain: '127.0.0.3',
             port: 8000,
             auth: '4a0abd9249451d0fdbf0e1406f5d9e6c',
             recvServicePort: 10000,
@@ -110,7 +110,7 @@ Router.post('/method/getGroupInfo', function (req, res) {
         recvStreamServices: [
           {
             id: 'b0abd9249451d0fdbf0e1406f5d9e33',
-            domain: '127.0.0.1',
+            domain: '127.0.0.3',
             port: 8087,
             state: "normal",
             eMessage: ''

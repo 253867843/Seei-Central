@@ -13,52 +13,101 @@ export const removeLocalStorage = (key) => {
   return localStorage.removeItem(key);
 };
 
-export const getRouteParams = (rootUrl = '/homev2', namelist = [], targetId, menu = 'unit', smenu = 'list') => {
-  // console.log('[路径参数制作]');
-  const selectedItem = getLocalStorage('selectedItem');
-  const selectedMenuItem = getLocalStorage('selectedMenuItem');
-  const selectedUnitItem = getLocalStorage('selectedUnitItem');
-  // let targetId;
-  let pathname;
-  let targetName;
-  let targetMenu;
-  let targetSMenu;
-  if (!targetId) {
-    if (selectedItem) {
-      targetId = selectedItem;
-    } else {
-      const [first = {}] = namelist;
-      targetId = first.group_id;
+export const getRouteParams = (namelist = [], targetId) => {
+  return (rootUrl = '/homev2', menu = 'unit', smenu = 'list') => {
+    // console.log('[路径参数制作]');
+    const selectedItem = getLocalStorage('selectedItem');
+    const selectedMenuItem = getLocalStorage('selectedMenuItem');
+    const selectedUnitItem = getLocalStorage('selectedUnitItem');
+    // let targetId;
+    let pathname;
+    let targetName;
+    let targetMenu;
+    let targetSMenu;
+    if (!targetId) {
+      if (selectedItem) {
+        targetId = selectedItem;
+      } else {
+        const [first = {}] = namelist;
+        targetId = first.group_id;
+      }
     }
-  }
-  // console.log('[targetId]', targetId);
+    // console.log('[targetId]', targetId);
 
-  const index = namelist
-    .findIndex((v) => (v.group_id === targetId));
-  if (index > -1) {
-    targetName = namelist[index].group;
-  }
-  // console.log('[target]', targetId, targetName);
+    const index = namelist
+      .findIndex((v) => (v.group_id === targetId));
+    if (index > -1) {
+      targetName = namelist[index].group;
+    }
+    // console.log('[target]', targetId, targetName);
 
-  targetMenu = menu ? menu : selectedMenuItem;
-  pathname = rootUrl + '/' + targetMenu;
+    targetMenu = menu ? menu : selectedMenuItem;
+    pathname = rootUrl + '/' + targetMenu;
 
 
-  if (menu === 'unit') {
-    targetSMenu = smenu ? smenu : selectedUnitItem;
-    pathname = pathname + '/' + targetSMenu;
-  }
+    if (menu === 'unit') {
+      targetSMenu = smenu ? smenu : selectedUnitItem;
+      pathname = pathname + '/' + targetSMenu;
+    }
 
-  console.log('[pathname]', pathname);
+    console.log('[pathname]', pathname);
 
-  return {
-    pathname,
-    state: {
-      group_id: targetId,
-      group: targetName,
+    return {
+      pathname,
+      state: {
+        group_id: targetId,
+        group: targetName,
+      }
     }
   }
 };
+
+// export const getRouteParams = (rootUrl = '/homev2', namelist = [], targetId, menu = 'unit', smenu = 'list') => {
+//   // console.log('[路径参数制作]');
+//   const selectedItem = getLocalStorage('selectedItem');
+//   const selectedMenuItem = getLocalStorage('selectedMenuItem');
+//   const selectedUnitItem = getLocalStorage('selectedUnitItem');
+//   // let targetId;
+//   let pathname;
+//   let targetName;
+//   let targetMenu;
+//   let targetSMenu;
+//   if (!targetId) {
+//     if (selectedItem) {
+//       targetId = selectedItem;
+//     } else {
+//       const [first = {}] = namelist;
+//       targetId = first.group_id;
+//     }
+//   }
+//   // console.log('[targetId]', targetId);
+//
+//   const index = namelist
+//     .findIndex((v) => (v.group_id === targetId));
+//   if (index > -1) {
+//     targetName = namelist[index].group;
+//   }
+//   // console.log('[target]', targetId, targetName);
+//
+//   targetMenu = menu ? menu : selectedMenuItem;
+//   pathname = rootUrl + '/' + targetMenu;
+//
+//
+//   if (menu === 'unit') {
+//     targetSMenu = smenu ? smenu : selectedUnitItem;
+//     pathname = pathname + '/' + targetSMenu;
+//   }
+//
+//   console.log('[pathname]', pathname);
+//
+//   return {
+//     pathname,
+//     state: {
+//       group_id: targetId,
+//       group: targetName,
+//     }
+//   }
+// };
 
 /**
  * 一级路由优先级: targetId > selectedItem > namelist首选项
