@@ -48,14 +48,14 @@ class GridTable extends React.Component {
         <GridPosition>
           <TableBg>
             <Table
+              id='deviceTable'
               dataSource={this.props.unitList}
               columns={groupColumns}
               pagination={false}
+              rowKey={record => record.id}
               onRow={record => {
                 return {
                   onClick: (event) => {
-                    // console.log('[event]', record);
-                    // this.props.history.push(`/device/${record.id}`);
                     this.props.onClick(record);
                   }
                 }

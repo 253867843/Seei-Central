@@ -70,7 +70,6 @@ class Unitnavbar extends React.Component {
     const nameList = this.props.nameList;
     console.log('[handleChange]', group_id, rootUrl, nameList);
     this.props.history.push(getRouteParams(nameList, group_id)(rootUrl, 'unit', v.target.value));
-    // 实现点击事件
   };
 }
 

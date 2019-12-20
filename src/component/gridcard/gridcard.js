@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 
 import {
   CardSideBar,
@@ -22,18 +22,56 @@ import {
 
 import {Icon, Button, Tabs} from 'antd';
 
+function Global() {
+  return (<div>Global</div>)
+}
+
+function Picture() {
+  return (<div>Picture</div>)
+}
+
+function Upload() {
+  return (<div>Upload</div>)
+}
+
+function File() {
+  return (<div>File</div>)
+}
+
 class GridCard extends React.Component {
   render() {
     const {TabPane} = Tabs;
     const record = this.props.record;
-    console.log('[record]', record);
+    // console.log('[record]', record);
+    const tabList = [
+      {
+        key: 'global',
+        icon: 'global',
+        component: Global
+      },
+      {
+        key: 'picture',
+        icon: 'picture',
+        component: Picture
+      },
+      {
+        key: 'upload',
+        icon: 'upload',
+        component: Upload
+      },
+      {
+        key: 'file',
+        icon: 'file',
+        component: File
+      }
+    ];
     return (
       <CardSideBar>
         <UnitDetails>
 
           <Header>
             <Icon type='hdd'/>
-            <Title>Diadem-6170</Title>
+            <Title>{record.domain}</Title>
 
             <AutoPlaceHolder/>
 
@@ -66,15 +104,39 @@ class GridCard extends React.Component {
 
             <Setting>
               <SettingLayout>
-                <span>数据桥</span>
-                <div></div>
-                <span>网关</span>
+                <span>端口</span>
                 <div>
-                  <Title>网关</Title>
+                  <Title>
+                    {record.port}
+                  </Title>
                 </div>
-                <span>通道</span>
+                {
+                  record.auth ? (
+                    <Fragment>
+                      <span>认证</span>
+                      <div>
+                        <Title>{record.auth}</Title>
+                      </div>
+                    </Fragment>
+                  ) : null
+                }
+                {
+                  record.recvServicePort ?
+                    <Fragment>
+                      <span>接收wowza端的端口</span>
+                      <div>
+                        <Title>{record.recvServicePort}</Title>
+                      </div>
+                    </Fragment>
+                    : null
+                }
+                <span>状态</span>
                 <div>
-                  <Title>没有通道</Title>
+                  <Title>{record.state}</Title>
+                </div>
+                <span>异常信息</span>
+                <div>
+                  <Title>{record.eMessage ? record.eMessage : '无异常信息'}</Title>
                 </div>
               </SettingLayout>
 
@@ -87,65 +149,23 @@ class GridCard extends React.Component {
 
             <InfoLayout>
               <Tabs type='card'>
-                <TabPane tab={
-                  <span>
-                    <Icon type='global'></Icon>
-                  </span>
-                } key='1'>
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
-                    <TabDetails>
-                      123
-                    </TabDetails>
-                  </div>
-                </TabPane>
 
-                <TabPane tab={
-                  <span>
-                    <Icon type='picture'></Icon>
-                  </span>
-                } key='2'>
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
-                    <TabDetails>
-                      123
-                    </TabDetails>
-                  </div>
-                </TabPane>
-
-                <TabPane tab={
-                  <span>
-                      <Icon type='upload'></Icon>
-                    </span>
-                } key='3'>
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
-                    <TabDetails>
-                      123
-                    </TabDetails>
-                  </div>
-                </TabPane>
-
-                <TabPane tab={
-                  <span>
-                    <Icon type='file'></Icon>
-                  </span>
-                } key='4'>
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
-                    <TabDetails>
-                      123
-                    </TabDetails>
-                  </div>
-                </TabPane>
+                {
+                  tabList.map((v) => (
+                    <TabPane
+                      key={v.key}
+                      tab={
+                        <span>
+                        <Icon type={v.icon}></Icon>
+                      </span>
+                      }
+                    >
+                      <TabDetails>
+                        <v.component/>
+                      </TabDetails>
+                    </TabPane>
+                  ))
+                }
 
               </Tabs>
             </InfoLayout>

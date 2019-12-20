@@ -24,14 +24,15 @@ export const types = {
 // action creators
 export const actions = {
   createGroup: (data) => { // 添加Group(操作: 修改)
+    console.log('[创建组]');
     return (dispatch) => {
-      dispatch(appActions.startRequest());
+      // dispatch(appActions.startRequest());
       // -
       // axios.post(url.createGroup(), data)
       // +
       postAxios(url.createGroup(), data, dispatch)
         .then((data) => {
-          dispatch(appActions.finishRequest());
+          // dispatch(appActions.finishRequest());
           // -
           // console.log('[groups.redux createGroup]', res);
           // +

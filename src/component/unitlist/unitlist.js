@@ -55,9 +55,27 @@ class UnitList extends React.Component {
     )
   }
 
+  componentDidMount() {
+    // console.log('[componentDidMount]', this.state.record);
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    // console.log('[shouldComponentUpdate]', this.state.record);
+    // 如果unitList变化了且this.state.record === {}, 表示第一次加载, 就更新record, 否则就不更新
+    if (this.props.unitList.length !== nextProps.unitList.length && !Object.keys(this.state.record).length) {
+      // console.log('[设置初始的record]', nextProps.unitList[0]);
+      this.setState({record: nextProps.unitList[0]});
+    }
+    return true;
+  }
+
   handleClick = (record) => {
     this.setState({record});
   };
+
+  componentWillUnmount() {
+    // console.log('[componentWillUnmount]');
+  }
 }
 
 const mapStateToProps = (state, props) => {
@@ -73,4 +91,22 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(UnitList);
 
-// TODO: Table选中第一项
+// TODO: 切换select组时, 如果当前是 /homev2/unit/list, 只会触发shouldComponentUpdate, 不会触发componentWillUnmount
+//    切换list >>> multiview/upload/map时, 会触发componentWillUnmount, 不会触发shouldComponentUpdate
+//    如何修复这个bug
+
+// 登录
+// [componentDidMount]
+// [shouldComponentUpdate]
+
+// 刷新
+// [componentDidMount]
+// [shouldComponentUpdate]
+
+// 一级路由切换
+// [shouldComponentUpdate]
+
+// 二级路由切换
+// [componentWillUnmount]
+
+//

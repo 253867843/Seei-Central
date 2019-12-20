@@ -1,4 +1,5 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
 import {Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 
@@ -9,6 +10,9 @@ import UnitList from '../unitlist/unitlist';
 import UnitMultiView from '../unitmultiview/unitmultiview';
 import UnitFileUpload from '../unitfileupload/unitfileupload';
 import UnitMap from '../unitmap/unitmap';
+
+// actions
+import {actions as groupsActions} from '../../redux/groups.redux';
 
 // utils
 import apiPrefix from '../../apiPrefix';
@@ -76,7 +80,9 @@ class Unit extends React.Component {
 
             {/*添加设备/刷新*/}
             <UnitNavBarHeaderRight>
-              <UnitOperator/>
+              <UnitOperator
+                createGroup={this.props.createGroup}
+              />
             </UnitNavBarHeaderRight>
 
           </UnitNavBarHeader>
@@ -107,6 +113,9 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
+  return {
+    ...bindActionCreators(groupsActions, dispatch)
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Unit);

@@ -59,9 +59,9 @@ Router.post('/method/getGroupInfo', function (req, res) {
           {
             id: 'f0abd9249451d0fdbf0e1406f5d9e88',
             domain: '127.0.0.2',
-            port: 8000,
+            port: 8001,
             auth: '4a0abd9249451d0fdbf0e1406f5d9e6b',
-            recvServicePort: 10000,
+            recvServicePort: 10001,
             state: "normal",
             eMessage: ''
           }
@@ -70,7 +70,7 @@ Router.post('/method/getGroupInfo', function (req, res) {
           {
             id: 'b0abd9249451d0fdbf0e1406f5d9e32',
             domain: '127.0.0.2',
-            port: 8087,
+            port: 8088,
             state: "normal",
             eMessage: ''
           }
@@ -100,9 +100,9 @@ Router.post('/method/getGroupInfo', function (req, res) {
           {
             id: 'f0abd9249451d0fdbf0e1406f5d9e89',
             domain: '127.0.0.3',
-            port: 8000,
+            port: 8002,
             auth: '4a0abd9249451d0fdbf0e1406f5d9e6c',
-            recvServicePort: 10000,
+            recvServicePort: 10002,
             state: "normal",
             eMessage: ''
           }
@@ -111,7 +111,7 @@ Router.post('/method/getGroupInfo', function (req, res) {
           {
             id: 'b0abd9249451d0fdbf0e1406f5d9e33',
             domain: '127.0.0.3',
-            port: 8087,
+            port: 8089,
             state: "normal",
             eMessage: ''
           }
