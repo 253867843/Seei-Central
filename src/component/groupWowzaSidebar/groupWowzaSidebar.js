@@ -173,6 +173,8 @@ const ModifyGroupForm = Form.create({name: 'modify_group_form'})(
             <RegisterArea>
               <Form layout='vertical' {...formItemLayout}>
                 <Title>Wowza</Title>
+
+                {/* 1 */}
                 <Form.Item label='domain'>
                   {
                     getFieldDecorator('domain', {
@@ -180,6 +182,8 @@ const ModifyGroupForm = Form.create({name: 'modify_group_form'})(
                     })(<Input placeholder='domain' size='large'/>)
                   }
                 </Form.Item>
+
+                {/* 2 */}
                 <Form.Item label='port'>
                   {
                     getFieldDecorator('port', {

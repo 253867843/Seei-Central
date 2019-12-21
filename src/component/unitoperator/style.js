@@ -10,4 +10,9 @@ export const MarginLeftAuto = styled.div`
     border: 0;
     margin-left: 8px;
   }
+  
+  .ant-modal.ant-modal-confirm.ant-modal-confirm-confirm {
+    padding-bottom: 0;
+    top: 30px;
+  }
 `;

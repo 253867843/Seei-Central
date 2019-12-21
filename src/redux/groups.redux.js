@@ -1,6 +1,4 @@
 import Immutable from 'immutable';
-import {fromJS} from 'immutable';
-// import axios from 'axios';
 import {postAxios} from '../utils/request';
 import {actions as appActions} from './app.redux';
 import {types as authTypes} from './auth.redux';
@@ -23,136 +21,99 @@ export const types = {
 
 // action creators
 export const actions = {
-  createGroup: (data) => { // 添加Group(操作: 修改)
-    console.log('[创建组]');
+  createGroup: (data) => {
     return (dispatch) => {
-      // dispatch(appActions.startRequest());
-      // -
-      // axios.post(url.createGroup(), data)
-      // +
       postAxios(url.createGroup(), data, dispatch)
         .then((data) => {
-          // dispatch(appActions.finishRequest());
-          // -
-          // console.log('[groups.redux createGroup]', res);
-          // +
           console.log('[groups.redux createGroup]', data);
-          // -
-          // if (res.status === 200 && res.data.status) {
-          // +
-          if (!data.error && data.status) {
-            // -
-            // const {group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertCreateGroupToPlain(res.data.data);
-            // +
-            const {group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertCreateGroupToPlain(data.data);
-            dispatch(createGroupSuccess(group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds));
-          } else {
-            dispatch(appActions.setError(data.error)); // 错误信息保留
-          }
-        })
-      // -
-      // .catch((err) => {
-      //   console.log('[err]', err);
-      //   dispatch(appActions.setError(err));
-      // });
-    }
-  },
-  modifyGroup: (data) => { // 修改Group(操作: 修改)
-    return (dispatch) => {
-      dispatch(appActions.startRequest());
-      // axios.post(url.modifyGroup(), data)
-      postAxios(url.modifyGroup(), data, dispatch)
-        .then((data) => {
-          dispatch(appActions.finishRequest());
-          // console.log('[groups.redux modifyGroup]', res);
-          console.log('[groups.redux modifyGroup]', data);
-          // if (res.status && res.data.status) {
-          if (!data.error && data.status) {
-            // const {groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertUpdateGroupToPlain(res.data.data);
-            const {groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertUpdateGroupToPlain(data.data);
-            dispatch(modifyGroupSuccess(groupItem, encodes, encodeIds, wowzas, wowzaIds));
-          } else {
-            dispatch(appActions.setError(data.error)); // 错误信息保留
-          }
-        })
-      // .catch((err) => {
-      //   dispatch(appActions.setError(err));
-      // });
-    }
-  },
-  fetchGroupInfo: ({group, group_id}) => { // 查看Group(操作: 覆盖)
-    return (dispatch) => {
-      // -
-      // dispatch(appActions.startRequest());
-      // axios.post(url.fetchGroupInfo(), {group, group_id})
-      postAxios(url.fetchGroupInfo(), {group, group_id}, dispatch)
-        .then((data) => {
-          // -
-          // dispatch(appActions.finishRequest());
-          // console.log('[groups.redux fetchGroupInfo]', res);
-          console.log('[groups.redux fetchGroupInfo]', data);
-          // if (res.status && res.data.status) {
-          if (!data.error && data.status) {
-            // console.log('[fetchGroupInfo结果]',res.data);
-            // const {groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertSingleGroupToPlain(res.data.data);
-            const {groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertSingleGroupToPlain(data.data);
-            dispatch(fetchGroupInfoSuccess(groupItem, encodes, encodeIds, wowzas, wowzaIds));
+          if (!data.error) {
+            if (data.status) {
+              // 创建组成功
+              const {group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertCreateGroupToPlain(data.data);
+              dispatch(createGroupSuccess(group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds));
+            } else {
+              // 创建组失败
+            }
           } else {
             dispatch(appActions.setError(data.error));
           }
-        })
-      // .catch((err) => {
-      //   console.log('[fetchGroupInfo err]', err);
-      //   dispatch(appActions.setError(err));
-      // });
+        });
     }
   },
-  deleteGroup: ({group, group_id}) => { // 删除Group(操作: 修改)
-    // console.log('[删除组参数]', group, group_id);
+  modifyGroup: (data) => {
     return (dispatch) => {
-      dispatch(appActions.startRequest());
-      // axios.post(url.deleteGroup(), {group, group_id})
+      postAxios(url.modifyGroup(), data, dispatch)
+        .then((data) => {
+          console.log('[groups.redux modifyGroup]', data);
+          if (!data.error) {
+            if (data.status) {
+              // 修改组失败
+              const {groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertUpdateGroupToPlain(data.data);
+              dispatch(modifyGroupSuccess(groupItem, encodes, encodeIds, wowzas, wowzaIds));
+            } else {
+              // 修改组成功
+            }
+          } else {
+            dispatch(appActions.setError(data.error));
+          }
+        });
+    }
+  },
+  fetchGroupInfo: ({group, group_id}) => {
+    return (dispatch) => {
+      postAxios(url.fetchGroupInfo(), {group, group_id}, dispatch)
+        .then((data) => {
+          console.log('[groups.redux fetchGroupInfo]', data);
+          if (!data.error) {
+            if (data.status) {
+              // 查询组成功
+              const {groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertSingleGroupToPlain(data.data);
+              dispatch(fetchGroupInfoSuccess(groupItem, encodes, encodeIds, wowzas, wowzaIds));
+            } else {
+              // 查询组失败
+            }
+          } else {
+            dispatch(appActions.setError(data.error));
+          }
+        });
+    }
+  },
+  deleteGroup: ({group, group_id}) => {
+    return (dispatch) => {
       postAxios(url.deleteGroup(), {group, group_id}, dispatch)
         .then((data) => {
-          dispatch(appActions.finishRequest());
-          // console.log('[groups.redux deleteGroup]', res);
           console.log('[groups.redux deleteGroup]', data);
-          // if (res.status === 200 && res.data.status) {
-          if (!data.error && data.status) {
-            //   const {encodeIds, wowzaIds} = convertDeleteGroupToPlain(res.data.data);
-            const {encodeIds, wowzaIds} = convertDeleteGroupToPlain(data.data);
-            dispatch(deleteGroupSuccess(group, group_id, encodeIds, wowzaIds));
+          if (!data.error) {
+            if (data.status) {
+              // 删除组成功
+              const {encodeIds, wowzaIds} = convertDeleteGroupToPlain(data.data);
+              dispatch(deleteGroupSuccess(group, group_id, encodeIds, wowzaIds));
+            } else {
+              // 删除组失败
+            }
           } else {
-            dispatch(appActions.setError(data.error)); // 错误信息保留
+            dispatch(appActions.setError(data.error));
           }
-        })
-      // .catch((err) => {
-      //   console.log('[删除组 报错]', err);
-      //   dispatch(appActions.setError(err));
-      // });
+        });
     }
   },
-  matchGroup: ({group, group_id}) => { // 匹配Group
+  matchGroup: ({group, group_id}) => {
     return (dispatch) => {
-      dispatch(appActions.startRequest());
-      // axios.post(url.matchGroup(), {group, group_id, auth: '6xxc4MS8Z9bFr2xcSK23r9Wd3P5jfrbG'})
       postAxios(url.matchGroup(), {group, group_id, auth: '6xxc4MS8Z9bFr2xcSK23r9Wd3P5jfrbG'}, dispatch)
         .then((data) => {
-          dispatch(appActions.finishRequest());
-          // console.log('[groups.redux matchGroup]', res);
           console.log('[groups.redux matchGroup]', data);
-          if (!data.error && data.status) {
-            // if (res.status === 200 && res.data.status) {
-            //   const {groupItem, encodes, wowzas} = convertMatchGroupToPlain(res.data.data);
-            const {groupItem, encodes, wowzas} = convertMatchGroupToPlain(data.data);
-            dispatch(matchGroupSuccess(groupItem, encodes, wowzas));
+          if (!data.error) {
+            if (data.status) {
+              // 匹配组失败
+              const {groupItem, encodes, wowzas} = convertMatchGroupToPlain(data.data);
+              dispatch(matchGroupSuccess(groupItem, encodes, wowzas));
+            } else {
+              // 匹配组成功
+            }
           } else {
-            dispatch(appActions.setError(data.error)); // 错误信息保留
+            dispatch(appActions.setError(data.error));
           }
-        })
-      // .catch((err) => {
-      //   dispatch(appActions.setError(err));
-      // });
+        });
     }
   },
   startPushStream: ({group, group_id, encodeDevice_id, recvStreamService_id}) => {

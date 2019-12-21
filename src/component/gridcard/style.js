@@ -48,6 +48,7 @@ export const AutoPlaceHolder = styled.span`
 
 export const IconButton = styled.div`
   width: 30px;
+  cursor: pointer;
 `;
 
 export const Location = styled.div`

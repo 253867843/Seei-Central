@@ -35,7 +35,7 @@ export const TableBg = styled.div`
       .ant-table-tbody > tr > td {
         color: #fff;
         font-size: ${rootFontSize['--primary-font-size']};
-        background: ${rootColor['--bg-second-color']};
+        // background: ${rootColor['--bg-second-color']};
         border-bottom: 1px solid  ${rootColor['--border-bottom-color']};
       }
       

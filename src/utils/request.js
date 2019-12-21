@@ -51,7 +51,8 @@ function handleResponse(response, dispatch) {
     if (!isEmpty(type)) {
       notification[type === 'tip' ? 'success' : type]({
         message: title || info.info,
-        description: info.info
+        description: info.info,
+        placement: 'bottomLeft'
       });
     }
 

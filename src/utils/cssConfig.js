@@ -6,7 +6,9 @@ export const rootColor = {
   '--table-thread-color': '#a5b2c7',
   '--border-bottom-color': '#545860',
   '--bg-btn-offline': '#43464d',
-  '--bg-btn-online': '#28b73d'
+  '--bg-btn-online': '#28b73d',
+  '--bg-modal-color': '#373a3c',
+  '--white': '#fff',
 };
 
 export const rootFontSize = {

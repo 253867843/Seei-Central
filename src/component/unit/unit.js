@@ -30,11 +30,16 @@ import {
 // reselect
 import makeGroupList from '../../selectors/groupselector';
 
+// 全局context
+import {UnitOperatorContext} from '../../context/unit-operator-context';
+
 class Unit extends React.Component {
   render() {
     // console.log('[Unit]', this.props.groupList);
     const rootUrl = apiPrefix.rootUrl(); // 主路由
     const secondaryUrl = apiPrefix.secondaryUrl(); // 次级路由
+    const {group, group_id} = this.props.location.state;
+    const {createGroup, deleteGroup} = this.props;
     // 三级路由
     const unitList = [
       {
@@ -80,9 +85,13 @@ class Unit extends React.Component {
 
             {/*添加设备/刷新*/}
             <UnitNavBarHeaderRight>
-              <UnitOperator
-                createGroup={this.props.createGroup}
-              />
+
+              <UnitOperatorContext.Provider value={{group, group_id, createGroup, deleteGroup}}>
+
+                <UnitOperator/>
+
+              </UnitOperatorContext.Provider>
+
             </UnitNavBarHeaderRight>
 
           </UnitNavBarHeader>

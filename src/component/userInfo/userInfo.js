@@ -341,6 +341,7 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
               <RegisterArea>
                 <Form layout='vertical' {...formItemLayout}>
                   <Title>组信息</Title>
+                  {/* 1 */}
                   <Form.Item label='组名' style={{lineHeight: '40px', textAlign: 'center !important'}}>
                     {
                       getFieldDecorator('group', {
@@ -348,6 +349,8 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
                       })(<Input placeholder='group' size='large'/>)
                     }
                   </Form.Item>
+
+                  {/* 2 */}
                   <Form.Item label='描述' style={{lineHeight: '40px', textAlign: 'center !important'}}>
                     {
                       getFieldDecorator('group-description', {
@@ -358,6 +361,8 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
                   <Divider style={{background: '#212a35'}}/>
 
                   <Title>编码器设置</Title>
+
+                  {/* 3 */}
                   <Form.Item label='编码器服务地址'>
                     {
                       getFieldDecorator('encode-domain', {
@@ -366,6 +371,8 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
                       })(<Input placeholder='domain' size='large'/>)
                     }
                   </Form.Item>
+
+                  {/* 4 */}
                   <Form.Item label='编码器服务端口'>
                     {
                       getFieldDecorator('encode-port', {
@@ -374,6 +381,8 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
                       })(<Input placeholder='port' size='large'/>)
                     }
                   </Form.Item>
+
+                  {/* 5 */}
                   <Form.Item label='认证auth'>
                     {
                       getFieldDecorator('encode-auth', {
@@ -382,6 +391,8 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
                       })(<Input placeholder='auth' size='large'/>)
                     }
                   </Form.Item>
+
+                  {/* 6 */}
                   <Form.Item label='接收wowza端的端口'>
                     {
                       getFieldDecorator('encode-recvServicePort', {
@@ -393,6 +404,8 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
                   <Divider style={{background: '#212a35'}}/>
 
                   <Title>wowza设置</Title>
+
+                  {/* 7 */}
                   <Form.Item label='接收端wowza地址'>
                     {
                       getFieldDecorator('wowza-domain', {
@@ -401,6 +414,8 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
                       })(<Input placeholder='domain' size='large'/>)
                     }
                   </Form.Item>
+
+                  {/* 8 */}
                   <Form.Item label='接收端wowza端口'>
                     {
                       getFieldDecorator('wowza-port', {

@@ -1,6 +1,80 @@
 const express = require('express');
 const Router = express.Router();
 
+// 模拟删除组信息
+Router.post('/method/deleteGroup', function (req, res) {
+  console.log('[删除组成功]');
+  return res.json({
+    status: true,
+    msg: '删除组成功',
+    code: '20002',
+    data: {
+      group_id: 'sd0abd9249451d0fdbf0e1406f5d9e6a',
+      encodeDevices: [
+        {
+          id: 'f0abd9249451d0fdbf0e1406f5d9e87'
+        }
+      ],
+      recvStreamServices: [
+        {
+          id: 'b0abd9249451d0fdbf0e1406f5d9e31'
+        }
+      ]
+    },
+    info: {
+      "type": "tip",
+      "title": "删除组成功",
+      "info": "删除组成功",
+      "note": "删除组成功",
+      "steps": "删除组步骤"
+    }
+  });
+});
+
+// 模拟创建组信息
+Router.post('/method/addGroup', function (req, res) {
+  console.log('[创建组成功]');
+  return res.json({
+    status: true,
+    msg: '创建组成功',
+    code: '20001',
+    data: {
+      group_id: 'sd0abd9249451d0fdbf0e1406fxxxxxx',
+      group: 'group_xxxxx',
+      encodeDevices: [
+        {
+          id: 'f0abd9249451d0fdbf0e1406fxxxxxx',
+          domain: '137.0.0.1',
+          port: 3000,
+          auth: '4a0abd9249451d0fdbf0e1406fxxxxxx',
+          recvServicePort: 30000,
+          state: "normal",
+          eMessage: ''
+        }
+      ],
+      recvStreamServices: [
+        {
+          id: 'b0abd9249451d0fdbf0e1406fxxxxxx',
+          domain: '137.0.0.1',
+          port: 3087,
+          state: "normal",
+          eMessage: ''
+        }
+      ],
+      dState: 'offline',
+      eMessage: '',
+      description: ''
+    },
+    info: {
+      "type": "tip",
+      "title": "创建组成功",
+      "info": "创建组成功",
+      "note": "创建组成功",
+      "steps": "创建组步骤"
+    }
+  });
+});
+
 // 模拟请求组信息
 Router.post('/method/getGroupInfo', function (req, res) {
   const {group, group_id} = req.body;

@@ -174,6 +174,7 @@ const ModifyGroupForm = Form.create({name: 'modify_group_form'})(
             <RegisterArea>
               <Form layout='vertical' {...formItemLayout}>
                 <Title>编码器</Title>
+                {/* 1 */}
                 <Form.Item label='domain'
                            style={{lineHeight: '40px', textAlign: 'center !important'}}>
                   {
@@ -183,6 +184,8 @@ const ModifyGroupForm = Form.create({name: 'modify_group_form'})(
                     })(<Input placeholder='domain' size='large'/>)
                   }
                 </Form.Item>
+
+                {/* 2 */}
                 <Form.Item label='port'
                            style={{lineHeight: '40px', textAlign: 'center !important'}}>
                   {
@@ -192,6 +195,8 @@ const ModifyGroupForm = Form.create({name: 'modify_group_form'})(
                     })(<Input placeholder='port' size='large'/>)
                   }
                 </Form.Item>
+
+                {/* 3 */}
                 <Form.Item label='auth'
                            style={{lineHeight: '40px', textAlign: 'center !important'}}>
                   {
@@ -201,6 +206,8 @@ const ModifyGroupForm = Form.create({name: 'modify_group_form'})(
                     })(<Input placeholder='auth' size='large'/>)
                   }
                 </Form.Item>
+
+                {/* 4 */}
                 <Form.Item label='recvServicePort'
                            style={{lineHeight: '40px', textAlign: 'center !important'}}>
                   {

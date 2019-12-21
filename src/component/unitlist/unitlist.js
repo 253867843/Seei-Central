@@ -55,27 +55,10 @@ class UnitList extends React.Component {
     )
   }
 
-  componentDidMount() {
-    // console.log('[componentDidMount]', this.state.record);
-  }
-
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    // console.log('[shouldComponentUpdate]', this.state.record);
-    // 如果unitList变化了且this.state.record === {}, 表示第一次加载, 就更新record, 否则就不更新
-    if (this.props.unitList.length !== nextProps.unitList.length && !Object.keys(this.state.record).length) {
-      // console.log('[设置初始的record]', nextProps.unitList[0]);
-      this.setState({record: nextProps.unitList[0]});
-    }
-    return true;
-  }
-
   handleClick = (record) => {
+    console.log('[执行了record]', record);
     this.setState({record});
   };
-
-  componentWillUnmount() {
-    // console.log('[componentWillUnmount]');
-  }
 }
 
 const mapStateToProps = (state, props) => {

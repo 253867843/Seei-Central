@@ -13,6 +13,32 @@ export const removeLocalStorage = (key) => {
   return localStorage.removeItem(key);
 };
 
+export const composeData = (group, description) => {
+  return (e_domain, e_port, e_auth, e_recvServicePort) => {
+    return (w_domain, w_port) => {
+      let requestData = {
+        group,
+        description,
+        encodeDevices: [
+          {
+            domain: e_domain,
+            port: e_port,
+            auth: e_auth,
+            recvServicePort: e_recvServicePort
+          }
+        ],
+        recvStreamServices: [
+          {
+            domain: w_domain,
+            port: w_port
+          }
+        ]
+      };
+      return requestData;
+    }
+  }
+}
+
 export const getRouteParams = (namelist = [], targetId) => {
   return (rootUrl = '/homev2', menu = 'unit', smenu = 'list') => {
     // console.log('[路径参数制作]');

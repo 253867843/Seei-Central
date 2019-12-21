@@ -1,5 +1,8 @@
 import React, {Fragment} from 'react';
 
+// 弹窗
+import ModelForm from '../../component/modalform/modalform';
+
 import {
   CardSideBar,
   UnitDetails,
@@ -43,6 +46,33 @@ class GridCard extends React.Component {
     const {TabPane} = Tabs;
     const record = this.props.record;
     // console.log('[record]', record);
+    const updateEncodeList = [
+      {
+        label: '域名',
+        field: 'encode-domain'
+      },
+      {
+        label: '端口',
+        field: 'encode-port'
+      },
+      {
+        label: 'auth',
+        field: 'encode-auth'
+      }, {
+        label: '接收wowza端口',
+        field: 'encode-recvServicePort'
+      }
+    ];
+    const updateWowzaList = [
+      {
+        label: '域名',
+        field: 'wowza-domain'
+      },
+      {
+        label: '端口',
+        field: 'wowza-port'
+      }
+    ];
     const tabList = [
       {
         key: 'global',
@@ -75,12 +105,18 @@ class GridCard extends React.Component {
 
             <AutoPlaceHolder/>
 
-            <IconButton style={{width: '30px'}}>
+            <IconButton style={{width: '30px'}} onClick={() => this.modalInstance.showModal()}>
               <Icon type='setting' theme='filled'></Icon>
             </IconButton>
             <Icon type='more'/>
 
           </Header>
+
+          <ModelForm
+            formList={record.recvServicePort ? updateEncodeList : updateWowzaList}
+            ref={(modal) => this.modalInstance = modal}
+            okText={'修改'}
+          />
 
           <Location>
             <LocationLayout>

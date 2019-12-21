@@ -1,0 +1,4 @@
+.clickRowStyle {
+    /*background-color: #2b3b51;*/
+    background-color: var(--bg-table-selected);
+}
