@@ -49,28 +49,34 @@ class GridCard extends React.Component {
     const updateEncodeList = [
       {
         label: '域名',
-        field: 'encode-domain'
+        field: 'encode-domain',
+        text: 'domain'
       },
       {
         label: '端口',
-        field: 'encode-port'
+        field: 'encode-port',
+        text: 'port'
       },
       {
         label: 'auth',
-        field: 'encode-auth'
+        field: 'encode-auth',
+        text: 'auth'
       }, {
         label: '接收wowza端口',
-        field: 'encode-recvServicePort'
+        field: 'encode-recvServicePort',
+        text: 'recvServicePort'
       }
     ];
     const updateWowzaList = [
       {
         label: '域名',
-        field: 'wowza-domain'
+        field: 'wowza-domain',
+        text: 'domain'
       },
       {
         label: '端口',
-        field: 'wowza-port'
+        field: 'wowza-port',
+        text: 'port'
       }
     ];
     const tabList = [
@@ -105,7 +111,7 @@ class GridCard extends React.Component {
 
             <AutoPlaceHolder/>
 
-            <IconButton style={{width: '30px'}} onClick={() => this.modalInstance.showModal()}>
+            <IconButton style={{width: '30px'}} onClick={this.showUpdateModal}>
               <Icon type='setting' theme='filled'></Icon>
             </IconButton>
             <Icon type='more'/>
@@ -113,9 +119,14 @@ class GridCard extends React.Component {
           </Header>
 
           <ModelForm
+            title={record.recvServicePort ? '编码器修改' : 'wowza修改'}
+            defaultRecord={record}
             formList={record.recvServicePort ? updateEncodeList : updateWowzaList}
             ref={(modal) => this.modalInstance = modal}
             okText={'修改'}
+            inputFormValue={(formValue) => {
+              this.props.modifyGroup(formValue);
+            }}
           />
 
           <Location>
@@ -178,7 +189,7 @@ class GridCard extends React.Component {
 
               <StatusButtonLayout>
                 <MarginLeftAuto>
-                  <Button>离线</Button>
+                  <Button type='primary'>匹配</Button>
                 </MarginLeftAuto>
               </StatusButtonLayout>
             </Setting>
@@ -211,6 +222,35 @@ class GridCard extends React.Component {
       </CardSideBar>
     )
   }
+
+  showUpdateModal = () => {
+    this.modalInstance.showModal();
+  };
 }
 
 export default GridCard;
+
+/**
+ * 接收到修改的数据:
+ * encode >>> 接收到编码器的修改数据 >>> 如何跟之前的数据打包???
+ * wowza >>> 接收到wowza的修改数据 >>>
+ *
+ *  {
+	group: 'group_test',	#组名
+	encodeDevices:[		#编码器设备
+		{
+			domain: '127.0.0.1',	#编码器服务地址可以是IP或者域名
+			port: 8000,		#编码器服务端口  默认8000
+			auth: '4a0abd9249451d0fdbf0e1406f5d9e6a',	#认证auth 让用户自行输入
+			recvServicePort: 10000		#接收wowza端的端口  默认10000
+		}
+	],
+	recvStreamServices:[	#接收端wowza
+		{
+			domain: '127.0.0.1',	#接收端wowza地址可以是IP或者域名
+			port: 8087		#接收端wowza端口  默认8087
+		}
+	],
+	description: '',		#描述信息  默认''
+ }
+ * */

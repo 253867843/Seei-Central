@@ -28,7 +28,7 @@ import {
 } from './style';
 
 // reselect
-import makeGroupList from '../../selectors/groupselector';
+import makeGroupNameList from '../../selectors/groupselector';
 
 // 全局context
 import {UnitOperatorContext} from '../../context/unit-operator-context';
@@ -80,7 +80,7 @@ class Unit extends React.Component {
 
             {/*导航栏*/}
             <UnitNavBarHeaderLeft>
-              <Unitnavbar data={unitList} nameList={this.props.groupList}/>
+              <Unitnavbar data={unitList} nameList={this.props.groupNameList}/>
             </UnitNavBarHeaderLeft>
 
             {/*添加设备/刷新*/}
@@ -115,9 +115,9 @@ class Unit extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const getGroupList = makeGroupList();
+  const getGroupNameList = makeGroupNameList();
   return {
-    groupList: getGroupList(state, props),
+    groupNameList: getGroupNameList(state, props),
   };
 };
 

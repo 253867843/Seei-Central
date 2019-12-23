@@ -66,7 +66,7 @@ class ModalForm extends React.Component {
       console.log('[requestData]', requestData);
 
       // 发送请求
-      this.props.execAction(values);
+      this.props.inputFormValue(requestData);
     });
   };
 
@@ -127,6 +127,7 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
     }
 
     getFields = () => {
+      const defaultRecord = this.props.defaultRecord;
       const formList = this.props.formList;
       const count = this.state.expand ? 10 : 6;
       const {getFieldDecorator} = this.props.form;
@@ -143,7 +144,8 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
             <Form.Item label={v.label} {...formItemLayout}>
               {
                 getFieldDecorator(v.field, {
-                  rules: [{required: true, message: 'Input something!'}]
+                  rules: [{required: true, message: 'Input something!'}],
+                  initialValue: defaultRecord ? defaultRecord[v.text] : null
                 })(<Input placeholder='placeholder'/>)
               }
             </Form.Item>

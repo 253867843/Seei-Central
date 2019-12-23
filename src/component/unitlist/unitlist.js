@@ -1,10 +1,13 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {withRouter, Route} from 'react-router-dom';
 
 // 自定义组件
 import GridTable from '../gridtable/gridtable';
 import GridCard from '../gridcard/gridcard';
+
+// actions
+import {actions as groupsActions} from '../../redux/groups.redux';
 
 // styled-components
 import {
@@ -17,6 +20,9 @@ import {
 
 // reselect
 import makeUnitList from '../../selectors/listselector';
+
+// lodash
+import _ from 'lodash';
 
 class UnitList extends React.Component {
   constructor(props) {
@@ -46,7 +52,10 @@ class UnitList extends React.Component {
 
           <UnitListPageContentCard>
 
-            <GridCard record={this.state.record}/>
+            <GridCard
+              record={this.state.record}
+              modifyGroup={this.modifyGroup}
+            />
 
           </UnitListPageContentCard>
 
@@ -56,9 +65,36 @@ class UnitList extends React.Component {
   }
 
   handleClick = (record) => {
-    console.log('[执行了record]', record);
     this.setState({record});
   };
+
+  // 修改转发流Group
+  modifyGroup = (formValue) => {
+    const unitList = this.props.unitList;
+    const group = this.props.location.state.group;
+    const encodeFieldFilterList = ['domain', 'port', 'auth', 'recvServicePort'];
+    const wowzaFieldFilterList = ['domain', 'port'];
+
+    // 如果进入的是encode, 保留的是wowza
+    // 如果进入的是wowza, 保留的是encode
+    let retainData = unitList.filter((v) => !(v.id === this.state.record.id));
+
+    let filteRet = {};
+    if (this.state.record.hasOwnProperty('recvServicePort')) {
+      // wowza保留数据, 属性过滤
+      filteRet['recvStreamServices'] = Array.of(_.pick(retainData[0], wowzaFieldFilterList));
+    } else {
+      // encode保留数据, 属性过滤
+      filteRet['encodeDevices'] = Array.of(_.pick(retainData[0], encodeFieldFilterList));
+    }
+
+    const requestData = Object.assign({}, formValue, {group, description: ''}, filteRet);
+    console.log('[requestData]', requestData);
+
+    // 发起请求
+    this.props.modifyGroup(requestData);
+  }
+
 }
 
 const mapStateToProps = (state, props) => {
@@ -69,27 +105,9 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    ...bindActionCreators(groupsActions, dispatch),
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UnitList);
-
-// TODO: 切换select组时, 如果当前是 /homev2/unit/list, 只会触发shouldComponentUpdate, 不会触发componentWillUnmount
-//    切换list >>> multiview/upload/map时, 会触发componentWillUnmount, 不会触发shouldComponentUpdate
-//    如何修复这个bug
-
-// 登录
-// [componentDidMount]
-// [shouldComponentUpdate]
-
-// 刷新
-// [componentDidMount]
-// [shouldComponentUpdate]
-
-// 一级路由切换
-// [shouldComponentUpdate]
-
-// 二级路由切换
-// [componentWillUnmount]
-
-//

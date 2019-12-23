@@ -6,7 +6,7 @@ import {getGroupIds, getGroupById} from '../redux/groups.redux';
 const getGroupIdsSelector = (state) => getGroupIds(state);
 const getGroupByIdSelector = (state) => (id) => getGroupById(state, id);
 
-const makeGroupList = () => {
+const makeGroupNameList = () => {
   return createSelector(
     [getGroupIdsSelector, getGroupByIdSelector],
     (groupIds, getGroupById) => {
@@ -15,4 +15,4 @@ const makeGroupList = () => {
   )
 };
 
-export default makeGroupList;
+export default makeGroupNameList;

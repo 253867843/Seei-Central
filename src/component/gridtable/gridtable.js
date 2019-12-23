@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 
 // antd
-import {Table, Icon, Input} from 'antd';
+import {Table, Icon} from 'antd';
 
 // styled-components
 import {
@@ -21,7 +21,6 @@ import Immutable from 'immutable';
 class GridTable extends React.Component {
   state = {
     rowId: '', // 表示当前选中的行id
-    num: 0
   };
 
   render() {
@@ -67,7 +66,6 @@ class GridTable extends React.Component {
               rowKey={record => record.id}
               rowClassName={this.setTableRowClassName}
               onRow={this.onClickTableRow}
-              ref={(table) => this.tableInstance = table}
             />
           </TableBg>
         </GridPosition>
@@ -90,7 +88,6 @@ class GridTable extends React.Component {
   };
 
   componentDidMount() {
-    // console.log('[componentDidMount]', this.props.unitList);
     if (this.props.unitList.length !== 0) {
       this.setState({
         rowId: this.props.unitList[0].id
@@ -103,10 +100,8 @@ class GridTable extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
-    // console.log('[shouldComponentUpdate]');
     const currentList = Immutable.fromJS(this.props.unitList);
     const nextList = Immutable.fromJS(nextProps.unitList);
-    // console.log('[gridTable shouldComponentUpdate]', Immutable.is(currentList, nextList));
     if (Immutable.is(currentList, nextList)) { // 是否执行componentDidUpdate条件
       return false;
     }
@@ -114,7 +109,6 @@ class GridTable extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    // console.log('[componentDidUpdate]', this.props.unitList);
     if (this.props.unitList.length !== 0) {
       this.setState({
         rowId: this.props.unitList[0].id,

@@ -105,3 +105,5 @@ ReactDOM.render(AppProvider, document.getElementById('root'));
 // 如果你是服务端渲染，你仍将应该在服务端使用react-router的Static Router
 
 // "proxy": "http://zyhh123.xiaomy.net:80"
+
+// console.log('[是否含有属性]', {name: 'dcj123'}.hasOwnProperty('age'));

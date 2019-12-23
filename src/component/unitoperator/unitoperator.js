@@ -55,7 +55,7 @@ class UnitOperator extends React.Component {
 
         <UnitOperatorContext.Consumer>
           {
-            ({createGroup}) => (
+            ({createGroup, deleteGroup, group, group_id}) => (
               <Fragment>
                 <Button size='large' onClick={this.showModal}>
 
@@ -77,16 +77,24 @@ class UnitOperator extends React.Component {
 
                 {/*创建组弹窗*/}
                 <ModalForm
-                  test='传递内容'
                   title='添加组'
                   formList={createFormList}
-                  execAction={createGroup}
+                  inputFormValue={(formValue) => {
+                    // 创建组
+                    console.log('[创建组]', formValue);
+                    createGroup(formValue);
+                  }}
                   ref={(modal) => this.modalInstance = modal}
                   okText={'创建'}
                 />
 
                 {/*删除组弹窗*/}
                 <ModelDelForm
+                  onDeleteGroup={() => {
+                    // 删除组
+                    deleteGroup({group_id, group});
+                  }}
+                  group={group}
                   ref={(modal) => this.delModalInstance = modal}
                 />
               </Fragment>
@@ -105,6 +113,7 @@ class UnitOperator extends React.Component {
   deleteGroup = () => {
     this.delModalInstance.showDelModal();
   };
+
 }
 
 export default UnitOperator;

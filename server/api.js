@@ -1,6 +1,50 @@
 const express = require('express');
 const Router = express.Router();
 
+// 模拟修改组信息
+Router.post('/method/modifyGroup', function (req, res) {
+  const body = req.body;
+  console.log('[修改组成功]', body);
+  return res.json({
+    status: true,
+    msg: '删除组成功',
+    code: '20003',
+    data: {
+      group_id: 'sd0abd9249451d0fdbf0e1406f5d9e6a',
+      encodeDevices: [
+        {
+          id: 'f0abd9249451d0fdbf0e1406fxxxxxx',
+          domain: '137.0.0.1',
+          port: 3000,
+          auth: '4a0abd9249451d0fdbf0e1406fxxxxxx',
+          recvServicePort: 30000,
+          state: "normal",
+          eMessage: ''
+        }
+      ],
+      recvStreamServices: [
+        {
+          id: 'b0abd9249451d0fdbf0e1406fxxxxxx',
+          domain: '137.0.0.1',
+          port: 3087,
+          state: "normal",
+          eMessage: ''
+        }
+      ],
+      dState: 'offline',
+      eMessage: '',
+      description: ''
+    },
+    info: {
+      "type": "tip",
+      "title": "修改组成功",
+      "info": "修改组成功",
+      "note": "修改组成功",
+      "steps": "修改组步骤"
+    }
+  });
+});
+
 // 模拟删除组信息
 Router.post('/method/deleteGroup', function (req, res) {
   console.log('[删除组成功]');
