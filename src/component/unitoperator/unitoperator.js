@@ -3,6 +3,7 @@ import React, {Fragment} from 'react';
 // 自定义组件
 import ModalForm from '../modalform/modalform';
 import ModelDelForm from '../modeldelform/modeldelform';
+import ModalMatchForm from '../modalmatchform/modalmatchform';
 
 // antd
 import {Button, Icon, Modal} from 'antd';
@@ -15,7 +16,7 @@ import {UnitOperatorContext} from '../../context/unit-operator-context';
 
 class UnitOperator extends React.Component {
   render() {
-    // console.log('[this.props]', this.props);
+    // console.log('[UnitOperator this.props]', this.props);
     const createFormList = [
       {
         label: '组名',
@@ -55,8 +56,16 @@ class UnitOperator extends React.Component {
 
         <UnitOperatorContext.Consumer>
           {
-            ({createGroup, deleteGroup, group, group_id}) => (
+            ({createGroup, deleteGroup, matchGroup, group, group_id, singleGroup}) => (
               <Fragment>
+
+                <Button size='large' onClick={this.showMatchModal}>
+
+                  匹配
+                  <Icon type="link"/>
+
+                </Button>
+
                 <Button size='large' onClick={this.showModal}>
 
                   添加组
@@ -73,6 +82,20 @@ class UnitOperator extends React.Component {
 
                 <Button size='large' icon='sync'
                         onClick={() => window.location.href = window.location.href}
+                />
+
+                {/*匹配弹窗*/}
+                <ModalMatchForm
+                  title='匹配'
+                  ref={(modal) => this.modalMatchInstance = modal}
+                  inputFormValue={(formValue) => {
+                    // 匹配
+                    console.log('[匹配组]', formValue);
+                    matchGroup(formValue);
+                  }}
+                  group={group}
+                  group_id={group_id}
+                  dState={singleGroup.dState === 'offline' ? false : true}
                 />
 
                 {/*创建组弹窗*/}
@@ -112,6 +135,10 @@ class UnitOperator extends React.Component {
 
   deleteGroup = () => {
     this.delModalInstance.showDelModal();
+  };
+
+  showMatchModal = () => {
+    this.modalMatchInstance.showMatchModal();
   };
 
 }

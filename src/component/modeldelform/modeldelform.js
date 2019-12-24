@@ -33,3 +33,7 @@ class ModelDelForm extends React.Component {
 }
 
 export default ModelDelForm;
+
+/**
+ * 删除弹窗
+ * */

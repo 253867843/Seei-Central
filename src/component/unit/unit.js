@@ -12,7 +12,7 @@ import UnitFileUpload from '../unitfileupload/unitfileupload';
 import UnitMap from '../unitmap/unitmap';
 
 // actions
-import {actions as groupsActions} from '../../redux/groups.redux';
+import {actions as groupsActions, getGroupById} from '../../redux/groups.redux';
 
 // utils
 import apiPrefix from '../../apiPrefix';
@@ -29,6 +29,7 @@ import {
 
 // reselect
 import makeGroupNameList from '../../selectors/groupselector';
+import makeSingleGroup from '../../selectors/groupsingleselector';
 
 // 全局context
 import {UnitOperatorContext} from '../../context/unit-operator-context';
@@ -39,7 +40,8 @@ class Unit extends React.Component {
     const rootUrl = apiPrefix.rootUrl(); // 主路由
     const secondaryUrl = apiPrefix.secondaryUrl(); // 次级路由
     const {group, group_id} = this.props.location.state;
-    const {createGroup, deleteGroup} = this.props;
+    const {createGroup, deleteGroup, matchGroup, singleGroup, groupNameList: nameList} = this.props;
+    // const nameList = this.props.groupNameList;
     // 三级路由
     const unitList = [
       {
@@ -73,6 +75,7 @@ class Unit extends React.Component {
         hasFilter: true
       }
     ];
+
     return (
       <ThirdDashBoardLayout>
         <UnitLayout>
@@ -80,13 +83,14 @@ class Unit extends React.Component {
 
             {/*导航栏*/}
             <UnitNavBarHeaderLeft>
-              <Unitnavbar data={unitList} nameList={this.props.groupNameList}/>
+              <Unitnavbar data={unitList} nameList={nameList}/>
             </UnitNavBarHeaderLeft>
 
             {/*添加设备/刷新*/}
             <UnitNavBarHeaderRight>
 
-              <UnitOperatorContext.Provider value={{group, group_id, createGroup, deleteGroup}}>
+              <UnitOperatorContext.Provider
+                value={{group, group_id, createGroup, deleteGroup, matchGroup, singleGroup}}>
 
                 <UnitOperator/>
 
@@ -116,9 +120,11 @@ class Unit extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const getGroupNameList = makeGroupNameList();
+  const getSingleGroup = makeSingleGroup();
   return {
     groupNameList: getGroupNameList(state, props),
-  };
+    singleGroup: getSingleGroup(state, props)
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {

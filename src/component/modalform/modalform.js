@@ -34,7 +34,7 @@ class ModalForm extends React.Component {
     const {form} = this.createFormRef.props;
     form.validateFields((err, values) => {
       if (err) {
-        console.log('[handleCreate]', err);
+        console.log('[handleCreate err]', err);
         return;
       }
 
@@ -65,7 +65,7 @@ class ModalForm extends React.Component {
       let requestData = composeData(...groups)(...encodes)(...wowzas);
       console.log('[requestData]', requestData);
 
-      // 发送请求
+      // 回掉给unitoperator.js
       this.props.inputFormValue(requestData);
     });
   };
@@ -170,7 +170,5 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
 export default ModalForm;
 
 /**
- * 创建: 8个 <Form.Item>
- * 修改编码器: 4个<Form.Item>
- * 修改wowza: 2个<Form.Item>
+ * 创建弹窗, 修改encode弹窗, 修改wowza弹窗
  * */

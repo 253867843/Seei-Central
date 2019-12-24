@@ -9,6 +9,9 @@ export const rootColor = {
   '--bg-btn-online': '#28b73d',
   '--bg-modal-color': '#373a3c',
   '--white': '#fff',
+  '--warning-label': '#fce446',
+  '--danger-color': '#EE4B53',
+  // '--test': 'gold'
 };
 
 export const rootFontSize = {

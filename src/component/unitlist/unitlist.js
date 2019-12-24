@@ -20,9 +20,11 @@ import {
 
 // reselect
 import makeUnitList from '../../selectors/listselector';
+import makeSingleGroup from '../../selectors/groupsingleselector';
 
 // lodash
 import _ from 'lodash';
+
 
 class UnitList extends React.Component {
   constructor(props) {
@@ -55,6 +57,7 @@ class UnitList extends React.Component {
             <GridCard
               record={this.state.record}
               modifyGroup={this.modifyGroup}
+              singleGroup={this.props.singleGroup}
             />
 
           </UnitListPageContentCard>
@@ -99,8 +102,10 @@ class UnitList extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const getUnitList = makeUnitList();
+  const getSingleGroup = makeSingleGroup();
   return {
-    unitList: getUnitList(state, props)
+    unitList: getUnitList(state, props),
+    singleGroup: getSingleGroup(state, props)
   }
 };
 

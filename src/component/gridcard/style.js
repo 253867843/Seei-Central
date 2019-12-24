@@ -133,7 +133,8 @@ export const MarginLeftAuto = styled.div`
   .ant-btn {
     width: 170px;
     height: 40px;
-    background-color: ${rootColor['--bg-btn-offline']};
+    // background-color: ${rootColor['--bg-btn-offline']};
+    background-color: ${props => rootColor[props.status.color]};
     color: #fff;
     border-color: transparent;
   } 

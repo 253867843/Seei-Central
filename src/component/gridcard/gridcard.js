@@ -42,6 +42,41 @@ function File() {
 }
 
 class GridCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      currentStatus: {},
+    };
+
+    this.statusCode = {
+      offline: {
+        color: '--bg-btn-offline',
+        text: '匹配异常',
+        disabled: true,
+        label: 'offline'
+      },
+      ready: {
+        color: '--bg-btn-online',
+        text: '推流',
+        disabled: false,
+        label: 'ready'
+      },
+      connection: {
+        color: '--warning-label',
+        text: '连接中...',
+        disabled: false,
+        label: 'connection'
+      },
+      streaming: {
+        color: '--danger-color',
+        text: '停止推流',
+        disabled: false,
+        label: 'streaming'
+      }
+    };
+  }
+
   render() {
     const {TabPane} = Tabs;
     const record = this.props.record;
@@ -187,11 +222,14 @@ class GridCard extends React.Component {
                 </div>
               </SettingLayout>
 
-              <StatusButtonLayout>
-                <MarginLeftAuto>
-                  <Button type='primary'>匹配</Button>
-                </MarginLeftAuto>
-              </StatusButtonLayout>
+              {
+
+                record.recvServicePort
+                  ? (
+                    this.toggleButtonStatus()
+                  )
+                  : null
+              }
             </Setting>
 
             <InfoLayout>
@@ -223,8 +261,58 @@ class GridCard extends React.Component {
     )
   }
 
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.singleGroup !== prevProps.singleGroup) {
+      const singleGroup = this.props.singleGroup;
+      let ret;
+      if (singleGroup.dState === 'offline') {
+        ret = this.statusCode['offline'];
+      } else {
+        if (singleGroup.status) {
+          ret = this.statusCode['streaming'];
+        } else {
+          ret = this.statusCode['ready'];
+        }
+      }
+
+      this.setState({currentStatus: ret});
+    }
+  }
+
   showUpdateModal = () => {
     this.modalInstance.showModal();
+  };
+
+  toggleButtonStatus = () => {
+    const status = this.state.currentStatus;
+    return (
+      <StatusButtonLayout>
+        <MarginLeftAuto status={status}>
+          <Button
+            type='primary'
+            disabled={status.disabled}
+            onClick={this.pushFlow}
+            loading={this.state.loading}
+          >
+            {status.text}
+          </Button>
+        </MarginLeftAuto>
+      </StatusButtonLayout>
+    )
+  };
+
+  pushFlow = () => {
+    console.log('[this.state.currentStatus.label]', this.state.currentStatus.label);
+    if (this.state.currentStatus.label === 'ready') {
+      this.setState({
+        currentStatus: this.statusCode['streaming']
+      });
+    } else if (this.state.currentStatus.label === 'streaming') {
+      this.setState({
+        currentStatus: this.statusCode['ready']
+      });
+    }
   };
 }
 

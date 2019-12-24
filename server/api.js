@@ -1,6 +1,51 @@
 const express = require('express');
 const Router = express.Router();
 
+// 模拟匹配
+Router.post('/method/groupMatch', function (req, res) {
+  const body = req.body;
+  console.log('[匹配组成功]', body);
+  return res.json({
+    status: true,
+    msg: '匹配组成功',
+    code: '20004',
+    data: {
+      group_id: 'sd0abd9249451d0fdbf0e1406f5d9e6a',
+      group: 'group_test',
+      encodeDevices: [
+        {
+          id: 'f0abd9249451d0fdbf0e1406f5d9e87',
+          domain: '127.0.0.1',
+          port: 8000,
+          auth: '4a0abd9249451d0fdbf0e1406f5d9e6a',
+          recvServicePort: 10000,
+          state: "normal",
+          eMessage: ''
+        }
+      ],
+      recvStreamServices: [
+        {
+          id: 'b0abd9249451d0fdbf0e1406f5d9e31',
+          domain: '127.0.0.1',
+          port: 8087,
+          state: "normal",
+          eMessage: ''
+        }
+      ],
+      dState: 'offline',
+      eMessage: '',
+      description: ''
+    },
+    info: {
+      "type": "tip",
+      "title": "匹配组成功",
+      "info": "匹配组成功",
+      "note": "匹配组成功",
+      "steps": "匹配组步骤"
+    }
+  });
+});
+
 // 模拟修改组信息
 Router.post('/method/modifyGroup', function (req, res) {
   const body = req.body;
@@ -152,8 +197,8 @@ Router.post('/method/getGroupInfo', function (req, res) {
             eMessage: ''
           }
         ],
-        dState: 'offline',
-        status: true,
+        dState: 'ready',
+        status: false,
         eMessage: '',
         description: ''
       },

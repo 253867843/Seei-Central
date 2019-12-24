@@ -99,7 +99,7 @@ export const actions = {
   },
   matchGroup: ({group, group_id}) => {
     return (dispatch) => {
-      postAxios(url.matchGroup(), {group, group_id, auth: '6xxc4MS8Z9bFr2xcSK23r9Wd3P5jfrbG'}, dispatch)
+      postAxios(url.matchGroup(), {group, group_id}, dispatch)
         .then((data) => {
           console.log('[groups.redux matchGroup]', data);
           if (!data.error) {
