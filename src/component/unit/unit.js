@@ -10,6 +10,7 @@ import UnitList from '../unitlist/unitlist';
 import UnitMultiView from '../unitmultiview/unitmultiview';
 import UnitFileUpload from '../unitfileupload/unitfileupload';
 import UnitMap from '../unitmap/unitmap';
+import ContentSideBar from '../../component/contentsidebar/contentsidebar';
 
 // actions
 import {actions as groupsActions, getGroupById} from '../../redux/groups.redux';

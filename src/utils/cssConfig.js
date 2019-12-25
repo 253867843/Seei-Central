@@ -3,6 +3,7 @@ export const rootColor = {
   '--bg-first-color': '#343a41',
   '--bg-second-color': '#212a35',
   '--bg-third-color': '#161b21',
+  '--bg-filters-color': '#090b0d',
   '--table-thread-color': '#a5b2c7',
   '--border-bottom-color': '#545860',
   '--bg-btn-offline': '#43464d',

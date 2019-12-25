@@ -12,6 +12,8 @@ import Login from './container/login/login';
 // +
 import DashBoard from './component/dashboard/dashboard';
 import HomeV2 from './container/homev2/homev2';
+// import CollapseSidebar from './component/collapsesidebar/collapsesidebar';
+import ContentSideBar from './component/contentsidebar/contentsidebar';
 
 import NotFound from './container/notfound/notFound';
 import AuthRouter from './component/authrouter/authrouter';
@@ -57,6 +59,8 @@ const AppProvider = (
           <Route path='/exception/500' component={Page500}/>
           <Route path='/exception/getUserInfo' component={PageUser}/>
           <Route path='/test' component={TestRedux}/>
+          {/*<Route path='/collapseSidebar' component={CollapseSidebar}/>*/}
+          <Route path='/contentsidebar' component={ContentSideBar}/>
           <Route component={NotFound}/>
           {/*<Route path='/rcform' component={RcForm}/>*/}
           {/*<Route path='/axiosFilter' component={AxiosFilter}/>*/}
