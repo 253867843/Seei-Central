@@ -246,5 +246,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(ContentSideBar);
  * 5.重置数据
  * 6.合并
  * 7.添加到内容页面(未实现)
- * 8.table根据ui.redux的过滤种类添加到
+ * 8.根据ui.redux的过滤字段, 过滤在table上的显示内容
  * */
