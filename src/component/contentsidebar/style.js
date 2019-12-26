@@ -20,8 +20,8 @@ export const SideBar = styled.div`
 `;
 
 export const FilterSideBar = styled.div`
-  height: 100%;
-  background-color: ${rootColor['--bg-filters-color)']};  
+  height: 100% !important;
+  background-color: ${rootColor['--bg-filters-color']};  
 `;
 
 export const FilterTitle = styled.div`
@@ -80,6 +80,19 @@ export const FilterFieldSet = styled.div`
   }
 `;
 
+export const FilterColFormLabel = styled.div`
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  color: inherit;
+  white-space: normal;
+  font-size: inherit;
+  line-height: 1.5;
+  // padding: 0 !important;
+  padding-bottom: 7px;
+  margin-bottom: 0;
+`;
+
 export const FilterLabel = styled.div`
   display: flex;
   justify-content: space-between !important; 
@@ -99,6 +112,36 @@ export const FilterSubTitle = styled.div`
     height: 100%;
     justify-content: center;
     margin-left: auto;
+  }
+`;
+
+// checkbox
+export const CustomControlsStacked = styled.div`
+  display: block;
+  .hidden-checkbox-text {
+    display: none;
+  }
+  .ifClass {
+    padding-right: 8px;
+  } 
+  .ifMarginL200 {
+    margin-left: 200px;
+  }
+`;
+
+export const CustomControlCheckbox = styled.div`
+  position: relative;
+  display: block;
+  height: 54px;
+  min-height: 21px;
+  padding-left: 24px;
+  .custom-control-input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    padding: 0;
+    overflow: visible;
+    margin: 0;
   }
 `;
 
