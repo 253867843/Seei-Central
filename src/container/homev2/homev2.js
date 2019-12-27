@@ -144,7 +144,7 @@ class HomeV2 extends React.Component {
                   }
                 </Fragment>
               )
-              : <NoGroupPage/>
+              : <NoGroupPage createGroup={this.props.createGroup}/>
           }
         </PageContent>
 

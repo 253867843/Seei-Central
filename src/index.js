@@ -109,5 +109,25 @@ ReactDOM.render(AppProvider, document.getElementById('root'));
 // 如果你是服务端渲染，你仍将应该在服务端使用react-router的Static Router
 
 // "proxy": "http://zyhh123.xiaomy.net:80"
+// "proxy": "http://zyhh123.eicp.net:23327"
 
 // console.log('[是否含有属性]', {name: 'dcj123'}.hasOwnProperty('age'));
+
+// 创建组后, 匹配成功, 推流按钮 不可见, 刷新却可见 --- recvServicePort返回丢失, 现在改用auth
+
+// 匹配弹窗的页面样式修改 --- 修复
+
+// 路由问题 --- 修复
+
+// 匹配字段返回 api和实际返回不同
+// encodeDevices: Array(1)
+// 0:
+// id: "5e05b5c497e9b22cd470b481"
+// domain: "211.161.196.204"
+// port: 8000
+// auth: "6MR65M0y2cNiM7xze4Fy0T3D6SwdB3Jp"
+// state: "normal"
+// eMessage: ""
+// 少了recvServicePort字段
+
+// TODO: 用户信息栏(登出功能, ... 其他功能实现)

@@ -34,5 +34,14 @@ export const UserMenu = styled.div`
   border-radius: 20px;
   border: 2px solid #fff;
   font-size: ${rootFontSize['--primary-font-size']};
+  cursor: pointer;
 `;
 
+// 点击头像显示下拉菜单
+// export const DropDownMenu = styled.div`
+//   position: absolute;
+
+//   z-index: 1001;  
+// `;
+
+// TODO: 继续开发

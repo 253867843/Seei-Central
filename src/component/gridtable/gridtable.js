@@ -81,6 +81,7 @@ class GridTable extends React.Component {
   onClickTableRow = (record) => {
     return {
       onClick: (event) => {
+        console.log('[gridtable 点击行响应]', record);
         this.setState({rowId: record.id}); // 只影响css样式
         this.props.onClick(record);
       }

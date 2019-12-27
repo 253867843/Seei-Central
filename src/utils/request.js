@@ -52,7 +52,7 @@ function handleResponse(response, dispatch) {
       notification[type === 'tip' ? 'success' : type]({
         message: title || info.info,
         description: info.info,
-        placement: 'bottomLeft'
+        // placement: 'bottomLeft'
       });
     }
 

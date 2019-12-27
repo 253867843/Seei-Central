@@ -14,43 +14,13 @@ import {MarginLeftAuto} from './style';
 // 全局context
 import {UnitOperatorContext} from '../../context/unit-operator-context';
 
+// utils 
+import {createFormList} from '../../utils/formFieldList';
+
 class UnitOperator extends React.Component {
   render() {
     // console.log('[UnitOperator this.props]', this.props);
-    const createFormList = [
-      {
-        label: '组名',
-        field: 'group'
-      },
-      {
-        label: '描述',
-        field: 'group-description'
-      },
-      {
-        label: '编码器域名',
-        field: 'encode-domain'
-      },
-      {
-        label: '编码器端口',
-        field: 'encode-port'
-      },
-      {
-        label: 'auth',
-        field: 'encode-auth'
-      },
-      {
-        label: '接收wowza端口',
-        field: 'encode-recvServicePort'
-      },
-      {
-        label: 'wowza域名',
-        field: 'wowza-domain'
-      },
-      {
-        label: 'wowza端口',
-        field: 'wowza-port'
-      },
-    ];
+
     return (
       <MarginLeftAuto>
 
@@ -101,14 +71,14 @@ class UnitOperator extends React.Component {
                 {/*创建组弹窗*/}
                 <ModalForm
                   title='添加组'
+                  okText={'创建'}
                   formList={createFormList}
+                  ref={(modal) => this.modalInstance = modal}
                   inputFormValue={(formValue) => {
                     // 创建组
                     console.log('[创建组]', formValue);
                     createGroup(formValue);
                   }}
-                  ref={(modal) => this.modalInstance = modal}
-                  okText={'创建'}
                 />
 
                 {/*删除组弹窗*/}

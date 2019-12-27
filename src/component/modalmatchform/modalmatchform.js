@@ -1,6 +1,10 @@
 import React from 'react';
 
+// styled-component
 import {Form, Modal, Select, Input} from 'antd';
+
+// css
+import './style.css';
 
 class ModalMatchForm extends React.Component {
   state = {
@@ -67,7 +71,7 @@ const GroupMatchForm = Form.create({name: 'group_match_form'})(
       };
       return (
         <Modal
-          wrapClassName={`customize-match-modal`}
+          wrapClassName='customize-match-modal'
           visible={this.props.visible}
           title={this.props.title}
           onOk={this.props.onMatch}

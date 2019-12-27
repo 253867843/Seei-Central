@@ -48,7 +48,7 @@ axios.defaults.withCredentials = true;
 // 拦截请求
 axios.interceptors.request.use((config) => {
   NProgress.start();
-  console.log('[拦截请求]', config);
+  // console.log('[拦截请求]', config);
 
   // 1.拦截重复请求
   // (1)生成请求唯一标识

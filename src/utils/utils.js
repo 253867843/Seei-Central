@@ -41,6 +41,7 @@ export const composeData = (group, description) => {
 
 export const getRouteParams = (namelist = [], targetId) => {
   return (rootUrl = '/homev2', menu = 'unit', smenu = 'list') => {
+    // console.log('[nameList]', namelist);
     // console.log('[路径参数制作]');
     const selectedItem = getLocalStorage('selectedItem');
     const selectedMenuItem = getLocalStorage('selectedMenuItem');
@@ -51,13 +52,19 @@ export const getRouteParams = (namelist = [], targetId) => {
     let targetMenu;
     let targetSMenu;
     if (!targetId) {
-      if (selectedItem) {
-        targetId = selectedItem;
-      } else {
-        const [first = {}] = namelist;
-        targetId = first.group_id;
-      }
+      // - 
+      // connected-react-redux保存了刷新后的路由, 暂时不需要使用selectedItem
+      // if (selectedItem) { 
+      //   targetId = selectedItem;
+      // } else {
+      //   const [first = {}] = namelist;
+      //   targetId = first.group_id;
+      // }
+      const [first = {}] = namelist;
+      console.log('[first]', first);
+      targetId = first.group_id;
     }
+  
     // console.log('[targetId]', targetId);
 
     const index = namelist
@@ -76,7 +83,7 @@ export const getRouteParams = (namelist = [], targetId) => {
       pathname = pathname + '/' + targetSMenu;
     }
 
-    console.log('[pathname]', pathname);
+    console.log('[pathname]', pathname, targetId, targetName);
 
     return {
       pathname,

@@ -1,10 +1,11 @@
 import Immutable from 'immutable';
-import {postAxios} from '../utils/request';
-import {actions as appActions} from './app.redux';
-import {types as authTypes} from './auth.redux';
-import {types as usersTypes} from './users.redux';
+import { postAxios } from '../utils/request';
+import { actions as appActions } from './app.redux';
+import { types as authTypes } from './auth.redux';
+import { types as usersTypes } from './users.redux';
 import url from '../utils/url';
-import {combineReducers} from 'redux-immutable';
+import { combineReducers } from 'redux-immutable';
+import { push } from 'connected-react-router';
 
 // action types
 export const types = {
@@ -29,9 +30,10 @@ export const actions = {
           if (!data.error) {
             if (data.status) {
               // 创建组成功
-              const {group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertCreateGroupToPlain(data.data);
+              const { group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds } = convertCreateGroupToPlain(data.data);
               dispatch(createGroupSuccess(group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds));
-            } else {
+              dispatch(push('/dashboard'));
+            }else {
               // 创建组失败
             }
           } else {
@@ -48,7 +50,7 @@ export const actions = {
           if (!data.error) {
             if (data.status) {
               // 修改组失败
-              const {groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertUpdateGroupToPlain(data.data);
+              const { groupItem, encodes, encodeIds, wowzas, wowzaIds } = convertUpdateGroupToPlain(data.data);
               dispatch(modifyGroupSuccess(groupItem, encodes, encodeIds, wowzas, wowzaIds));
             } else {
               // 修改组成功
@@ -59,15 +61,15 @@ export const actions = {
         });
     }
   },
-  fetchGroupInfo: ({group, group_id}) => {
+  fetchGroupInfo: ({ group, group_id }) => {
     return (dispatch) => {
-      postAxios(url.fetchGroupInfo(), {group, group_id}, dispatch)
+      postAxios(url.fetchGroupInfo(), { group, group_id }, dispatch)
         .then((data) => {
           console.log('[groups.redux fetchGroupInfo]', data);
           if (!data.error) {
             if (data.status) {
               // 查询组成功
-              const {groupItem, encodes, encodeIds, wowzas, wowzaIds} = convertSingleGroupToPlain(data.data);
+              const { groupItem, encodes, encodeIds, wowzas, wowzaIds } = convertSingleGroupToPlain(data.data);
               dispatch(fetchGroupInfoSuccess(groupItem, encodes, encodeIds, wowzas, wowzaIds));
             } else {
               // 查询组失败
@@ -78,16 +80,17 @@ export const actions = {
         });
     }
   },
-  deleteGroup: ({group, group_id}) => {
+  deleteGroup: ({ group, group_id }) => {
     return (dispatch) => {
-      postAxios(url.deleteGroup(), {group, group_id}, dispatch)
+      postAxios(url.deleteGroup(), { group, group_id }, dispatch)
         .then((data) => {
           console.log('[groups.redux deleteGroup]', data);
           if (!data.error) {
             if (data.status) {
               // 删除组成功
-              const {encodeIds, wowzaIds} = convertDeleteGroupToPlain(data.data);
+              const { encodeIds, wowzaIds } = convertDeleteGroupToPlain(data.data);
               dispatch(deleteGroupSuccess(group, group_id, encodeIds, wowzaIds));
+              dispatch(push('/dashboard'));
             } else {
               // 删除组失败
             }
@@ -97,18 +100,18 @@ export const actions = {
         });
     }
   },
-  matchGroup: ({group, group_id}) => {
+  matchGroup: ({ group, group_id }) => {
     return (dispatch) => {
-      postAxios(url.matchGroup(), {group, group_id}, dispatch)
+      postAxios(url.matchGroup(), { group, group_id }, dispatch)
         .then((data) => {
           console.log('[groups.redux matchGroup]', data);
           if (!data.error) {
             if (data.status) {
-              // 匹配组失败
-              const {groupItem, encodes, wowzas} = convertMatchGroupToPlain(data.data);
+              // 匹配组成功
+              const { groupItem, encodes, wowzas } = convertMatchGroupToPlain(data.data);
               dispatch(matchGroupSuccess(groupItem, encodes, wowzas));
             } else {
-              // 匹配组成功
+              // 匹配组失败
             }
           } else {
             dispatch(appActions.setError(data.error));
@@ -116,68 +119,58 @@ export const actions = {
         });
     }
   },
-  startPushStream: ({group, group_id, encodeDevice_id, recvStreamService_id}) => {
+  startPushStream: ({ group, group_id, encodeDevice_id, recvStreamService_id }) => {
     return (dispatch) => {
-      dispatch(appActions.startRequest());
-      // axios.post(url.startPushStream(), {group, group_id, encodeDevice_id, recvStreamService_id})
-      postAxios(url.startPushStream(), {group, group_id, encodeDevice_id, recvStreamService_id}, dispatch)
+      postAxios(url.startPushStream(), { group, group_id, encodeDevice_id, recvStreamService_id }, dispatch)
         .then((data) => {
-          dispatch(appActions.finishRequest());
-          // console.log('[groups.redux startPushStream]', res);
           console.log('[groups.redux startPushStream]', data);
-          // if (res.status === 200 && res.data.status) {
-          if (!data.error && data.status) {
-            console.log('[startPushStream]', data);
-            dispatch(startPushStreamSuccess(group_id));
+          if (!data.error) {
+            if (data.status) {
+              // 推流成功
+              dispatch(startPushStreamSuccess(group_id));
+            } else {
+              // 推流失败
+            }
           } else {
-            dispatch(appActions.setError(data.error)); // 错误信息保留
+            dispatch(appActions.setError(data.error));
           }
         })
-      // .catch((err) => {
-      //   dispatch(appActions.setError(err));
-      // });
     }
   },
-  finishPushStream: ({group, group_id}) => {
+  finishPushStream: ({ group, group_id }) => {
     return (dispatch) => {
-      dispatch(appActions.startRequest());
-      // axios.post(url.finishPushStream(), {group, group_id})
-      postAxios(url.finishPushStream(), {group, group_id}, dispatch)
+      postAxios(url.finishPushStream(), { group, group_id }, dispatch)
         .then((data) => {
-          dispatch(appActions.finishRequest());
-          // console.log('[groups.redux finishPushStream]', res);
           console.log('[groups.redux finishPushStream]', data);
-          // if (res.status === 200 && res.data.status) {
-          if (!data.error && data.status) {
-            dispatch(finishPushStreamSuccess(group_id));
+          if (!data.error) {
+            if (data.status) {
+              // 停止推流成功
+              dispatch(finishPushStreamSuccess(group_id));
+            } else {
+              // 停止推流失败
+            }
           } else {
-            dispatch(appActions.setError(data.error)); // 错误信息保留
+            dispatch(appActions.setError(data.error));
           }
         })
-      // .catch((err) => {
-      //   dispatch(appActions.setError(err));
-      // });
     }
   },
-  deleteAllGroup: () => { // 不需要传参
+  deleteAllGroup: () => {
     return (dispatch) => {
-      dispatch(appActions.startRequest());
-      // axios.post(url.deleteGroup())
       postAxios(url.deleteGroup(), dispatch)
         .then((data) => {
-          dispatch(appActions.finishRequest());
-          // console.log('[groups.redux deleteAllGroup]', res);
           console.log('[groups.redux deleteAllGroup]', data);
-          // if (res.status === 200 && res.data.status) {
-          if (!data.error && data.status) {
-            dispatch(deleteAllGroupSuccess());
+          if (!data.error) {
+            if (data.status) {
+              // 删除所有组成功
+              dispatch(deleteAllGroupSuccess());
+            } else {
+              // 删除所有组失败
+            }
           } else {
-            dispatch(appActions.setError(data.error)); // 错误信息保留
+            dispatch(appActions.setError(data.error));
           }
         })
-      // .catch((err) => {
-      //   dispatch(appActions.setError(err));
-      // });
     }
   }
 };
@@ -242,18 +235,18 @@ const deleteAllGroupSuccess = () => ({
 
 // 扁平化, 添加Group返回
 const convertCreateGroupToPlain = (data) => {
-  const {group_id, group, dState, eMessage, description, encodeDevices, recvStreamServices} = data;
-  let groupItem = {group, group_id, dState, eMessage, description};
+  const { group_id, group, dState, eMessage, description, encodeDevices, recvStreamServices } = data;
+  let groupItem = { group, group_id, dState, eMessage, description };
   let encodesById = {}; // 记录前端设备
   let encodeIds = []; // encode.redux.js/byPost用
   let wowzaById = {}; // 记录wowza
   let wowzaIds = []; //wowza.redux.js/byPost用
   encodeDevices.forEach((item) => {
-    encodesById[item.id] = {...item};
+    encodesById[item.id] = { ...item };
     encodeIds.push(item.id);
   });
   recvStreamServices.forEach((item) => {
-    wowzaById[item.id] = {...item};
+    wowzaById[item.id] = { ...item };
     wowzaIds.push(item.id);
   });
   return {
@@ -268,15 +261,15 @@ const convertCreateGroupToPlain = (data) => {
 
 // 扁平化, 修改Group返回
 const convertUpdateGroupToPlain = (data) => {
-  const {group_id, group, dState, eMessage, description, encodeDevices, recvStreamServices} = data;
-  let groupItem = {group, group_id, dState, eMessage, description};
+  const { group_id, group, dState, eMessage, description, encodeDevices, recvStreamServices } = data;
+  let groupItem = { group, group_id, dState, eMessage, description };
   let encodesById = {}; // 记录前端设备
   let wowzasById = {}; // 记录wowza
   encodeDevices.forEach((item) => {
-    encodesById[item.id] = {...item};
+    encodesById[item.id] = { ...item };
   });
   recvStreamServices.forEach((item) => {
-    wowzasById[item.id] = {...item};
+    wowzasById[item.id] = { ...item };
   });
   return {
     groupItem: groupItem,
@@ -287,18 +280,18 @@ const convertUpdateGroupToPlain = (data) => {
 
 // 扁平化, 查看Group返回
 const convertSingleGroupToPlain = (data) => {
-  const {group_id, group, dState, eMessage, description, status, encodeDevices, recvStreamServices} = data;
-  let groupItem = {group_id, group, dState, eMessage, description, status};
+  const { group_id, group, dState, eMessage, description, status, encodeDevices, recvStreamServices } = data;
+  let groupItem = { group_id, group, dState, eMessage, description, status };
   let encodesById = {};
   let encodeIds = [];
   let wowzasById = {};
   let wowzaIds = [];
   encodeDevices.forEach((item) => {
-    encodesById[item.id] = {...item};
+    encodesById[item.id] = { ...item };
     encodeIds.push(item.id);
   });
   recvStreamServices.forEach((item) => {
-    wowzasById[item.id] = {...item};
+    wowzasById[item.id] = { ...item };
     wowzaIds.push(item.id);
   });
   return {
@@ -312,7 +305,7 @@ const convertSingleGroupToPlain = (data) => {
 
 // 扁平化, 删除Group返回(目前不返回内容)
 const convertDeleteGroupToPlain = (data) => {
-  const {encodeDevices, recvStreamServices} = data;
+  const { encodeDevices, recvStreamServices } = data;
   console.log('[删除Group返回 encodeDevices]', encodeDevices);
   console.log('[删除Group返回 recvStreamServices]', recvStreamServices);
   const encodeIds = [];
@@ -331,15 +324,15 @@ const convertDeleteGroupToPlain = (data) => {
 
 // 扁平化, 匹配Group返回
 const convertMatchGroupToPlain = (data) => {
-  const {group_id, group, dState, eMessage, description, status, encodeDevices, recvStreamServices} = data;
-  let groupItem = {group_id, group, dState, eMessage, description};
+  const { group_id, group, dState, eMessage, description, status, encodeDevices, recvStreamServices } = data;
+  let groupItem = { group_id, group, dState, eMessage, description };
   let encodesById = {};
   let wowzasById = {};
   encodeDevices.forEach((item) => {
-    encodesById[item.id] = {...item};
+    encodesById[item.id] = { ...item };
   });
   recvStreamServices.forEach((item) => {
-    wowzasById[item.id] = {...item};
+    wowzasById[item.id] = { ...item };
   });
   return {
     groupItem: groupItem,
@@ -360,7 +353,7 @@ const byId = (state = Immutable.fromJS({}), action) => { // 记录groups信息
     case types.MODIFY_GROUP:
     case types.FETCH_GROUP_INFO:
     case types.MATCH_GROUP:
-      return state.merge({[action.groupItem.group_id]: Immutable.fromJS(action.groupItem)}); // 复杂数据类型
+      return state.merge({ [action.groupItem.group_id]: Immutable.fromJS(action.groupItem) }); // 复杂数据类型
     case types.DELETE_GROUP:
       return state.delete(action.group_id);
     case types.START_PUSH_STREAM:
