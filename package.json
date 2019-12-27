@@ -82,5 +82,5 @@
       "react-app"
     ]
   },
-  "proxy": "http://zyhh123.eicp.net:23327"
+  "proxy": "http://localhost:9000"
 }

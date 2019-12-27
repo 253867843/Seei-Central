@@ -22,9 +22,8 @@ import {
 // antd
 import {Icon, Button, Form, Checkbox, Row, Col} from 'antd';
 
-const IconFont = Icon.createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_1113810_o3p2w2mc6i.js'
-});
+// iconfont
+import IconFont from '../../iconFont/iconfont';
 
 class ContentSideBar extends React.Component {
   constructor(props) {

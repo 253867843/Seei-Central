@@ -38,10 +38,28 @@ export const UserMenu = styled.div`
 `;
 
 // 点击头像显示下拉菜单
-// export const DropDownMenu = styled.div`
-//   position: absolute;
-
-//   z-index: 1001;  
-// `;
+export const DropDownMenu = styled.div`
+  position: absolute;
+  top: 46px;
+  right: 20px;
+  width: 190px;
+  height: 40px;
+  
+  // padding: 8px auto;
+  // margin-top: 2px;
+  // font-size: ${rootFontSize['--primary-font-size']};
+  color: #fff;
+  // text-align: left;
+  // list-style: none;
+  background-color: #000;
+  // background-clip: padding-box;
+  // border: 1px solid #495057;
+  // border-radius: 2px;
+  // z-index: 1001;  
+  // right: 0;
+  // left: auto;
+  // top: 46px;
+  // float: none;
+`;
 
 // TODO: 继续开发

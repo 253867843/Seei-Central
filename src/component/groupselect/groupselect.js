@@ -1,8 +1,8 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 // antd
-import { Form, Select } from 'antd';
+import {Form, Select, Popover, List, Typography} from 'antd';
 
 // styled-components
 import {
@@ -13,20 +13,27 @@ import {
 } from './style.js';
 
 // utils
-import { getRouteParams } from '../../utils/utils';
+import {getRouteParams} from '../../utils/utils';
 import apiPrefix from '../../apiPrefix';
+
+// iconfont
+import IconFont from '../../iconFont/iconfont';
+
+// css
+import './style.css';
 
 @withRouter
 class GroupSelect extends React.Component {
   state = {
-    showUserMenu: false
+    showUserMenu: true
   };
+
   render() {
-    const { nameList, user, location: { state } } = this.props;
+    const {nameList, user, location: {state}} = this.props;
     const nameListRaw = nameList.toJS();
     const userRaw = user.toJS();
-    const { group } = state;
-    const { username } = userRaw;
+    const {group} = state;
+    const {username} = userRaw;
     // console.log('[GroupSelect]', nameListRaw);
     return (
       <GroupSelectLayout id='navbar-select-div'>
@@ -43,18 +50,26 @@ class GroupSelect extends React.Component {
 
         {
           username
-            ? <UserMenu onClick={this.toggleUserMenu}>
-              {username.substring(0, 1).toUpperCase()}
-              {
-                this.state.showUserMenu
-                  ? <DropDownMenu>
-
-                  </DropDownMenu>
-                  : null
-              }
-            </UserMenu>
+            ? (
+              <Popover placement='bottom'
+                       title={
+                         <span>{username}</span>
+                       }
+                       content={this.getDropDownMenu()}
+                       trigger='click'
+                       overlayClassName='customize-popover'
+              >
+                <UserMenu onClick={this.toggleUserMenu}>
+                  {username.substring(0, 1).toUpperCase()}
+                </UserMenu>
+              </Popover>
+            )
             : null
         }
+
+        {/*<DropDownMenu>*/}
+        {/*  123456*/}
+        {/*</DropDownMenu>*/}
 
 
       </GroupSelectLayout>
@@ -75,19 +90,63 @@ class GroupSelect extends React.Component {
       showUserMenu: !prevState.showUserMenu
     }));
   };
+
+  getDropDownMenu = () => {
+    const data = [
+      {
+        title: '账户',
+        type: 'iconuser-copy'
+      },
+      {
+        title: '技术支持',
+        type: 'iconsupport-copy'
+      },
+      {
+        title: '关于',
+        type: 'iconabout-copy'
+      },
+      {
+        title: '什么是新闻',
+        type: 'iconNews-copy'
+      },
+      {
+        title: '设置',
+        type: 'iconsetting-copy'
+      },
+      {
+        title: '注销',
+        type: 'iconLogout-copy'
+      }
+    ];
+    return (
+      <List
+        itemLayout='horizontal'
+        dataSource={data}
+        size='small'
+        renderItem={(item) => (
+          <List.Item>
+            <Typography.Text><IconFont type={item.type} style={{marginRight: 10}}/></Typography.Text>
+            <span onClick={() => console.log('List.Item被点击了')}>{item.title}</span>
+          </List.Item>
+        )}
+      >
+
+      </List>
+    )
+  };
 }
 
 // 下拉菜单Form
-const GroupSelectForm = Form.create({ name: 'group_select_form' })(
+const GroupSelectForm = Form.create({name: 'group_select_form'})(
   class extends React.Component {
     render() {
-      const { defaultGroup, grouplist, onChange } = this.props;
+      const {defaultGroup, grouplist, onChange} = this.props;
       // console.log('[defaultValue]', grouplist);
       return (
-        <div style={{ width: '100%' }}>
+        <div style={{width: '100%'}}>
           <Select size='large' onChange={onChange} notFoundContent='No Group'
-            value={defaultGroup || 'Please add a group'}
-            style={{ width: '100%' }}>
+                  value={defaultGroup || 'Please add a group'}
+                  style={{width: '100%'}}>
             {
               grouplist.map((item) => (
                 <Select.Option
