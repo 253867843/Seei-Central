@@ -1,12 +1,12 @@
 import React from 'react';
 
 // antd
-import {Form, Modal, Row, Col, Input, Button, Icon} from 'antd';
+import { Form, Modal, Row, Col, Input, Button, Icon } from 'antd';
 
 import './style.css';
 
 // utils
-import {composeData} from '../../utils/utils';
+import { composeData } from '../../utils/utils';
 
 class ModalForm extends React.Component {
   state = {
@@ -27,11 +27,11 @@ class ModalForm extends React.Component {
   }
 
   showModal = () => {
-    this.setState({visible: true});
+    this.setState({ visible: true });
   };
 
   handleCreate = () => {
-    const {form} = this.createFormRef.props;
+    const { form } = this.createFormRef.props;
     form.validateFields((err, values) => {
       if (err) {
         console.log('[handleCreate err]', err);
@@ -42,7 +42,7 @@ class ModalForm extends React.Component {
       form.resetFields();
 
       // 关闭Modal
-      this.setState({visible: false});
+      this.setState({ visible: false });
 
       // 打印结果
       console.log('[values]', values);
@@ -71,7 +71,7 @@ class ModalForm extends React.Component {
   };
 
   handleCancel = () => {
-    this.setState({visible: false});
+    this.setState({ visible: false });
   };
 
   saveCreateFormRef = (formRef) => { // 表示GroupCreateForm实例
@@ -80,7 +80,7 @@ class ModalForm extends React.Component {
 
 }
 
-const GroupCreateForm = Form.create({name: 'group_create_form'})(
+const GroupCreateForm = Form.create({ name: 'group_create_form' })(
   class extends React.Component {
     state = {
       expand: false
@@ -89,7 +89,7 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
     render() {
       // console.log('[GroupCreateForm]', this.props.formList);
       const buttonItemLayout = {
-        wrapperCol: {span: 14, offset: 4},
+        wrapperCol: { span: 14, offset: 4 },
       };
       return (
         <Modal
@@ -106,14 +106,14 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
           <Form className='ant-advanced-search-form'>
             <Row gutter={24}>{this.getFields()}</Row>
             <Row>
-              <Col span={24} style={{textAlign: 'right'}}>
+              <Col span={24} style={{ textAlign: 'right' }}>
                 <Form.Item  {...buttonItemLayout}>
-                  <Button type='primary' style={{marginLeft: 8}} onClick={this.handleReset}>清空</Button>
+                  <Button type='primary' style={{ marginLeft: 8 }} onClick={this.handleReset}>清空</Button>
                   {
                     this.props.formList.length > 6
                       ? (
-                        <a style={{marginLeft: 8, fontSize: 12}} onClick={this.toggle}>
-                          切换<Icon type={this.state.expand ? 'up' : 'down'}/>
+                        <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
+                          切换<Icon type={this.state.expand ? 'up' : 'down'} />
                         </a>
                       )
                       : null
@@ -130,23 +130,23 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
       const defaultRecord = this.props.defaultRecord;
       const formList = this.props.formList;
       const count = this.state.expand ? 10 : 6;
-      const {getFieldDecorator} = this.props.form;
+      const { getFieldDecorator } = this.props.form;
       const children = [];
 
       const formItemLayout = {
-        labelCol: {span: 12},
-        wrapperCol: {span: 14},
+        labelCol: { span: 12 },
+        wrapperCol: { span: 14 },
       };
 
       formList.forEach((v, i) => {
         children.push(
-          <Col span={8} key={v.label} style={{display: i < count ? 'block' : 'none'}}>
+          <Col span={8} key={v.label} style={{ display: i < count ? 'block' : 'none' }}>
             <Form.Item label={v.label} {...formItemLayout}>
               {
                 getFieldDecorator(v.field, {
-                  rules: [{required: true, message: 'Input something!'}],
+                  rules: [{ required: true, message: 'Input something!' }],
                   initialValue: defaultRecord ? defaultRecord[v.text] : null
-                })(<Input placeholder='placeholder'/>)
+                })(<Input placeholder='placeholder' />)
               }
             </Form.Item>
           </Col>
@@ -161,8 +161,8 @@ const GroupCreateForm = Form.create({name: 'group_create_form'})(
     };
 
     toggle = () => {
-      const {expand} = this.state;
-      this.setState({expand: !expand});
+      const { expand } = this.state;
+      this.setState({ expand: !expand });
     };
   }
 );

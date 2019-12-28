@@ -1,10 +1,10 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 
 // 弹窗
 import ModelForm from '../../component/modalform/modalform';
 
 // utils
-import {updateEncodeList, updateWowzaList} from '../../utils/formFieldList';
+import { updateEncodeList, updateWowzaList } from '../../utils/formFieldList';
 
 import {
   CardSideBar,
@@ -26,7 +26,7 @@ import {
   TabDetails
 } from './style';
 
-import {Icon, Button, Tabs} from 'antd';
+import { Icon, Button, Tabs } from 'antd';
 
 function Global() {
   return (<div>Global</div>)
@@ -81,9 +81,10 @@ class GridCard extends React.Component {
   }
 
   render() {
-    const {TabPane} = Tabs;
+    const { TabPane } = Tabs;
     const record = this.props.record;
-    // console.log('[record]', record);
+    // console.log('[record]', record);      
+    // console.log('[singleGroup]', this.props.singleGroup);
     const tabList = [
       {
         key: 'global',
@@ -111,20 +112,20 @@ class GridCard extends React.Component {
         <UnitDetails>
 
           <Header>
-            <Icon type='hdd'/>
+            <Icon type='hdd' />
             <Title>{record.domain}</Title>
 
-            <AutoPlaceHolder/>
+            <AutoPlaceHolder />
 
-            <IconButton style={{width: '30px'}} onClick={this.showUpdateModal}>
+            <IconButton style={{ width: '30px' }} onClick={this.showUpdateModal}>
               <Icon type='setting' theme='filled'></Icon>
             </IconButton>
-            <Icon type='more'/>
+            <Icon type='more' />
 
           </Header>
 
           <ModelForm
-            title={record.recvServicePort ? '编码器修改' : 'wowza修改'}
+            title={record.recvServicePort ? '编码器修改' : 'S2000修改'}
             defaultRecord={record}
             formList={record.recvServicePort ? updateEncodeList : updateWowzaList}
             ref={(modal) => this.modalInstance = modal}
@@ -140,7 +141,7 @@ class GridCard extends React.Component {
                 地理位置: Xietu Road, Xuhui, Xuhui District, Shanghai, 200030, China
               </Title>
 
-              <Button style={{marginLeft: 'auto !important'}}>
+              <Button style={{ marginLeft: 'auto !important' }}>
                 <Icon type='sync'></Icon>
               </Button>
 
@@ -150,7 +151,7 @@ class GridCard extends React.Component {
           <ScrollArea>
             <StreamVideo>
               <StreamVideoDefaultImg>
-                <img src={require('../../images/logo.png')} alt=''/>
+                <img src={require('../../images/logo.png')} alt='' />
               </StreamVideoDefaultImg>
             </StreamVideo>
 
@@ -212,12 +213,12 @@ class GridCard extends React.Component {
                       key={v.key}
                       tab={
                         <span>
-                        <Icon type={v.icon}></Icon>
-                      </span>
+                          <Icon type={v.icon}></Icon>
+                        </span>
                       }
                     >
                       <TabDetails>
-                        <v.component/>
+                        <v.component />
                       </TabDetails>
                     </TabPane>
                   ))
@@ -247,7 +248,7 @@ class GridCard extends React.Component {
         }
       }
 
-      this.setState({currentStatus: ret});
+      this.setState({ currentStatus: ret });
     }
   }
 
@@ -275,41 +276,26 @@ class GridCard extends React.Component {
 
   pushFlow = () => {
     console.log('[this.state.currentStatus.label]', this.state.currentStatus.label);
+    const { group, group_id } = this.props.singleGroup;
+    const [encode, wowza] = this.props.unitList;
+    // console.log('[group]', group);
+    // console.log('[group_id]', group_id);
+    // console.log('[encode]', encode.id);
+    // console.log('[wowza]', wowza.id);
     if (this.state.currentStatus.label === 'ready') {
       this.setState({
         currentStatus: this.statusCode['streaming']
       });
+      // 开始推流
+      this.props.startPushStream({ group, group_id, encodeDevice_id: encode.id, recvStreamService_id: wowza.id });
     } else if (this.state.currentStatus.label === 'streaming') {
       this.setState({
         currentStatus: this.statusCode['ready']
       });
+      // 停止推流
+      this.props.finishPushStream({ group, group_id });
     }
   };
 }
 
 export default GridCard;
-
-/**
- * 接收到修改的数据:
- * encode >>> 接收到编码器的修改数据 >>> 如何跟之前的数据打包???
- * wowza >>> 接收到wowza的修改数据 >>>
- *
- *  {
-	group: 'group_test',	#组名
-	encodeDevices:[		#编码器设备
-		{
-			domain: '127.0.0.1',	#编码器服务地址可以是IP或者域名
-			port: 8000,		#编码器服务端口  默认8000
-			auth: '4a0abd9249451d0fdbf0e1406f5d9e6a',	#认证auth 让用户自行输入
-			recvServicePort: 10000		#接收wowza端的端口  默认10000
-		}
-	],
-	recvStreamServices:[	#接收端wowza
-		{
-			domain: '127.0.0.1',	#接收端wowza地址可以是IP或者域名
-			port: 8087		#接收端wowza端口  默认8087
-		}
-	],
-	description: '',		#描述信息  默认''
- }
- * */

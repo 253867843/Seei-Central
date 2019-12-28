@@ -46,7 +46,7 @@ class GridTable extends React.Component {
         title: '类型',
         dataIndex: 'dtype',
         key: 'dtype',
-        render: (text, record) => record.recvServicePort ? <span>编码器</span> : <span>wowza</span>
+        render: (text, record) => record.recvServicePort ? <span>编码器</span> : <span>S2000</span>
       },
       {
         title: '端口',

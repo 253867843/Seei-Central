@@ -24,15 +24,10 @@
     color: #fff;
 }
 
-.customize-popover .ant-list-split .ant-list-item {
+.customize-popover .ant-list-item {
     cursor: pointer;
-    border-bottom: 0;
 }
 
-.customize-popover .ant-list-split .ant-list-item:hover {
-    color: #d9482f;
-}
-
-.customize-popover .ant-typography .anticon:hover {
+.customize-popover .ant-list-item:hover {
     color: #d9482f;
 }

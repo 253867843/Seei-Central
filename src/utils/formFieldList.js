@@ -21,15 +21,15 @@ export const createFormList = [
       field: 'encode-auth'
     },
     {
-      label: '接收wowza端口',
+      label: '接收S2000端口',
       field: 'encode-recvServicePort'
     },
     {
-      label: 'wowza域名',
+      label: 'S2000域名',
       field: 'wowza-domain'
     },
     {
-      label: 'wowza端口',
+      label: 'S2000端口',
       field: 'wowza-port'
     },
   ];
@@ -51,7 +51,7 @@ export const updateEncodeList = [
       field: 'encode-auth',
       text: 'auth'
     }, {
-      label: '接收wowza端口',
+      label: '接收S2000端口',
       field: 'encode-recvServicePort',
       text: 'recvServicePort'
     }

@@ -58,6 +58,9 @@ class UnitList extends React.Component {
               record={this.state.record}
               modifyGroup={this.modifyGroup}
               singleGroup={this.props.singleGroup}
+              startPushStream={this.props.startPushStream}
+              finishPushStream={this.props.finishPushStream}
+              unitList={this.props.unitList}
             />
 
           </UnitListPageContentCard>
@@ -103,6 +106,7 @@ class UnitList extends React.Component {
 const mapStateToProps = (state, props) => {
   const getUnitList = makeUnitList();
   const getSingleGroup = makeSingleGroup();
+  // console.log('[getUnitList]', getUnitList(state, props));
   return {
     unitList: getUnitList(state, props),
     singleGroup: getSingleGroup(state, props)

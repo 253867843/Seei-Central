@@ -110,6 +110,7 @@ ReactDOM.render(AppProvider, document.getElementById('root'));
 
 // "proxy": "http://zyhh123.xiaomy.net:80"
 // "proxy": "http://zyhh123.eicp.net:23327"
+// http://211.161.196.204:8000/seeiCloud
 
 // console.log('[是否含有属性]', {name: 'dcj123'}.hasOwnProperty('age'));
 
@@ -131,3 +132,10 @@ ReactDOM.render(AppProvider, document.getElementById('root'));
 // 少了recvServicePort字段
 
 // TODO: 用户信息栏(登出功能, ... 其他功能实现)
+
+// 修改的地方: 
+// 匹配不要显示group_id
+// gridcard/encode 不要显示auth
+// 推流后, 轮训请求显示数据(10s)
+// 无论什么时候都能推流
+// 推流之前, 要验证是否匹配成功
