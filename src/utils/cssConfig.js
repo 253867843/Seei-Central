@@ -12,7 +12,7 @@ export const rootColor = {
   '--white': '#fff',
   '--warning-label': '#fce446',
   '--danger-color': '#EE4B53',
-  // '--test': 'gold'
+  '--about-line-color': '#fff',
 };
 
 export const rootFontSize = {

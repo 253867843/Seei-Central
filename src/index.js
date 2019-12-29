@@ -139,3 +139,5 @@ ReactDOM.render(AppProvider, document.getElementById('root'));
 // 推流后, 轮训请求显示数据(10s)
 // 无论什么时候都能推流
 // 推流之前, 要验证是否匹配成功
+
+// 要一张329*57的图片: Seei Cloud >>> groupselect.js/style.js

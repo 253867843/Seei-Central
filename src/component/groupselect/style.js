@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {rootFontSize, rootColor} from '../../utils/cssConfig';
+import { rootFontSize, rootColor } from '../../utils/cssConfig';
 
 // 组选择框布局
 export const GroupSelectLayout = styled.div`
@@ -23,6 +23,15 @@ export const MainGroupSelect = styled.div`
   background-color: ${rootColor['--bg-first-color']}; 
 `;
 
+// 弹窗布局
+export const DropDownPopover = styled.div`
+  position: absolute;
+  float: none;
+  top: 46px;
+  right: 0px;
+  left: auto;
+`;
+
 // 用户
 export const UserMenu = styled.div`
   display: flex;
@@ -37,29 +46,63 @@ export const UserMenu = styled.div`
   cursor: pointer;
 `;
 
-// 点击头像显示下拉菜单
-export const DropDownMenu = styled.div`
-  position: absolute;
-  top: 46px;
-  right: 20px;
-  width: 190px;
-  height: 40px;
-  
-  // padding: 8px auto;
-  // margin-top: 2px;
-  // font-size: ${rootFontSize['--primary-font-size']};
-  color: #fff;
-  // text-align: left;
-  // list-style: none;
-  background-color: #000;
-  // background-clip: padding-box;
-  // border: 1px solid #495057;
-  // border-radius: 2px;
-  // z-index: 1001;  
-  // right: 0;
-  // left: auto;
-  // top: 46px;
-  // float: none;
+// 用户信息/关于
+export const AboutModal = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #343a41;
 `;
 
-// TODO: 继续开发
+export const AboutModalPic = styled.div`
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;  
+  img {
+    width: 329px;
+    height: 57px;
+    margin-bottom: 51px;
+  }
+`;
+
+export const FlexJCenter = styled.div`
+    display: flex;
+    justify-content: center;
+`;
+
+export const AboutModalText = styled.div`
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-bottom: 54px;  
+`;
+
+export const WhiteLineLeft = styled.div`
+  width: 70px;
+  height: 2px;
+  background-color: ${rootColor['--about-line-color']};
+  margin-top: 4px;
+  margin-right: 8px;
+`;
+
+export const WhiteLineRight = styled.div`
+  width: 70px;
+  height: 2px;
+  background-color: ${rootColor['--about-line-color']};
+  margin-top: 4px;
+  margin-left: 8px;
+`;
+
+export const Version = styled.div`
+  color: ${rootColor['--white']};
+`;
+
+export const NewsModal = styled.div`
+  height: calc(100vh - 400px);
+  min-height: 350px;
+  overflow-y: auto;
+  padding-right: 24px;
+  background-color: ${rootColor['--bg-first-color']};
+`;

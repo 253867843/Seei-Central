@@ -31,3 +31,71 @@
 .customize-popover .ant-list-item:hover {
     color: #d9482f;
 }
+
+/* antd modal */
+.customize-500 .ant-modal-content, 
+.customize-750 .ant-modal-content {
+    border: 2px solid #fff;
+    background-color: #373a3c;
+}
+
+.customize-500 .ant-modal-content .ant-modal-close .ant-modal-close-x,
+.customize-750 .ant-modal-content .ant-modal-close .ant-modal-close-x
+{
+    color: var(--white);
+}
+
+.customize-500 .ant-modal-header, 
+.customize-750 .ant-modal-header {
+    background-color: var(--bg-second-color);
+    border-bottom: var(--border-bottom-modal);
+}
+
+.customize-500 .ant-modal-header .ant-modal-title,
+.customize-750 .ant-modal-header .ant-modal-title {
+    color: var(--white);
+}
+
+.customize-500 .ant-modal-footer,
+.customize-750 .ant-modal-footer {
+    border-top: 2px solid var(--bg-second-color);
+    text-align: center;
+}
+
+.customize-500 .ant-modal-footer button,
+.customize-750 .ant-modal-footer button {
+    width: 120px;
+}
+
+.customize-500 .ant-modal-body span {
+    color: var(--white);
+}
+
+/* antd tree */
+.customize-750 .ant-modal-body .ant-tree {
+    color: var(--white);
+}
+
+.customize-750 .ant-tree li .ant-tree-node-content-wrapper {
+    color: var(--white);
+    padding: 0;
+    margin-left: -8px;
+}
+
+.customize-750 .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+    background-color: transparent;
+}
+
+.customize-750 .ant-tree li .ant-tree-node-content-wrapper:hover {
+    background-color: transparent;
+}
+
+
+/* 账户 */
+.bodyAccount .ant-form-item-label > label {
+    color: var(--white);
+}
+
+.bodyAccount .ant-form-item-label {
+    text-align: left;
+}
