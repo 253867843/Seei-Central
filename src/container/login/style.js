@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import poster from '../../images/poster.jpg';
+// import poster from '../../images/poster.jpg';
 import tube from '../../images/tube.png';
+import poster from '../../images/Background_990.jpg';
 
 export const LoginMain = styled.div`
-  background: rgba(0,0,0,0) url(${poster}) repeat scroll 0 0 ;
-  background-size: auto 40%;
+  background: rgba(0,0,0,0) url(${poster}) no-repeat scroll left top/100vw 100vh;
+  // background-size: auto 40%;
   color: #fff;
   font-family: '黑体', sans-serif;
   font-size: 16px;
@@ -27,7 +28,8 @@ export const LoginContainer = styled.div`
 `;
 
 export const Logo = styled.div`
-  
+  width: 220px;
+  height: 105px;
 `;
 
 export const Title = styled.div`

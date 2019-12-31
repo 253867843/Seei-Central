@@ -28,7 +28,7 @@ class Login extends React.Component {
         <LoginWrapper style={{height: this.state.height}}>
           <LoginContainer style={{marginTop: (this.state.height * 3 / 14)}}>
             <Logo>
-              <img src={require('../../images/logo.png')} alt=""/>
+              <img src={require('../../images/logo_220.png')} alt=""/>
             </Logo>
             <Title>
               登录

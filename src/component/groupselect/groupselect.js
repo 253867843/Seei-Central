@@ -1,29 +1,28 @@
 import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 
+// 自定义组件
+import BodyAccount from '../../component/bodyaccount/bodyaccount';
+import BodyAbout from '../../component/bodyabout/bodyabout';
+import BodySupport from '../../component/bodysupport/bodysupport';
+import BodyNews from '../../component/bodynews/bodynews';
+import BodySetting from '../../component/bodysetting/bodysetting';
+import BodyLogout from '../../component/bodylogout/bodylogout';
+
 // antd
-import { Form, Select, Popover, List, Typography, Modal, Button, Input, Tree, Icon } from 'antd';
+import { Form, Select, Popover, List, Typography, Modal, Button, Col } from 'antd';
 
 // styled-components
 import {
   GroupSelectLayout,
   MainGroupSelect,
   UserMenu,
-  AboutModal,
-  AboutModalPic,
-  AboutModalText,
-  FlexJCenter,
-  WhiteLineLeft,
-  WhiteLineRight,
-  Version,
-  NewsModal,
   DropDownPopover,
 } from './style.js';
 
 // utils
 import { getRouteParams } from '../../utils/utils';
 import apiPrefix from '../../apiPrefix';
-import versionTree from '../../utils/version';
 
 // iconfont
 import IconFont from '../../iconFont/iconfont';
@@ -33,146 +32,6 @@ import './style.css';
 
 // lodash
 import _ from 'lodash';
-import version from '../../utils/version';
-
-const bodyAccount = (props) => {
-  console.log('[bodyAccount props]', props);
-  const username = props.location.state.group;
-  const { getFieldDecorator } = props.form;
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 6 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 },
-    },
-  };
-  return (
-    <div className='bodyAccount'>
-      <Form {...formItemLayout}>
-        <Form.Item label='用户名'>
-          {
-            getFieldDecorator('username', {
-              rules: [{ required: true, message: 'username is required' }],
-              initialValue: username
-            })(<Input placeholder='please input username' disabled />)
-          }
-        </Form.Item>
-
-        <Form.Item label='旧密码' hasFeedback>
-          {
-            getFieldDecorator('old_password', {
-              rules: [{ required: true, message: 'old_password is required' }]
-            })(<Input.Password placeholder='please input your old_password' />)
-          }
-        </Form.Item>
-
-        <Form.Item label='新密码' hasFeedback>
-          {
-            getFieldDecorator('new_password', {
-              rules: [{ required: true, message: 'new_password is required' }],
-              validator: this.validateToNextPassword
-            })(<Input.Password placeholder='please input your new_password' />)
-          }
-        </Form.Item>
-
-        <Form.Item label='确认密码' hasFeedback>
-          {
-            getFieldDecorator('password', {
-              rules: [{ required: true, message: 'confirm_new_password is required' }]
-            })(<Input.Password placeholder='please input your confirm_new_password' />)
-          }
-        </Form.Item>
-
-        <Form.Item label='验证码' hasFeedback>
-          {
-            getFieldDecorator('captcha', {
-              rules: [{ required: true, message: 'captcha is required' }]
-            })(<Input placeholder='please input captcha' />)
-          }
-        </Form.Item>
-
-      </Form>
-    </div>
-  )
-}
-
-const bodyAbout = (props) => {
-  return (
-    <AboutModal>
-
-      <AboutModalPic>
-
-        <FlexJCenter>
-          <img src={require('../../images/logo.png')} alt='' />
-        </FlexJCenter>
-
-      </AboutModalPic>
-
-      <AboutModalText>
-
-        <WhiteLineLeft></WhiteLineLeft>
-        <Version>版本 0.0.2</Version>
-        <WhiteLineRight></WhiteLineRight>
-
-      </AboutModalText>
-
-    </AboutModal>
-  )
-}
-
-const bodySupport = (props) => {
-  return (
-    <div>
-      技术支持
-    </div>
-  )
-}
-
-const bodyNews = (props) => {
-  const { TreeNode } = Tree;
-  const treeData = versionTree.getVersionTreeData();
-  const renderTreeNodes = (treeData) => (
-    treeData.map((v) => {
-      if (v.children) {
-        return (
-          <TreeNode title={v.title} key={v.key} dataRef={v} icon={<IconFont type={v.icon} />}>
-            {renderTreeNodes(v.children)}
-          </TreeNode>
-        )
-      }
-      return <TreeNode title={v.title} key={v.key} icon={<IconFont type={v.icon} />} />
-    })
-  );
-
-  const { key } = _.first(treeData);
-  return (
-    <NewsModal>
-      <Tree
-        showIcon
-        defaultExpandedKeys={[key]}
-      >
-        {renderTreeNodes(treeData)}
-      </Tree>
-    </NewsModal>
-  )
-}
-
-const bodySetting = (props) => {
-  return (
-    <div>
-      设置
-    </div>
-  )
-}
-
-const bodyLogout = (props) => {
-  return (
-    <span>确定退出登录吗?</span>
-  )
-}
 
 @withRouter
 class GroupSelect extends React.Component {
@@ -186,7 +45,15 @@ class GroupSelect extends React.Component {
     };
   }
 
+  // 有Form表单, 在原组件上包装一层, 传入props
+  WrappedBody = (props, WrappedComponent) => {
+    return (
+      <WrappedComponent {...props} />
+    )
+  }
+
   render() {
+    // console.log('[this.props]', this.props);
     const { nameList, user, location: { state } } = this.props;
     const nameListRaw = nameList.toJS();
     const userRaw = user.toJS();
@@ -196,7 +63,7 @@ class GroupSelect extends React.Component {
     const dropDownMenuListItem = {
       account: {
         title: '账户',
-        body: bodyAccount,
+        body: (props) => this.WrappedBody(props, BodyAccount),
         resEvent: () => console.log('修改密码'),
         width: 750,
         wrapClassName: 'customize-750',
@@ -205,7 +72,7 @@ class GroupSelect extends React.Component {
       },
       support: {
         title: '技术支持',
-        body: bodySupport,
+        body: BodySupport,
         width: 500,
         wrapClassName: 'customize-500',
         okText: 'OK',
@@ -213,21 +80,21 @@ class GroupSelect extends React.Component {
       },
       about: {
         title: '关于',
-        body: bodyAbout,
+        body: BodyAbout,
         width: 500,
         wrapClassName: 'customize-500',
         cancelText: '搞定'
       },
       news: {
         title: '什么是新闻',
-        body: bodyNews,
+        body: BodyNews,
         width: 750,
         wrapClassName: 'customize-750',
         cancelText: '搞定'
       },
       setting: {
         title: '设置',
-        body: bodySetting,
+        body: BodySetting,
         resEvent: '',
         width: 750,
         wrapClassName: 'customize-750',
@@ -236,8 +103,8 @@ class GroupSelect extends React.Component {
       },
       logout: {
         title: '注销',
-        body: bodyLogout,
-        resEvent: () => console.log('退出登录'),
+        body: BodyLogout,
+        resEvent: this.props.logout,
         width: 500,
         wrapClassName: 'customize-500',
         okText: '注销',
@@ -295,8 +162,8 @@ class GroupSelect extends React.Component {
   }
 
   handleCreate = () => {
-    console.log('[handleCreate]');
     const { form } = this.createFormRef.props;
+    console.log('[handleCreate]');
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -429,7 +296,7 @@ const UserDropDownListForm = Form.create({ name: 'user_dropdown_list_form' })(
       const { modalName, dropDownMenuListItem, onCancel, onCreate } = this.props;
       const currentModal = dropDownMenuListItem[modalName] || {};
       const hasEvent = _.has(currentModal, 'resEvent');
-      console.log('[UserDropDownListForm]', this.props);
+      // console.log('[UserDropDownListForm]', this.props);
       let footer = [
         <Button key='cancel' onClick={onCancel} type={hasEvent ? '' : 'primary'}> {currentModal.cancelText}</ Button>
       ];
@@ -463,5 +330,5 @@ export default GroupSelect;
  *  分为3个部分:
  *  1.标题
  *  2.body内容
- *  3.响应事件
+ *  3.响应事件 --- 未完成
  */

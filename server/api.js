@@ -1,6 +1,25 @@
 const express = require('express');
 const Router = express.Router();
 
+// 模拟登出
+Router.post('/users/logout', function (req, res) {
+  const body = req.body;
+  console.log('[登出成功]', body);
+  return res.json({
+    status: true,
+    msg: '匹配组成功',
+    code: '10051',
+    data: {},
+    info: {
+      "type": "tip",
+      "title": "登出成功",
+      "info": "登出成功",
+      "note": "登出成功",
+      "steps": "登出步骤"
+    }
+  });
+});
+
 // 模拟匹配
 Router.post('/method/groupMatch', function (req, res) {
   const body = req.body;
@@ -166,7 +185,7 @@ Router.post('/method/addGroup', function (req, res) {
 
 // 模拟请求组信息
 Router.post('/method/getGroupInfo', function (req, res) {
-  const {group, group_id} = req.body;
+  const { group, group_id } = req.body;
   console.log('[group, group_id]', group, group_id);
   let ret = {};
   if (group === 'group_test1') {
@@ -382,7 +401,7 @@ Router.get('/users/verifyCode', function (req, res) {
 
 Router.get('/axiosfilter', function (req, res) {
   console.log('[后端axiosfilter]');
-  return res.json({result: 'success'});
+  return res.json({ result: 'success' });
 });
 
 // Router.get('/axiosfilter', function (req, res) {
