@@ -163,7 +163,8 @@ class GridCard extends React.Component {
                     {record.port}
                   </Title>
                 </div>
-                {
+                {/* 不显示auth */}
+                {/* {
                   record.auth ? (
                     <Fragment>
                       <span>认证</span>
@@ -172,6 +173,16 @@ class GridCard extends React.Component {
                       </div>
                     </Fragment>
                   ) : null
+                } */}
+                {
+                  record.protocol ?
+                    <Fragment>
+                      <span>协议</span>
+                      <div>
+                        <Title>{record.protocol}</Title>
+                      </div>
+                    </Fragment>
+                    : null
                 }
                 {
                   record.recvServicePort ?

@@ -8,6 +8,7 @@ import BodySupport from '../../component/bodysupport/bodysupport';
 import BodyNews from '../../component/bodynews/bodynews';
 import BodySetting from '../../component/bodysetting/bodysetting';
 import BodyLogout from '../../component/bodylogout/bodylogout';
+import UserDropDownListFormModal from '../../component/userdropdownlistformmodal/userdropdownlistformmodal';
 
 // antd
 import { Form, Select, Popover, List, Typography, Modal, Button, Col } from 'antd';
@@ -40,8 +41,7 @@ class GroupSelect extends React.Component {
     super(props);
     this.state = {
       showUserMenu: false,
-      showMenuModal: false,
-      modalName: 'account'
+      modalName: ''
     };
   }
 
@@ -53,7 +53,6 @@ class GroupSelect extends React.Component {
   }
 
   render() {
-    // console.log('[this.props]', this.props);
     const { nameList, user, location: { state } } = this.props;
     const nameListRaw = nameList.toJS();
     const userRaw = user.toJS();
@@ -64,11 +63,11 @@ class GroupSelect extends React.Component {
       account: {
         title: '账户',
         body: (props) => this.WrappedBody(props, BodyAccount),
-        resEvent: () => console.log('修改密码'),
+        resEvent: this.props.modifyPassword,
         width: 750,
         wrapClassName: 'customize-750',
         okText: 'OK',
-        cancelText: '取消'
+        cancelText: '取消',
       },
       support: {
         title: '技术支持',
@@ -108,7 +107,7 @@ class GroupSelect extends React.Component {
         width: 500,
         wrapClassName: 'customize-500',
         okText: '注销',
-        cancelText: '取消'
+        cancelText: '取消',
       }
     };
 
@@ -146,36 +145,15 @@ class GroupSelect extends React.Component {
             ) : null
         }
 
-        {/*用户信息弹窗*/}
-        <UserDropDownListForm
-          wrappedComponentRef={this.saveCreateFormRef}
-          visible={this.state.showMenuModal}
-          modalName={this.state.modalName}
+        <UserDropDownListFormModal
+          ref={(modal) => this.userDropDownListFormInstance = modal}
           dropDownMenuListItem={dropDownMenuListItem}
-          onOk={() => this.setState({ showMenuModal: false })}
-          onCreate={this.handleCreate}
-          onCancel={() => this.setState({ showMenuModal: false })}
-          {...this.props}
+          modalName={this.state.modalName}
+          username={username}
         />
       </GroupSelectLayout>
     )
   }
-
-  handleCreate = () => {
-    const { form } = this.createFormRef.props;
-    console.log('[handleCreate]');
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-
-      console.log('[values 用户信息弹窗]', values);
-    });
-  };
-
-  saveCreateFormRef = (formRef) => {
-    this.createFormRef = formRef;
-  };
 
   // 切换组
   handleChange = (value, namelist) => {
@@ -255,6 +233,7 @@ class GroupSelect extends React.Component {
       showMenuModal: !prevState.showMenuModal,
       modalName: name
     }));
+    this.userDropDownListFormInstance.showModal();
   };
 }
 
@@ -289,46 +268,4 @@ const GroupSelectForm = Form.create({ name: 'group_select_form' })(
   }
 );
 
-// 用户信息List点击弹窗
-const UserDropDownListForm = Form.create({ name: 'user_dropdown_list_form' })(
-  class extends React.Component {
-    render() {
-      const { modalName, dropDownMenuListItem, onCancel, onCreate } = this.props;
-      const currentModal = dropDownMenuListItem[modalName] || {};
-      const hasEvent = _.has(currentModal, 'resEvent');
-      // console.log('[UserDropDownListForm]', this.props);
-      let footer = [
-        <Button key='cancel' onClick={onCancel} type={hasEvent ? '' : 'primary'}> {currentModal.cancelText}</ Button>
-      ];
-      if (hasEvent) {
-        footer.push(
-          <Button key='execEvent' type='primary' onClick={onCreate}>{currentModal.okText}</Button>
-        );
-      }
-
-      return (
-        <Modal
-          wrapClassName={currentModal.wrapClassName}
-          visible={this.props.visible}
-          title={currentModal.title}
-          width={currentModal.width}
-          mast={true}
-          onCancel={onCancel}
-          footer={footer}
-          centered={true}
-        >
-          {currentModal.body(this.props)}
-        </Modal>
-      )
-    }
-  }
-);
-
 export default GroupSelect;
-
-/**
- *  分为3个部分:
- *  1.标题
- *  2.body内容
- *  3.响应事件 --- 未完成
- */

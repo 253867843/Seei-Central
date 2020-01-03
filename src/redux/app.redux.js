@@ -1,5 +1,5 @@
-import {fromJS} from 'immutable';
-import {types as authTypes} from './auth.redux';
+import { fromJS } from 'immutable';
+import { types as authTypes } from './auth.redux';
 import isEmpty from 'lodash/isEmpty';
 
 const defaultState = fromJS({
@@ -37,18 +37,23 @@ export const actions = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case types.START_REQUEST:
-      return state.merge({requestQuantity: state.get('requestQuantity') + 1});
+      return state.merge({ requestQuantity: state.get('requestQuantity') + 1 });
     case types.FINISH_REQUEST:
-      return state.merge({requestQuantity: state.get('requestQuantity') - 1});
+      return state.merge({ requestQuantity: state.get('requestQuantity') - 1 });
     case types.SET_ERROR:
-      return state.merge({error: action.error});
+      return state.merge({ error: action.error });
     case types.REMOVE_ERROR:
-      return state.merge({error: null});
+      return state.merge({ error: null });
     case authTypes.LOGIN:
       // +
-      return state.merge({redirectTo: '/dashboard'});
+      console.log('[authTypes.LOGIN]');
+      return state.merge({ redirectTo: '/dashboard' });
     // -
     // return state.merge({redirectTo: getRedirectToPath(action)});
+    case authTypes.LOGOUT:
+    case authTypes.MODIFY_PASSWORD:
+      // console.log('[authTypes.LOGOUT]');
+      return state.merge({ redirectTo: '' });
     default:
       return state;
   }

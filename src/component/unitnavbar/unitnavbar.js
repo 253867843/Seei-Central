@@ -68,7 +68,7 @@ class Unitnavbar extends React.Component {
     const group_id = this.props.location.state.group_id;
     const rootUrl = apiPrefix.rootUrl();
     const nameList = this.props.nameList;
-    console.log('[handleChange]', group_id, rootUrl, nameList);
+    // console.log('[handleChange]', group_id, rootUrl, nameList);
     this.props.history.push(getRouteParams(nameList, group_id)(rootUrl, 'unit', v.target.value));
   };
 }

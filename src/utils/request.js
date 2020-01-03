@@ -1,8 +1,9 @@
 import axios from 'axios';
-import {push} from 'connected-react-router';
-import {notification, message} from 'antd';
+import { push, replace } from 'connected-react-router';
+import { notification, message } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 import codeMessage from './codeMessage';
+import browserCookies from 'browser-cookies';
 
 // connected-react-router
 // with react-redux
@@ -45,8 +46,8 @@ function postAxios(url, data, dispatch) {
 function handleResponse(response, dispatch) {
   // >>>>>>>>>>>>>> 请求成功 <<<<<<<<<<<<<<
   if (response.data && !isEmpty(response.data.code) && !isEmpty(response.data.info)) {
-    const {code, info} = response.data;
-    const {type, title} = codeMessage[code] || info;
+    const { code, info } = response.data;
+    const { type, title } = codeMessage[code] || info;
 
     if (!isEmpty(type)) {
       notification[type === 'tip' ? 'success' : type]({
@@ -56,26 +57,32 @@ function handleResponse(response, dispatch) {
       });
     }
 
+    // console.log('[code]', code);
+
     // 路由跳转
     if (code === '-16000') {
       // 未登录
-      dispatch(push('/login'));
+      dispatch(replace('/redirectToLogin'));
     } else if (code === '10051') {
       // 登出成功
-      dispatch(push('/login'));
+      browserCookies.erase('login.user');
+      browserCookies.erase('connect.sid');
+      dispatch(replace('/redirectToLogin'));
     } else if (code === '10021') {
       // 修改密码成功
-      dispatch(push('/login'));
+      browserCookies.erase('login.user');
+      browserCookies.erase('connect.sid');
+      dispatch(replace('/redirectToLogin'));
     } else if (code === '-10041') {
       // 获取用户信息失败
       dispatch(push('/exception/getUserInfo'));
     }
 
-    return {...response.data};
+    return { ...response.data };
   } else {
     // console.log('[请求验证码]', response.data);
     // 请求验证码, 返回没有code和info字段
-    return {vcode: response.data};
+    return { vcode: response.data };
   }
 }
 
@@ -88,7 +95,7 @@ function handleErrorResponse(error, dispatch) {
   if (!response) {
     console.log('Error', error.message);
     message.error(error.message);
-    return {error: error.message};
+    return { error: error.message };
   }
 
   // http状态码和文本
@@ -108,14 +115,13 @@ function handleErrorResponse(error, dispatch) {
   } else if (status >= 404 && status < 422) {
     dispatch(push('/exception/404'));
   } else if (status >= 500 && status <= 504) {
-
     dispatch(push('/exception/500'));
   }
 
-  return {error: {message: errorText}};
+  return { error: { message: errorText } };
 }
 
-export {getAxios, postAxios};
+export { getAxios, postAxios };
 
 /**
  * 对axios请求做封装

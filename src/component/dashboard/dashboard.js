@@ -8,7 +8,7 @@ class dashboard extends React.Component {
   render() {
     const {groupNameList} = this.props;
     const groupNameListRaw = groupNameList.toJS();
-    console.log('[dashboard]', groupNameListRaw);
+    // console.log('[dashboard]', groupNameListRaw);
     return (
       <Redirect to={getRouteParams(groupNameListRaw)('/homev2')}/>
     )

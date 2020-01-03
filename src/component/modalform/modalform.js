@@ -1,7 +1,7 @@
 import React from 'react';
 
 // antd
-import { Form, Modal, Row, Col, Input, Button, Icon } from 'antd';
+import { Form, Modal, Row, Col, Input, Button, Icon, Select } from 'antd';
 
 import './style.css';
 
@@ -14,7 +14,6 @@ class ModalForm extends React.Component {
   };
 
   render() {
-    // console.log('[ModalForm]', this.props);
     return (
       <GroupCreateForm
         wrappedComponentRef={this.saveCreateFormRef}
@@ -34,7 +33,7 @@ class ModalForm extends React.Component {
     const { form } = this.createFormRef.props;
     form.validateFields((err, values) => {
       if (err) {
-        console.log('[handleCreate err]', err);
+        // console.log('[handleCreate err]', err);
         return;
       }
 
@@ -50,8 +49,11 @@ class ModalForm extends React.Component {
       // {
       //    group: "1"
       //    group-description: "2"
-      //    encode-domain: "23"
-      //    encode-port: "3"
+      //    encode-domain: "127.0.0.1"
+      //    encode-port: 8000
+      //    encode-auth: "4a0abd9249451d0fdbf0e1406f5d9e6a"
+      //    encode-recvServicePort: 10000
+      //    encode-protocol: "mpegts"
       //    auth: "3"
       //    encode-recvServicePort: "4"
       //    wowza-domain: "4"
@@ -63,7 +65,7 @@ class ModalForm extends React.Component {
 
       // 数据处理
       let requestData = composeData(...groups)(...encodes)(...wowzas);
-      console.log('[requestData]', requestData);
+      // console.log('[requestData]', requestData);
 
       // 回掉给unitoperator.js
       this.props.inputFormValue(requestData);
@@ -87,7 +89,6 @@ const GroupCreateForm = Form.create({ name: 'group_create_form' })(
     };
 
     render() {
-      // console.log('[GroupCreateForm]', this.props.formList);
       const buttonItemLayout = {
         wrapperCol: { span: 14, offset: 4 },
       };
@@ -132,6 +133,7 @@ const GroupCreateForm = Form.create({ name: 'group_create_form' })(
       const count = this.state.expand ? 10 : 6;
       const { getFieldDecorator } = this.props.form;
       const children = [];
+      const { Option } = Select;
 
       const formItemLayout = {
         labelCol: { span: 12 },
@@ -141,14 +143,35 @@ const GroupCreateForm = Form.create({ name: 'group_create_form' })(
       formList.forEach((v, i) => {
         children.push(
           <Col span={8} key={v.label} style={{ display: i < count ? 'block' : 'none' }}>
-            <Form.Item label={v.label} {...formItemLayout}>
-              {
-                getFieldDecorator(v.field, {
-                  rules: [{ required: true, message: 'Input something!' }],
-                  initialValue: defaultRecord ? defaultRecord[v.text] : null
-                })(<Input placeholder='placeholder' />)
-              }
-            </Form.Item>
+            {
+              v.type === 'select'
+                ? (
+                  <Form.Item label={v.label} {...formItemLayout}>
+                    {
+                      getFieldDecorator(v.field, {
+                        rules: [{ required: true, message: 'please select protocol' }],
+                        initialValue: 'srt'
+                      })(
+                        <Select placeholder='please select a protocol'>
+                          <Option value='srt'>srt</Option>
+                          <Option value='mpegts'>mpegts</Option>
+                        </Select>
+                      )
+                    }
+                  </Form.Item>
+                )
+                : (
+                  <Form.Item label={v.label} {...formItemLayout}>
+                    {
+                      getFieldDecorator(v.field, {
+                        rules: [{ required: true, message: 'Input something!' }],
+                        initialValue: defaultRecord ? defaultRecord[v.text] : null
+                      })(<Input placeholder='placeholder' />)
+                    }
+                  </Form.Item>
+                )
+            }
+
           </Col>
         );
       });

@@ -14,8 +14,9 @@ export const removeLocalStorage = (key) => {
 };
 
 export const composeData = (group, description) => {
-  return (e_domain, e_port, e_auth, e_recvServicePort) => {
+  return (e_domain, e_port, e_auth, e_recvServicePort, e_protocol) => {
     return (w_domain, w_port) => {
+      console.log('[composeData]', e_protocol);
       let requestData = {
         group,
         description,
@@ -24,6 +25,7 @@ export const composeData = (group, description) => {
             domain: e_domain,
             port: e_port,
             auth: e_auth,
+            protocol: e_protocol,
             recvServicePort: e_recvServicePort
           }
         ],
@@ -61,10 +63,10 @@ export const getRouteParams = (namelist = [], targetId) => {
       //   targetId = first.group_id;
       // }
       const [first = {}] = namelist;
-      console.log('[first]', first);
+      // console.log('[first]', first);
       targetId = first.group_id;
     }
-  
+
     // console.log('[targetId]', targetId);
 
     const index = namelist
@@ -94,53 +96,6 @@ export const getRouteParams = (namelist = [], targetId) => {
     }
   }
 };
-
-// export const getRouteParams = (rootUrl = '/homev2', namelist = [], targetId, menu = 'unit', smenu = 'list') => {
-//   // console.log('[路径参数制作]');
-//   const selectedItem = getLocalStorage('selectedItem');
-//   const selectedMenuItem = getLocalStorage('selectedMenuItem');
-//   const selectedUnitItem = getLocalStorage('selectedUnitItem');
-//   // let targetId;
-//   let pathname;
-//   let targetName;
-//   let targetMenu;
-//   let targetSMenu;
-//   if (!targetId) {
-//     if (selectedItem) {
-//       targetId = selectedItem;
-//     } else {
-//       const [first = {}] = namelist;
-//       targetId = first.group_id;
-//     }
-//   }
-//   // console.log('[targetId]', targetId);
-//
-//   const index = namelist
-//     .findIndex((v) => (v.group_id === targetId));
-//   if (index > -1) {
-//     targetName = namelist[index].group;
-//   }
-//   // console.log('[target]', targetId, targetName);
-//
-//   targetMenu = menu ? menu : selectedMenuItem;
-//   pathname = rootUrl + '/' + targetMenu;
-//
-//
-//   if (menu === 'unit') {
-//     targetSMenu = smenu ? smenu : selectedUnitItem;
-//     pathname = pathname + '/' + targetSMenu;
-//   }
-//
-//   console.log('[pathname]', pathname);
-//
-//   return {
-//     pathname,
-//     state: {
-//       group_id: targetId,
-//       group: targetName,
-//     }
-//   }
-// };
 
 /**
  * 一级路由优先级: targetId > selectedItem > namelist首选项

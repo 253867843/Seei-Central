@@ -93,7 +93,8 @@ const GroupMatchForm = Form.create({name: 'group_match_form'})(
               }
             </Form.Item>
 
-            <Form.Item label='group_id' {...formItemLayout}>
+            {/* group_id不显示 */}
+            {/* <Form.Item label='group_id' {...formItemLayout}>
               {
                 getFieldDecorator('group_id', {
                   rules: [{required: true, message: 'Please select your group_id!'}],
@@ -102,7 +103,7 @@ const GroupMatchForm = Form.create({name: 'group_match_form'})(
                   <Input placeholder='123' disabled={true}/>
                 )
               }
-            </Form.Item>
+            </Form.Item> */}
 
           </Form>
         </Modal>

@@ -88,14 +88,6 @@ class Login extends React.Component {
     removeLocalStorage('selectedItem');
     removeLocalStorage('selectedMenuItem');
   }
-
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   const verifyCodeStatus = this.props.verifyCodeStatus;
-  //   if (verifyCodeStatus) {
-  //     console.log('[获取验证码失败, 正在重新请求]');
-  //     this.updateVCode();
-  //   }
-  // }
 }
 
 // 匿名登录输入框组件

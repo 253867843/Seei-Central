@@ -1,8 +1,8 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 // antd
-import {Table, Icon} from 'antd';
+import { Table, Icon } from 'antd';
 
 // styled-components
 import {
@@ -24,13 +24,12 @@ class GridTable extends React.Component {
   };
 
   render() {
-    // console.log('[GridTable]');
     const groupColumns = [
       {
         title: '',
         dataIndex: 'icon',
         key: 'icon',
-        render: () => <Icon type='hdd'/>
+        render: () => <Icon type='hdd' />
       },
       {
         title: '域名',
@@ -46,7 +45,7 @@ class GridTable extends React.Component {
         title: '类型',
         dataIndex: 'dtype',
         key: 'dtype',
-        render: (text, record) => record.recvServicePort ? <span>编码器</span> : <span>S2000</span>
+        render: (text, record) => record.recvServicePort ? <span>编码器</span> : <span>S4000</span>
       },
       {
         title: '端口',
@@ -81,8 +80,8 @@ class GridTable extends React.Component {
   onClickTableRow = (record) => {
     return {
       onClick: (event) => {
-        console.log('[gridtable 点击行响应]', record);
-        this.setState({rowId: record.id}); // 只影响css样式
+        // console.log('[gridtable 点击行响应]', record);
+        this.setState({ rowId: record.id }); // 只影响css样式
         this.props.onClick(record);
       }
     }

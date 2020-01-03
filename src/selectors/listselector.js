@@ -1,9 +1,9 @@
-import {createSelector} from 'reselect';
+import { createSelector } from 'reselect';
 import Immutable from 'immutable';
 
 // selector
-import {getEncodeById, getEncodeIdsByGroup} from '../redux/encode.redux';
-import {getWowzaById, getWowzaIdsByGroup} from '../redux/wowza.redux';
+import { getEncodeById, getEncodeIdsByGroup } from '../redux/encode.redux';
+import { getWowzaById, getWowzaIdsByGroup } from '../redux/wowza.redux';
 
 // 1.encodes
 const encodeIdsSelector = (state, props) => getEncodeIdsByGroup(state, props.location.state.group_id);

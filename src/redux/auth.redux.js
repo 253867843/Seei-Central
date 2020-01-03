@@ -1,8 +1,8 @@
-import {fromJS} from 'immutable';
-import {getAxios, postAxios} from '../utils/request';
-import {actions as appActions} from './app.redux';
-import {actions as vcodeActions} from './vcode.redux';
-import {types as usersTypes} from './users.redux';
+import { fromJS } from 'immutable';
+import { getAxios, postAxios } from '../utils/request';
+import { actions as appActions } from './app.redux';
+import { actions as vcodeActions } from './vcode.redux';
+import { types as usersTypes } from './users.redux';
 import url from '../utils/url';
 
 const defaultState = fromJS({
@@ -18,14 +18,14 @@ export const types = {
 
 // action creators
 export const actions = {
-  login: ({user, password, verifyCode}) => {
+  login: ({ user, password, verifyCode }) => {
     return (dispatch) => {
-      postAxios(url.login(), {user, password, verifyCode}, dispatch)
+      postAxios(url.login(), { user, password, verifyCode }, dispatch)
         .then((data) => {
           if (!data.error) {
             if (data.status) {
               // 登录成功
-              const {username, groups, groupsIds} = convertLoginInfoToPlain(data.data);
+              const { username, groups, groupsIds } = convertLoginInfoToPlain(data.data);
               dispatch(loginSuccess(username, groups, groupsIds));
               /**
                * auth.redux.js
@@ -50,6 +50,7 @@ export const actions = {
           if (!data.error) {
             if (data.status) {
               dispatch(logoutSuccess());
+              // dispatch(push('/login'));
               /**
                * auth.redux.js 清空
                * groups.redux.js 清空
@@ -63,16 +64,19 @@ export const actions = {
         })
     }
   },
-  modifyPassword: ({user, old_password, new_password, verifyCode}) => {
+  modifyPassword: ({ user, old_password, new_password, verifyCode }) => {
     return (dispatch) => {
-      postAxios(url.modifyPassword(), {user, old_password, new_password, verifyCode}, dispatch)
+      postAxios(url.modifyPassword(), { user, old_password, new_password, verifyCode }, dispatch)
         .then((data) => {
           console.log('[auth.redux modifyPassword]', data);
           if (!data.error) {
             if (data.status) {
               // 修改密码成功, 无操作
+              // console.log('[修改密码成功, 无操作]');
+              dispatch({type: types.MODIFY_PASSWORD});
             } else {
-              // 修改密码失败
+              // 修改密码失败, 刷新验证码
+               dispatch(vcodeActions.fetchVerifyCode());
             }
           } else {
             dispatch(appActions.setError(data.error));
@@ -101,7 +105,7 @@ const convertLoginInfoToPlain = (data) => {
   let groupsById = {};
   let groupsIds = [];
   groupList.forEach((item) => {
-    groupsById[item.group_id] = {...item};
+    groupsById[item.group_id] = { ...item };
     groupsIds.push(item.group_id);
   });
   return {
@@ -117,8 +121,9 @@ export default (state = defaultState, action) => {
   switch (action.type) {
     case usersTypes.FETCH_USER_INFO: // 获取用户信息
     case types.LOGIN: // 登录
-      return state.merge({username: action.username});
+      return state.merge({ username: action.username });
     case types.LOGOUT: // 登出
+    case types.MODIFY_PASSWORD: // 修改密码
       return state.merge(defaultState);
     default:
       return state;

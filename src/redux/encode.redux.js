@@ -1,7 +1,7 @@
 import Immutable from "immutable";
-import {combineReducers} from 'redux-immutable';
-import {types as groupsTypes} from './groups.redux';
-import {types as authTypes} from './auth.redux';
+import { combineReducers } from 'redux-immutable';
+import { types as groupsTypes } from './groups.redux';
+import { types as authTypes } from './auth.redux';
 
 // action types
 
@@ -15,11 +15,11 @@ const byId = (state = Immutable.fromJS({}), action) => { // 记录encodes
 
   switch (action.type) {
     case groupsTypes.CREATE_GROUP: // 添加Group
-    case groupsTypes.MODIFY_GROUP: // 修改Group
     case groupsTypes.FETCH_GROUP_INFO: // 查看Group
       return state.merge(Immutable.fromJS(action.encodes)); // 复杂数据类型
+    case groupsTypes.MODIFY_GROUP: // 修改Group
+      return state.merge(Immutable.fromJS(action.encodes));
     case groupsTypes.MATCH_GROUP:
-      // console.log('[encode MATCH_GROUP]', action.encodes);
       return state.merge(Immutable.fromJS(action.encodes)); // 复杂数据类型
     case groupsTypes.DELETE_GROUP: // TODO: 测试
       return deleteEncodes(state, action.encodeIds);
@@ -39,7 +39,7 @@ const byGroup = (state = Immutable.fromJS({}), action) => { // 记录encode属�
         Immutable.List([]).unshift(action.encodeIds[0])
       );
     case groupsTypes.FETCH_GROUP_INFO:
-      return state.merge({[action.groupItem.group_id]: Immutable.fromJS(action.encodeIds)}); // 复杂数据类型
+      return state.merge({ [action.groupItem.group_id]: Immutable.fromJS(action.encodeIds) }); // 复杂数据类型
     case groupsTypes.DELETE_GROUP:
       return state.delete(action.group_id);
     case authTypes.LOGOUT:

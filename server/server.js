@@ -18,8 +18,8 @@ app.use(serveStatic(path.join(__dirname, '../build')));
 //   res.render('index');
 // });
 
-app.listen(9000, function () {
-  console.log('server.js start at 9000 port');
+app.listen(8000, function () {
+  console.log('server.js start at 8000 port');
 });
 
 // nodemon --watch server.js --exec babel-node server.js/server.js
