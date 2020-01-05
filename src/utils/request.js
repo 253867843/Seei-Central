@@ -44,6 +44,7 @@ function postAxios(url, data, dispatch) {
 // 200
 // 业务状态码
 function handleResponse(response, dispatch) {
+  console.log('[业务状态码]', response.data);
   // >>>>>>>>>>>>>> 请求成功 <<<<<<<<<<<<<<
   if (response.data && !isEmpty(response.data.code) && !isEmpty(response.data.info)) {
     const { code, info } = response.data;

@@ -22,6 +22,7 @@ export const actions = {
     return (dispatch) => {
       postAxios(url.login(), { user, password, verifyCode }, dispatch)
         .then((data) => {
+          console.log('[login]', data);
           if (!data.error) {
             if (data.status) {
               // 登录成功

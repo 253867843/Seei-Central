@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Random</title>
+    <script src="http://mockjs.com/dist/mock.js"></script>
+
+</head>
+
+<body>
+    <script>
+        var random = Mock.Random;
+        var friends = ['xiaozhang', 'xiaowang', 'xiaochen'];
+        var data = {
+            email: random.email(),
+            image: random.image('125x125', '#00405d', '#fff', 'mockjs'),
+            name: random.name(),
+            url: random.url(),
+            address: random.city(),
+            friend: random.pick(friends)
+        };
+        console.log(JSON.stringify(data, null, 2));
+        // 具体使用可以查阅文档
+    </script>
+</body>
+
+</html>

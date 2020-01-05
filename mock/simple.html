@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>simple</title>
+    <script src="http://mockjs.com/dist/mock.js"></script>
+
+</head>
+
+<body>
+    <script>
+        var data = Mock.mock({
+            'list|1-10': [
+                {
+                    'id|+1': 1,
+                    'name': '@cname'
+                }
+            ]
+        });
+        console.log(JSON.stringify(data, null, 2));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+{
+    "status": true,
+    "msg": "",
+    "code": 0,
+    "data": {
+        "group_id": "sd0abd9249451d0fdbf0e1406f5d9e6a",
+        "group": "group_test",
+        "encodeDevices": [
+            {
+                "id": "f0abd9249451d0fdbf0e1406f5d9e87",
+                "domain": "127.0.0.1",
+                "port": 8000,
+                "auth": "4a0abd9249451d0fdbf0e1406f5d9e6a",
+                "protocol": "srt",
+                "recvServicePort": 10000,
+                "state": "normal",
+                "eMessage": ""
+            }
+        ],
+        "recvStreamServices": [
+            {
+                "id": "b0abd9249451d0fdbf0e1406f5d9e31",
+                "domain": "127.0.0.1",
+                "port": 8087,
+                "state": "normal",
+                "eMessage": ""
+            }
+        ],
+        "dState": "offline",
+        "status": false,
+        "eMessage": "",
+        "description": ""
+    }
+}

@@ -154,7 +154,7 @@ Router.post('/method/deleteGroup', function (req, res) {
     },
     info: {
       "type": "tip",
-      "title": "删除组成功",
+      "title": "",
       "info": "删除组成功",
       "note": "删除组成功",
       "steps": "删除组步骤"
@@ -200,7 +200,7 @@ Router.post('/method/addGroup', function (req, res) {
     },
     info: {
       "type": "tip",
-      "title": "创建组成功",
+      "title": "",
       "info": "创建组成功",
       "note": "创建组成功",
       "steps": "创建组步骤"
