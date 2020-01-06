@@ -135,7 +135,7 @@ class BodyAccount extends Component {
                     </Form.Item>
 
                     {/* 张勇建议先去掉, 等待后续版本. 原因: 密码能修改成功, 但请求没有response */}
-                    <Form.Item label='验证码' hasFeedback>
+                    {/* <Form.Item label='验证码' hasFeedback>
                         <Row gutter={8}>
                             <Col span={16}>
                                 {
@@ -155,7 +155,7 @@ class BodyAccount extends Component {
                                 </VerifyCodeLayout>
                             </Col>
                         </Row>
-                    </Form.Item>
+                    </Form.Item> */}
 
                 </Form>
             </div>

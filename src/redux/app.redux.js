@@ -6,6 +6,7 @@ const defaultState = fromJS({
   requestQuantity: 0, // 当前应用正在进行的API请求数
   error: null, // 应用全局错误信息
   redirectTo: '', // 跳转
+  isFetching: false, // 获取接收wowza服务器流信息
 });
 
 // action types
@@ -14,6 +15,8 @@ export const types = {
   FINISH_REQUEST: 'APP/FINISH_REQUEST',
   SET_ERROR: 'APP/SET_ERROR',
   REMOVE_ERROR: 'APP/REMOVE_ERROR',
+  START_WOWZA_FETCH: 'APP/START_WOWZA_FETCH',
+  FINISH_WOWZA_FETCH: 'APP/FINISH_WOWZA_FETCH'
 };
 
 // action creators
@@ -31,6 +34,12 @@ export const actions = {
   removeError: () => ({
     type: types.REMOVE_ERROR
   }),
+  startFetching: () => ({
+    type: types.START_WOWZA_FETCH
+  }),
+  finishFetching: () => ({
+    type: types.FINISH_WOWZA_FETCH
+  })
 };
 
 // reducers
@@ -54,6 +63,11 @@ export default (state = defaultState, action) => {
     case authTypes.MODIFY_PASSWORD:
       // console.log('[authTypes.LOGOUT]');
       return state.merge({ redirectTo: '' });
+
+    case types.START_WOWZA_FETCH:
+      return state.merge({ isFetching: true }); // 简单数据类型
+    case types.FINISH_WOWZA_FETCH:
+      return state.merge({ isFetching: false });
     default:
       return state;
   }
@@ -77,6 +91,8 @@ export const getRequestQuantity = (state) => state.getIn(['app', 'requestQuantit
 export const getError = (state) => state.getIn(['app', 'error']);
 // 获取当前跳转路径
 export const getRedirectTo = (state) => state.getIn(['app', 'redirectTo']);
+// 获取isFetching
+export const getIsFetching = (state) => state.getIn(['app', 'isFetching']);
 
 /**
  * app: {

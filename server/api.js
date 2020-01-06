@@ -27,7 +27,7 @@ Router.get('/users/logout', function (req, res) {
   console.log('[登出成功]', query);
   return res.json({
     status: true,
-    msg: '匹配组成功',
+    msg: '登出成功',
     code: '10051',
     data: {},
     info: {

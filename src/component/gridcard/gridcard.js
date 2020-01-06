@@ -3,6 +3,10 @@ import React, { Fragment } from 'react';
 // 弹窗
 import ModelForm from '../../component/modalform/modalform';
 
+// 自定义组件
+// import TabInfo from '../../component/tabinfo/tabinfo';
+import TabInfo from '../../component/tabinfo/tabinfo';
+
 // utils
 import { updateEncodeList, updateWowzaList } from '../../utils/formFieldList';
 
@@ -87,8 +91,9 @@ class GridCard extends React.Component {
     // console.log('[singleGroup]', this.props.singleGroup);
     const tabList = [
       {
-        key: 'global',
-        icon: 'global',
+        key: 'info',
+        icon: 'info',
+        // component: TabInfo
         component: Global
       },
       {

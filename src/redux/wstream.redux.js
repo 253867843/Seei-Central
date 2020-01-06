@@ -1,9 +1,9 @@
 import Immutable from 'immutable';
-import {combineReducers} from 'redux-immutable';
+import { combineReducers } from 'redux-immutable';
 // import axios from 'axios';
-import {postAxios} from '../utils/request';
-import {actions as appActions} from './app.redux';
-import {types as authTypes} from "./auth.redux";
+import { postAxios } from '../utils/request';
+import { actions as appActions } from './app.redux';
+import { types as authTypes } from "./auth.redux";
 import url from '../utils/url';
 
 // action types
@@ -13,41 +13,36 @@ export const types = {
 
 // action creators
 export const actions = {
-    fetchWowzaInfo: ({group, group_id, recvStreamServices_id}) => {
-      return (dispatch) => {
-        dispatch(appActions.startRequest());
-        // -
-        // axios.post(url.fetchWowzaInfo(), {group, group_id, recvStreamServices_id})
-        // +
-        postAxios(url.fetchWowzaInfo(), {group, group_id, recvStreamServices_id}, dispatch)
-          .then((data) => {
-              dispatch(appActions.finishRequest());
-              // -
-              // console.log('[wstream.redux fetchWowzaInfo]', res);
+  fetchWowzaInfo: ({ group, group_id, recvStreamServices_id }) => {
+    // + 
+    appActions.startFetching();
+    return (dispatch) => {
+      postAxios(url.fetchWowzaInfo(), { group, group_id, recvStreamServices_id }, dispatch)
+        .then((data) => {
+          // +
+          appActions.finishFetching();
+          console.log('[wstream.redux fetchWowzaInfo]', data);
+          if (!data.error) {
+            if (data.status) {
+              // 获取成功
+              const { wowzasInfo, wowzaIds } = convertSingleWowzaToPlain(data.data);
+              dispatch(fetchWowzaInfoSuccess(group_id, wowzasInfo, wowzaIds));
+            } else {
+              // 获取失败
               // +
-              console.log('[wstream.redux fetchWowzaInfo]', data);
-              // -
-              // if (res.status === 200 && res.data.status) {
-              // +
-              if (!data.error && data.status) {
-                // -
-                // const {wowzasInfo, wowzaIds} = convertSingleWowzaToPlain(res.data.data);
-                // +
-                const {wowzasInfo, wowzaIds} = convertSingleWowzaToPlain(data.data);
-                dispatch(fetchWowzaInfoSuccess(group_id, wowzasInfo, wowzaIds));
-              } else {
-                dispatch(appActions.setError(data.error));
-              }
+              appActions.finishFetching();
             }
-          )
-        // -
-        // .catch((err) => {
-        //   dispatch(appActions.setError(err));
-        // });
-      }
-    },
-  }
-;
+          } else {
+            dispatch(appActions.setError(data.error));
+            // + 
+            appActions.finishFetching();
+          }
+        }
+        )
+    }
+  },
+}
+  ;
 
 // 内部action creators
 const fetchWowzaInfoSuccess = (group_id, wowzasInfo, wowzaIds) => ({
@@ -58,11 +53,11 @@ const fetchWowzaInfoSuccess = (group_id, wowzasInfo, wowzaIds) => ({
 });
 
 const convertSingleWowzaToPlain = (data) => {
-  const {recvStreamServicesStatusInfo} = data;
+  const { recvStreamServicesStatusInfo } = data;
   let wowzasById = {};
   let wowzaIds = [];
   recvStreamServicesStatusInfo.forEach((item) => {
-    wowzasById[item.id] = {...item};
+    wowzasById[item.id] = { ...item };
     wowzaIds.push(item.id);
   });
   return {
@@ -85,7 +80,7 @@ const byId = (state = Immutable.fromJS({}), action) => {
 const byGroup = (state = Immutable.fromJS({}), action) => {
   switch (action.type) {
     case types.FETCH_WOWZA_INFO:
-      return state.merge({[action.group_id]: Immutable.fromJS(action.wowzaIds)}); // 复杂数据类型 []
+      return state.merge({ [action.group_id]: Immutable.fromJS(action.wowzaIds) }); // 复杂数据类型 []
     case authTypes.LOGOUT:
       return Immutable.fromJS({}); // 清空数据
     default:
