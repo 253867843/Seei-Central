@@ -19,7 +19,7 @@ export const FormRow = styled.div`
     flow-wrap: wrap;
     margin-left: -5px;
     margin-right: -5px;
-    background-color: green;
+    // background-color: green;
     .row-setting {
         width: 100%;
     } 

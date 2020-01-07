@@ -1,8 +1,8 @@
 import Immutable from 'immutable';
-import {types as authTypes} from './auth.redux';
-import {types as userTypes} from './users.redux';
-import {types as groupsTypes, getGroupIds} from './groups.redux';
-import {getLocalStorage} from "../utils/utils";
+import { types as authTypes } from './auth.redux';
+import { types as userTypes } from './users.redux';
+import { types as groupsTypes, getGroupIds } from './groups.redux';
+import { getLocalStorage } from "../utils/utils";
 import isEmpty from 'lodash/isEmpty';
 
 const defaultState = Immutable.fromJS({
@@ -12,6 +12,7 @@ const defaultState = Immutable.fromJS({
   selectedItem: '', // 导航条, <select>选中项, group_id
   selectedMenuItem: '', // <Menu>选中项, device/groups/server.js
   selectedUnitItem: '', // 三级路由选中项(只有当二级路由是unit才有)
+  streamStatus: false, // 是否开始推流(获取接收wowza服务器流信息tabinfo.js用)
 });
 
 // action types
@@ -25,6 +26,7 @@ export const types = {
   SET_SELECTED_ITEM: 'UI/SET_SELECTED_ITEM', // 设置<select>选中项目
   SET_SELECTED_MENU_ITEM: 'UI/SET_SELECTED_MENU_ITEM', // 设置<Menu>选中项目
   SET_SELECTED_UNIT_ITEM: 'UI/SET_SELECTED_UNIT_ITEM', // 设置三级路由选中项目
+  TOGGLE_STREAM_STATUS: 'UI/TOGGLE_STREAM_STATUS', // 切换推流状态
 };
 
 // action creators
@@ -78,7 +80,7 @@ export default (state = defaultState, action) => {
     if (isEmpty(selectedItem)) {
       return getLoginSelectedStatus(state, groupIds);
     }
-    return state.merge({selectedItem, selectedMenuItem});
+    return state.merge({ selectedItem, selectedMenuItem });
   }
 
   function getOperateSelectedStatus(state, group_id) { // 方式三: 操作数组(添加组/删除组)
@@ -94,13 +96,13 @@ export default (state = defaultState, action) => {
     case types.CLOSE_REMEMBER_ACCOUNT:
       return state.set('isRememberAccount', false);
     case types.SET_DEVICE_STATUS:
-      return state.merge({deviceStatus: Immutable.fromJS(action.dStatus)}); // 复杂数据类型 []
+      return state.merge({ deviceStatus: Immutable.fromJS(action.dStatus) }); // 复杂数据类型 []
     case types.CLEAR_DEVICE_STATUS:
-      return state.merge({deviceStatus: Immutable.fromJS([])}); // 复杂数据类型 []
+      return state.merge({ deviceStatus: Immutable.fromJS([]) }); // 复杂数据类型 []
     case types.SET_DEVICE_TYPE:
-      return state.merge({deviceType: Immutable.fromJS(action.dType)}); // 复杂数据类型 []
+      return state.merge({ deviceType: Immutable.fromJS(action.dType) }); // 复杂数据类型 []
     case types.CLEAR_DEVICE_TYPE:
-      return state.merge({deviceType: Immutable.fromJS([])}); // 复杂数据类型 []
+      return state.merge({ deviceType: Immutable.fromJS([]) }); // 复杂数据类型 []
     case types.SET_SELECTED_ITEM:
       return state.set('selectedItem', action.group_id); // 简单数据类型
     case types.SET_SELECTED_MENU_ITEM:

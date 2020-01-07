@@ -1,10 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 
 // 弹窗
 import ModelForm from '../../component/modalform/modalform';
 
 // 自定义组件
-// import TabInfo from '../../component/tabinfo/tabinfo';
 import TabInfo from '../../component/tabinfo/tabinfo';
 
 // utils
@@ -84,32 +83,47 @@ class GridCard extends React.Component {
     };
   }
 
+  // 包装<TabInfo>组件
+  wrappedTabInfo = (WrappedComponent, record, singleGroup) => {
+    // console.log('[WrappedComponent]', WrappedComponent);
+    const group = singleGroup.group || '';
+    const group_id = singleGroup.group_id || '';
+    const recvStreamServices_id = record.id || '';
+    console.log('[包装组件]', group, group_id, recvStreamServices_id);
+    return <WrappedComponent
+      recvStreamServices_id={recvStreamServices_id}
+      group={group}
+      group_id={group_id}
+    />;
+  }
+
   render() {
     const { TabPane } = Tabs;
     const record = this.props.record;
-    // console.log('[record]', record);      
+    const singleGroup = this.props.singleGroup;
+    console.log('[record]', record);
+    // console.log('[gridcard.js this.props]', this.props);
     // console.log('[singleGroup]', this.props.singleGroup);
     const tabList = [
       {
         key: 'info',
         icon: 'info',
-        // component: TabInfo
-        component: Global
+        component: this.wrappedTabInfo(TabInfo, record, singleGroup)
       },
       {
         key: 'picture',
         icon: 'picture',
-        component: Picture
+        component: <Picture />
       },
       {
         key: 'upload',
         icon: 'upload',
-        component: Upload
+        component: <Upload />
       },
       {
         key: 'file',
         icon: 'file',
-        component: File
+        component: <File />
       }
     ];
     return (
@@ -220,28 +234,35 @@ class GridCard extends React.Component {
 
             </Setting>
 
-            <InfoLayout>
-              <Tabs type='card'>
 
-                {
-                  tabList.map((v) => (
-                    <TabPane
-                      key={v.key}
-                      tab={
-                        <span>
-                          <Icon type={v.icon}></Icon>
-                        </span>
+            {
+              !record.protocol
+                ? (
+                  <InfoLayout>
+                    <Tabs type='card'>
+
+                      {
+                        tabList.map((v) => (
+                          <TabPane
+                            key={v.key}
+                            tab={
+                              <span>
+                                <Icon type={v.icon}></Icon>
+                              </span>
+                            }
+                          >
+                            <TabDetails>
+                              {v.component}
+                            </TabDetails>
+                          </TabPane>
+                        ))
                       }
-                    >
-                      <TabDetails>
-                        <v.component />
-                      </TabDetails>
-                    </TabPane>
-                  ))
-                }
 
-              </Tabs>
-            </InfoLayout>
+                    </Tabs>
+                  </InfoLayout>
+                )
+                : null
+            }
           </ScrollArea>
 
         </UnitDetails>

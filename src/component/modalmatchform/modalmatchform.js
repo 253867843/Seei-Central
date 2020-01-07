@@ -1,7 +1,7 @@
 import React from 'react';
 
 // styled-component
-import {Form, Modal, Select, Input} from 'antd';
+import { Form, Modal, Select, Input } from 'antd';
 
 // css
 import './style.css';
@@ -26,7 +26,7 @@ class ModalMatchForm extends React.Component {
   }
 
   handleMatch = () => {
-    const {form} = this.matchFormRef.props;
+    const { form } = this.matchFormRef.props;
     form.validateFields((err, values) => {
       if (err) {
         console.log('[handleMatch err]', err);
@@ -37,7 +37,7 @@ class ModalMatchForm extends React.Component {
       form.resetFields();
 
       // 关闭Modal
-      this.setState({visible: false});
+      this.setState({ visible: false });
 
       // 打印结果
       console.log('[values]', values);
@@ -48,11 +48,11 @@ class ModalMatchForm extends React.Component {
   };
 
   handleCancel = () => {
-    this.setState({visible: false});
+    this.setState({ visible: false });
   };
 
   showMatchModal = () => {
-    this.setState({visible: true});
+    this.setState({ visible: true });
   };
 
   saveMatchFormref = (formRef) => {
@@ -60,14 +60,14 @@ class ModalMatchForm extends React.Component {
   }
 }
 
-const GroupMatchForm = Form.create({name: 'group_match_form'})(
+const GroupMatchForm = Form.create({ name: 'group_match_form' })(
   class extends React.Component {
     render() {
-      const {Option} = Select;
-      const {getFieldDecorator} = this.props.form;
+      const { Option } = Select;
+      const { getFieldDecorator } = this.props.form;
       const formItemLayout = {
-        labelCol: {span: 6},
-        wrapperCol: {span: 14},
+        labelCol: { span: 6 },
+        wrapperCol: { span: 14 },
       };
       return (
         <Modal
@@ -80,30 +80,30 @@ const GroupMatchForm = Form.create({name: 'group_match_form'})(
           cancelText={`取消`}
           width={500}
           mask={false}
-          okButtonProps={{disabled: this.props.dState}}
+          okButtonProps={{ disabled: this.props.dState }}
         >
           <Form>
 
             <Form.Item label='group' {...formItemLayout}>
               {
                 getFieldDecorator('group', {
-                  rules: [{required: true, message: 'Please select your group!'}],
+                  rules: [{ required: true, message: 'Please select your group!' }],
                   initialValue: this.props.group
-                })(<Input placeholder='123' disabled={true}/>)
+                })(<Input placeholder='123' disabled={true} />)
               }
             </Form.Item>
 
             {/* group_id不显示 */}
-            {/* <Form.Item label='group_id' {...formItemLayout}>
+            <Form.Item label='group_id' {...formItemLayout} style={{ display: 'none' }}>
               {
                 getFieldDecorator('group_id', {
-                  rules: [{required: true, message: 'Please select your group_id!'}],
+                  rules: [{ required: true, message: 'Please select your group_id!' }],
                   initialValue: this.props.group_id
                 })(
-                  <Input placeholder='123' disabled={true}/>
+                  <Input placeholder='123' disabled={true} />
                 )
               }
-            </Form.Item> */}
+            </Form.Item>
 
           </Form>
         </Modal>

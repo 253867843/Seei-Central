@@ -6,7 +6,7 @@ const defaultState = fromJS({
   requestQuantity: 0, // 当前应用正在进行的API请求数
   error: null, // 应用全局错误信息
   redirectTo: '', // 跳转
-  isFetching: false, // 获取接收wowza服务器流信息
+  isFetching: false, // 是否开始轮询(获取接收wowza服务器流信息tabinfo.js用)
 });
 
 // action types
