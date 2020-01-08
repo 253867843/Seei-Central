@@ -26,7 +26,8 @@ export const types = {
   SET_SELECTED_ITEM: 'UI/SET_SELECTED_ITEM', // 设置<select>选中项目
   SET_SELECTED_MENU_ITEM: 'UI/SET_SELECTED_MENU_ITEM', // 设置<Menu>选中项目
   SET_SELECTED_UNIT_ITEM: 'UI/SET_SELECTED_UNIT_ITEM', // 设置三级路由选中项目
-  TOGGLE_STREAM_STATUS: 'UI/TOGGLE_STREAM_STATUS', // 切换推流状态
+  START_STREAM_STATUS: 'UI/SET_STREAM_STATUS', // 切换推流状态, 为正在推流
+  FINISH_STREAM_STATUS: 'UI/FINISH_STREAM_STATUS', // 切换推流状态, 为停止推流
 };
 
 // action creators
@@ -62,6 +63,12 @@ export const actions = {
   setSelectedUnitItem: (current) => ({
     type: types.SET_SELECTED_UNIT_ITEM,
     current
+  }),
+  startStreamStatus: () => ({
+    type: types.START_STREAM_STATUS
+  }),
+  finishStreamStatus: () => ({
+    type: types.FINISH_STREAM_STATUS
   })
 };
 
@@ -117,6 +124,10 @@ export default (state = defaultState, action) => {
       return getOperateSelectedStatus(state, action.group_id); // 简单数据类型
     case groupsTypes.DELETE_GROUP: // 删除组
       return getOperateSelectedStatus(state, ''); // 简单数据类型
+    case types.START_STREAM_STATUS:
+      return state.merge({ 'streamStatus': true }); // 切换推流状态为正在推流
+    case types.FINISH_STREAM_STATUS:
+      return state.merge({ 'streamStatus': false }); // 切换推流状态为停止推流
     default:
       return state;
   }
@@ -128,12 +139,12 @@ export const getDeviceStatus = (state) => state.getIn(['ui', 'deviceStatus']);
 export const getDeviceType = (state) => state.getIn(['ui', 'deviceType']);
 export const getSelectedItem = (state) => state.getIn(['ui', 'selectedItem']);
 export const getSelectedMenuItem = (state) => state.getIn(['ui', 'selectedMenuItem']);
+export const getStreamStatus = (state) => state.getIn(['ui', 'streamStatus']);
 
 /**
  * 测试参数: 127.0.0.1     8000   auth:D37pAyzwfYTD4P1ZA1ycZ158PBy9zEzs
  * 接收端参数:  127.0.0.1    8087
  * */
-
 
 /**
  * 测试

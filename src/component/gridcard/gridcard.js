@@ -85,11 +85,9 @@ class GridCard extends React.Component {
 
   // 包装<TabInfo>组件
   wrappedTabInfo = (WrappedComponent, record, singleGroup) => {
-    // console.log('[WrappedComponent]', WrappedComponent);
     const group = singleGroup.group || '';
     const group_id = singleGroup.group_id || '';
     const recvStreamServices_id = record.id || '';
-    console.log('[包装组件]', group, group_id, recvStreamServices_id);
     return <WrappedComponent
       recvStreamServices_id={recvStreamServices_id}
       group={group}
@@ -101,9 +99,7 @@ class GridCard extends React.Component {
     const { TabPane } = Tabs;
     const record = this.props.record;
     const singleGroup = this.props.singleGroup;
-    console.log('[record]', record);
-    // console.log('[gridcard.js this.props]', this.props);
-    // console.log('[singleGroup]', this.props.singleGroup);
+    // console.log('[record]', record);
     const tabList = [
       {
         key: 'info',
@@ -144,9 +140,9 @@ class GridCard extends React.Component {
           </Header>
 
           <ModelForm
-            title={record.recvServicePort ? '编码器修改' : 'S2000修改'}
+            title={record.protocol ? '编码器修改' : 'S4000修改'}
             defaultRecord={record}
-            formList={record.recvServicePort ? updateEncodeList : updateWowzaList}
+            formList={record.protocol ? updateEncodeList : updateWowzaList}
             ref={(modal) => this.modalInstance = modal}
             okText={'修改'}
             inputFormValue={(formValue) => {
@@ -272,6 +268,7 @@ class GridCard extends React.Component {
 
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('[singleGroup]', this.props.singleGroup);
     if (this.props.singleGroup !== prevProps.singleGroup) {
       const singleGroup = this.props.singleGroup;
       let ret;
@@ -312,19 +309,15 @@ class GridCard extends React.Component {
   };
 
   pushFlow = () => {
-    console.log('[this.state.currentStatus.label]', this.state.currentStatus.label);
     const { group, group_id } = this.props.singleGroup;
     const [encode, wowza] = this.props.unitList;
-    // console.log('[group]', group);
-    // console.log('[group_id]', group_id);
-    // console.log('[encode]', encode.id);
-    // console.log('[wowza]', wowza.id);
     if (this.state.currentStatus.label === 'ready') {
       this.setState({
         currentStatus: this.statusCode['streaming']
       });
       // 开始推流
-      this.props.startPushStream({ group, group_id, encodeDevice_id: encode.id, recvStreamService_id: wowza.id });
+      // console.log('[开始推流]', group, group_id, encode.id, wowza.id);
+      this.props.startPushStream({ group, group_id, encodeDevice_id: encode.id, recvStreamServices_id: wowza.id });
     } else if (this.state.currentStatus.label === 'streaming') {
       this.setState({
         currentStatus: this.statusCode['ready']
@@ -336,3 +329,9 @@ class GridCard extends React.Component {
 }
 
 export default GridCard;
+
+/**
+ * 1.开始推流后修改streamStatus = true, 开始获取推流信息
+ * 2.停止推流后修改streamStatus = false, 停止获取推流信息
+ * 3.
+*/

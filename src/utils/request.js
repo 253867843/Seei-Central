@@ -21,7 +21,6 @@ const httpMessage = {
 function getAxios(url, dispatch) {
   return axios.get(url)
     .then((response) => {
-      // console.log('[request.js response]', response);
       return handleResponse(response, dispatch);
     })
     .catch((error) => {
@@ -58,8 +57,6 @@ function handleResponse(response, dispatch) {
       });
     }
 
-    // console.log('[code]', code);
-
     // 路由跳转
     if (code === '-16000') {
       // 未登录
@@ -80,7 +77,17 @@ function handleResponse(response, dispatch) {
     }
 
     return { ...response.data };
-  } else {
+  } else if (!isEmpty(response.data.info)) {
+    // 推流成功
+    const { type, title, info } = response.data.info;
+    notification[type === 'tip' ? 'success' : type]({
+      message: title,
+      description: info
+    })
+
+    return { ...response.data };
+  }
+  else {
     // console.log('[请求验证码]', response.data);
     // 请求验证码, 返回没有code和info字段
     return { vcode: response.data };

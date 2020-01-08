@@ -3,9 +3,12 @@ import { postAxios } from '../utils/request';
 import { actions as appActions } from './app.redux';
 import { types as authTypes } from './auth.redux';
 import { types as usersTypes } from './users.redux';
+import { actions as uiActions } from './ui.redux';
+import { actions as wstreamActions } from './wstream.redux';
 import url from '../utils/url';
 import { combineReducers } from 'redux-immutable';
 import { push } from 'connected-react-router';
+import ColumnGroup from 'antd/lib/table/ColumnGroup';
 
 // action types
 export const types = {
@@ -33,7 +36,7 @@ export const actions = {
               const { group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds } = convertCreateGroupToPlain(data.data);
               dispatch(createGroupSuccess(group_id, groupItem, encodes, encodeIds, wowzas, wowzaIds));
               dispatch(push('/dashboard'));
-            }else {
+            } else {
               // 创建组失败
             }
           } else {
@@ -119,17 +122,30 @@ export const actions = {
         });
     }
   },
-  startPushStream: ({ group, group_id, encodeDevice_id, recvStreamService_id }) => {
+  startPushStream: ({ group, group_id, encodeDevice_id, recvStreamServices_id }) => {
+    // console.log('[startPushStream]', group, group_id, encodeDevice_id, recvStreamServices_id);
     return (dispatch) => {
-      postAxios(url.startPushStream(), { group, group_id, encodeDevice_id, recvStreamService_id }, dispatch)
+      postAxios(url.startPushStream(), { group, group_id, encodeDevice_id, recvStreamServices_id }, dispatch)
         .then((data) => {
           console.log('[groups.redux startPushStream]', data);
           if (!data.error) {
             if (data.status) {
               // 推流成功
               dispatch(startPushStreamSuccess(group_id));
+              // +
+              // 开始获取推流信息
+              // console.log('[开始获取推流信息]', group, group_id, recvStreamServices_id);
+              dispatch(wstreamActions.fetchWowzaInfo({ group, group_id, recvStreamServices_id }));
+              // + 
+              // 置标志位: 开始获取推流信息
+              dispatch(uiActions.startStreamStatus());
+              // + 
+              // 查看转发流Group信息, 更新status
+              // dispatch(actions.fetchGroupInfo({ group, group_id }));
             } else {
               // 推流失败
+              // -
+              dispatch(uiActions.finishStreamStatus());
             }
           } else {
             dispatch(appActions.setError(data.error));
@@ -146,8 +162,12 @@ export const actions = {
             if (data.status) {
               // 停止推流成功
               dispatch(finishPushStreamSuccess(group_id));
+              // +
+              // 置标志位: 停止获取推流信息
+              dispatch(uiActions.finishStreamStatus());
             } else {
               // 停止推流失败
+              dispatch(uiActions.finishStreamStatus());
             }
           } else {
             dispatch(appActions.setError(data.error));
@@ -306,8 +326,6 @@ const convertSingleGroupToPlain = (data) => {
 // 扁平化, 删除Group返回(目前不返回内容)
 const convertDeleteGroupToPlain = (data) => {
   const { encodeDevices, recvStreamServices } = data;
-  console.log('[删除Group返回 encodeDevices]', encodeDevices);
-  console.log('[删除Group返回 recvStreamServices]', recvStreamServices);
   const encodeIds = [];
   const wowzaIds = [];
   encodeDevices.forEach((item) => {
@@ -369,7 +387,6 @@ const allIds = (state = Immutable.fromJS([]), action) => {
   switch (action.type) {
     case usersTypes.FETCH_USER_INFO:
     case authTypes.LOGIN:
-      // console.log('[!!!!!!!!!]', action.groupsIds);
       return Immutable.List(action.groupsIds);
     case authTypes.LOGOUT:
       return Immutable.List();

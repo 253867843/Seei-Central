@@ -14,6 +14,7 @@ export const types = {
 // action creators
 export const actions = {
   fetchWowzaInfo: ({ group, group_id, recvStreamServices_id }) => {
+    console.log('[fetchWowzaInfo]', group, group_id, recvStreamServices_id);
     // + 
     appActions.startFetching();
     return (dispatch) => {

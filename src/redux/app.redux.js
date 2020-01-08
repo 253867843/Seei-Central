@@ -6,7 +6,7 @@ const defaultState = fromJS({
   requestQuantity: 0, // 当前应用正在进行的API请求数
   error: null, // 应用全局错误信息
   redirectTo: '', // 跳转
-  isFetching: false, // 是否开始轮询(获取接收wowza服务器流信息tabinfo.js用)
+  isFetching: false, // 是否开始轮询(获取接收wowza服务器流信息tabinfo.js用, wstream.redux)
 });
 
 // action types
@@ -54,16 +54,10 @@ export default (state = defaultState, action) => {
     case types.REMOVE_ERROR:
       return state.merge({ error: null });
     case authTypes.LOGIN:
-      // +
-      console.log('[authTypes.LOGIN]');
       return state.merge({ redirectTo: '/dashboard' });
-    // -
-    // return state.merge({redirectTo: getRedirectToPath(action)});
     case authTypes.LOGOUT:
     case authTypes.MODIFY_PASSWORD:
-      // console.log('[authTypes.LOGOUT]');
       return state.merge({ redirectTo: '' });
-
     case types.START_WOWZA_FETCH:
       return state.merge({ isFetching: true }); // 简单数据类型
     case types.FINISH_WOWZA_FETCH:

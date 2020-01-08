@@ -6,6 +6,7 @@ import Immutable from 'immutable';
 // action creators
 import { actions as wstreamActions, getWowzaInfoById } from '../../redux/wstream.redux';
 import { getIsFetching } from '../../redux/app.redux';
+import { getStreamStatus } from '../../redux/ui.redux';
 
 // styled-components
 import {
@@ -30,16 +31,11 @@ export class TabInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            group_id: '',
-            group: '',
-            recvStreamServices_id: '',
-        };
     }
 
     render() {
         const { bytesIn, bytesInRate, totalConnections, bytesOut, bytesOutRate } = this.props.streamData;
-        console.log('[streamData]', this.props.streamData);
+        const streamStatus = this.props.streamStatus;
         const groupItemList = [
             { labelName: '累计视频流传入多少字节', unit: '字节', info: bytesIn },
             { labelName: '频流传入速率', unit: '字节/秒', info: bytesInRate },
@@ -56,7 +52,7 @@ export class TabInfo extends Component {
                             <FormRow>
                                 <Row className='row-setting'>
                                     <Col span={14}>{v.labelName}</Col>
-                                    <Col span={10}>{v.info} {v.unit}</Col>
+                                    <Col span={10}>{(v.info && streamStatus) ? v.info : 0} {v.unit}</Col>
                                 </Row>
                             </FormRow>
                         </ListGroupItem>
@@ -68,7 +64,7 @@ export class TabInfo extends Component {
 
     // 开始轮询
     startPoll = () => {
-        const { group, group_id, recvStreamServices_id } = this.state;
+        const { group, group_id, recvStreamServices_id } = this.props;
         this.timeout = setTimeout(() => {
             this.props.fetchWowzaInfo({ group, group_id, recvStreamServices_id });
         }, 10000);
@@ -79,19 +75,22 @@ export class TabInfo extends Component {
             clearTimeout(this.timeout);
 
             // 你可以在这里处理获取到的数据
+            // console.log('[你可以在这里处理获取到的数据]', nextProps.streamData);
             this.setState({
                 streamData: nextProps.streamData
             });
 
-            if (!nextProps.isFetching) {
+            if (!nextProps.isFetching && nextProps.streamStatus) {
                 this.startPoll();
             }
         }
     }
 
     componentWillMount() {
-        const { group, group_id, recvStreamServices_id } = this.props;
-        this.props.fetchWowzaInfo({ group, group_id, recvStreamServices_id });
+        const { group, group_id, recvStreamServices_id, streamStatus } = this.props;
+        if (streamStatus) {
+            this.props.fetchWowzaInfo({ group, group_id, recvStreamServices_id });
+        }
     }
 
     componentWillUnmount() {
@@ -101,11 +100,10 @@ export class TabInfo extends Component {
 
 const mapStateToProps = (state, props) => {
     const getStreamList = makeStreamList();
-    console.log('[prop.group_id]', props.recvStreamServices_id);
-    // props = { ...props, deviceId: props.recvStreamServices_id };
     return {
-        streamData: getStreamList(state, props),
-        isFetching: getIsFetching(state),
+        streamData: getStreamList(state, props), // wowza数据流
+        isFetching: getIsFetching(state), // 当前轮询状态(是否在轮询)
+        streamStatus: getStreamStatus(state), // 当前推流状态(是否正在推流)
     };
 };
 
@@ -133,5 +131,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(TabInfo);
  * 4.组件拿到数据, 更新界面 --- 完成
  * 5.使用reselect监听数据变化 --- 完成
  * 6.传入参数, 参数验证 --- 完成
- * 7.置标志位, 只有当开始推流时, 才发送推流请求
+ * 7.置标志位, 只有当开始推流时, 才发送推流请求 --- 完成
+ *
+ * 1.新增, 开始推流, 获取推流数据
+ * 2.
 */
