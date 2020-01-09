@@ -66,9 +66,13 @@ export const actions = {
   },
   fetchGroupInfo: ({ group, group_id }) => {
     return (dispatch) => {
+      // + 
+      appActions.startGroupInfoFetching();
       postAxios(url.fetchGroupInfo(), { group, group_id }, dispatch)
         .then((data) => {
           console.log('[groups.redux fetchGroupInfo]', data);
+          // + 
+          appActions.finishGroupInfoFetching();
           if (!data.error) {
             if (data.status) {
               // 查询组成功
@@ -141,7 +145,7 @@ export const actions = {
               dispatch(uiActions.startStreamStatus());
               // + 
               // 查看转发流Group信息, 更新status
-              // dispatch(actions.fetchGroupInfo({ group, group_id }));
+              // dispatch(actions.fetchGroupInfo({ group, group_id, }));
             } else {
               // 推流失败
               // -

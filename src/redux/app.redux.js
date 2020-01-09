@@ -7,6 +7,7 @@ const defaultState = fromJS({
   error: null, // 应用全局错误信息
   redirectTo: '', // 跳转
   isFetching: false, // 是否开始轮询(获取接收wowza服务器流信息tabinfo.js用, wstream.redux)
+  isGroupInfoFetching: false, // 是否开始轮询(gridcard.js用, 用于开始推流后轮询fetchGroupInfo组信息)
 });
 
 // action types
@@ -39,7 +40,13 @@ export const actions = {
   }),
   finishFetching: () => ({
     type: types.FINISH_WOWZA_FETCH
-  })
+  }),
+  startGroupInfoFetching: () => ({
+    type: types.START_GROUP_INFO_FETCH
+  }),
+  finishGroupInfoFetching: () => ({
+    type: types.FINISH_GROUP_INFO_FETCH
+  }),
 };
 
 // reducers
@@ -62,6 +69,10 @@ export default (state = defaultState, action) => {
       return state.merge({ isFetching: true }); // 简单数据类型
     case types.FINISH_WOWZA_FETCH:
       return state.merge({ isFetching: false });
+    case types.START_GROUP_INFO_FETCH:
+      return state.merge({ isGroupInfoFetching: true }); // 简单数据类型
+    case types.FINISH_GROUP_INFO_FETCH:
+      return state.merge({ isGroupInfoFetching: false });
     default:
       return state;
   }

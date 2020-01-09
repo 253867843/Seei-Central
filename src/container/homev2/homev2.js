@@ -181,10 +181,10 @@ class HomeV2 extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { group_id: currentGroupId, group: currentGroup } = this.props.location.state; // 切换后id和name
     const { group_id: prevGroupId } = prevProps.location.state; // 切换前id
-    console.log('[homeV2.js currentGroupId]', currentGroupId);
-    console.log('[homeV2.js prevGroupId]', prevGroupId);
-    console.log('[this.state.group_id]', this.state.group_id);
-    console.log('[currentGroupId]', currentGroupId);
+    // console.log('[homeV2.js currentGroupId]', currentGroupId);
+    // console.log('[homeV2.js prevGroupId]', prevGroupId);
+    // console.log('[this.state.group_id]', this.state.group_id);
+    // console.log('[currentGroupId]', currentGroupId);
     if (currentGroupId !== prevGroupId && this.state.group_id !== currentGroupId) {
       this.props.fetchGroupInfo({ group: currentGroup, group_id: currentGroupId });
       this.setState({ group_id: currentGroupId });

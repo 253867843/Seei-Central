@@ -1,13 +1,27 @@
 import React, { Fragment, Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 // 弹窗
 import ModelForm from '../../component/modalform/modalform';
 
 // 自定义组件
 import TabInfo from '../../component/tabinfo/tabinfo';
+import SPlayer from '../../component/splayer/splayer';
 
 // utils
 import { updateEncodeList, updateWowzaList } from '../../utils/formFieldList';
+
+// reselect
+import makeSingleGroup from '../../selectors/groupsingleselector';
+
+// action creators
+import { getStreamStatus } from '../../redux/ui.redux';
+import { actions as groupsActions } from '../../redux/groups.redux';
+
+// immutable
+import Immutable from 'immutable';
 
 import {
   CardSideBar,
@@ -30,6 +44,7 @@ import {
 } from './style';
 
 import { Icon, Button, Tabs } from 'antd';
+import isEmpty from 'lodash/isEmpty';
 
 function Global() {
   return (<div>Global</div>)
@@ -47,39 +62,13 @@ function File() {
   return (<div>File</div>)
 }
 
+@withRouter
 class GridCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       currentStatus: {},
-    };
-
-    this.statusCode = {
-      offline: {
-        color: '--bg-btn-offline',
-        text: '匹配异常',
-        disabled: true,
-        label: 'offline'
-      },
-      ready: {
-        color: '--bg-btn-online',
-        text: '推流',
-        disabled: false,
-        label: 'ready'
-      },
-      connection: {
-        color: '--warning-label',
-        text: '连接中...',
-        disabled: false,
-        label: 'connection'
-      },
-      streaming: {
-        color: '--danger-color',
-        text: '停止推流',
-        disabled: false,
-        label: 'streaming'
-      }
     };
   }
 
@@ -100,6 +89,7 @@ class GridCard extends React.Component {
     const record = this.props.record;
     const singleGroup = this.props.singleGroup;
     // console.log('[record]', record);
+    // console.log('[singleGroup]', singleGroup);
     const tabList = [
       {
         key: 'info',
@@ -165,9 +155,24 @@ class GridCard extends React.Component {
 
           <ScrollArea>
             <StreamVideo>
-              <StreamVideoDefaultImg>
-                <img src={require('../../images/logo.png')} alt='' />
-              </StreamVideoDefaultImg>
+              {
+                this.state.currentStatus.label === 'streaming'
+                  ? (
+                    <SPlayer
+                      posters={require(`../../images/poster.jpg`)}
+                      width={'415'}
+                      height={'170'}
+                      url={'http://192.168.2.196:1935/live/cloud_recv_stream_v1.stream/playlist.m3u8'} // 流地址
+                      eventOn={this.handleEventOn()}
+                    />
+                  )
+                  : (
+                    <StreamVideoDefaultImg>
+                      <img src={require('../../images/logo.png')} alt='' />
+                    </StreamVideoDefaultImg>
+                  )
+              }
+
             </StreamVideo>
 
             <Setting>
@@ -266,72 +271,241 @@ class GridCard extends React.Component {
     )
   }
 
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log('[singleGroup]', this.props.singleGroup);
-    if (this.props.singleGroup !== prevProps.singleGroup) {
-      const singleGroup = this.props.singleGroup;
-      let ret;
-      if (singleGroup.dState === 'offline') {
-        ret = this.statusCode['offline'];
-      } else {
-        if (singleGroup.status) {
-          ret = this.statusCode['streaming'];
-        } else {
-          ret = this.statusCode['ready'];
-        }
+  handleEventOn = () => {
+    return {
+      play: () => {
+        // console.log('[播放]');
+      },
+      pause: () => {
+        // console.log('[暂停]');
       }
+    }
+  };
 
-      this.setState({ currentStatus: ret });
+  // +
+  componentWillMount() {
+    console.log('[componentWillMount]', this.props.streamStatus);
+    // 如果正在推流, 执行轮询
+    const streamStatus = this.props.streamStatus;
+    if (streamStatus) {
+      const { group, group_id } = this.props.singleGroup;
+      if (!isEmpty(group) && !isEmpty(group_id)) {
+        this.props.fetchGroupInfo({ group, group_id });
+      }
     }
   }
+
+  // +
+  startPoll = () => {
+    console.log('[开始轮询 gridcard]');
+    const { group, group_id } = this.props.singleGroup;
+    if (!isEmpty(group) && !isEmpty(group_id)) {
+      this.timeout = setTimeout(() => {
+        this.props.fetchGroupInfo({ group, group_id });
+      }, 10000); // 间隔20s开始轮询
+    }
+  };
+
+  // + 
+  componentWillReceiveProps(nextProps) {
+    // console.log('[componentWillReceiveProps]', this.props.singleGroup);
+    // console.log('[componentWillReceiveProps nextProps]', nextProps.singleGroup);
+    if (!Object.is(this.props.singleGroup, nextProps.singleGroup)) {
+      clearTimeout(this.timeout);
+
+      // 你可以在这里处理你的数据
+      this.setState({
+        dState: nextProps.singleGroup.dState,
+        status: nextProps.singleGroup.status
+      });
+
+      if (!nextProps.isGroupInfoFetching && nextProps.streamStatus) {
+        this.startPoll();
+      }
+    }
+  }
+
+  // + 
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
+
+  // + 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('[componentDidUpdate]');
+    // console.log('[componentDidUpdate]', this.props.singleGroup);
+    // console.log('[componentDidUpdate prevProps]', prevProps.singleGroup);
+    if (!Object.is(this.props.singleGroup, prevProps.singleGroup)) {
+      this.setState({
+        dState: this.props.singleGroup.dState,
+        status: this.props.singleGroup.status
+      });
+    }
+  }
+
+  // -
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   // console.log('[singleGroup]', this.props.singleGroup);
+  //   if (this.props.singleGroup !== prevProps.singleGroup) {
+  //     const singleGroup = this.props.singleGroup;
+  //     let ret;
+  //     if (singleGroup.dState === 'offline') {
+  //       ret = this.statusCode['offline'];
+  //     } else {
+  //       if (singleGroup.status) {
+  //         ret = this.statusCode['streaming'];
+  //       } else {
+  //         ret = this.statusCode['ready'];
+  //       }
+  //     }
+
+  //     this.setState({ currentStatus: ret });
+  //   }
+  // }
 
   showUpdateModal = () => {
     this.modalInstance.showModal();
   };
 
+  // +
   toggleButtonStatus = () => {
-    const status = this.state.currentStatus;
+    const { dState, status } = this.state;
+    // console.log('[dState]', dState);
+    // console.log('[status]', status);
+    const statusCode = {
+      offline: {
+        color: '--bg-btn-offline',
+        text: '匹配异常',
+        disabled: true,
+        label: 'offline'
+      },
+      ready: {
+        color: '--bg-btn-online',
+        text: '推流',
+        disabled: false,
+        label: 'ready'
+      },
+      connection: {
+        color: '--warning-label',
+        text: '连接中...',
+        disabled: false,
+        label: 'connection'
+      },
+      streaming: {
+        color: '--danger-color',
+        text: '停止推流',
+        disabled: false,
+        label: 'streaming'
+      }
+    };
+    let mode = '';
+    if (dState === 'offline') {
+      // 未匹配
+      mode = statusCode['offline'];
+    } else if (dState === 'ready') {
+      if (status) {
+        // 已匹配, 正在推流
+        mode = statusCode['streaming'];
+      } else {
+        // 已匹配, 没在推流
+        mode = statusCode['ready'];
+      }
+    }
+
     return (
       <StatusButtonLayout>
-        <MarginLeftAuto status={status}>
+        <MarginLeftAuto status={mode}>
           <Button
             type='primary'
-            disabled={status.disabled}
+            disabled={mode.disabled}
             onClick={this.pushFlow}
-            loading={this.state.loading}
           >
-            {status.text}
+            {mode.text}
           </Button>
         </MarginLeftAuto>
       </StatusButtonLayout>
     )
   };
 
+  // -
+  // toggleButtonStatus = () => {
+  //   const status = this.state.currentStatus;
+  //   return (
+  //     <StatusButtonLayout>
+  //       <MarginLeftAuto status={status}>
+  //         <Button
+  //           type='primary'
+  //           disabled={status.disabled}
+  //           onClick={this.pushFlow}
+  //           loading={this.state.loading}
+  //         >
+  //           {status.text}
+  //         </Button>
+  //       </MarginLeftAuto>
+  //     </StatusButtonLayout>
+  //   )
+  // };
+
+  // + 
   pushFlow = () => {
+    const { status } = this.state;
     const { group, group_id } = this.props.singleGroup;
     const [encode, wowza] = this.props.unitList;
-    if (this.state.currentStatus.label === 'ready') {
-      this.setState({
-        currentStatus: this.statusCode['streaming']
-      });
-      // 开始推流
-      // console.log('[开始推流]', group, group_id, encode.id, wowza.id);
-      this.props.startPushStream({ group, group_id, encodeDevice_id: encode.id, recvStreamServices_id: wowza.id });
-    } else if (this.state.currentStatus.label === 'streaming') {
-      this.setState({
-        currentStatus: this.statusCode['ready']
-      });
-      // 停止推流
+
+    if (status) {
+      // 正在推流, 停止推流
       this.props.finishPushStream({ group, group_id });
+    } else {
+      // 没在推流, 开始推流
+      this.props.startPushStream({ group, group_id, encodeDevice_id: encode.id, recvStreamServices_id: wowza.id });
     }
   };
+
+  // -
+  // pushFlow = () => {
+  //   const { group, group_id } = this.props.singleGroup;
+  //   const [encode, wowza] = this.props.unitList;
+  //   if (this.state.currentStatus.label === 'ready') {
+  //     this.setState({
+  //       currentStatus: this.statusCode['streaming']
+  //     });
+  //     // 开始推流
+  //     // console.log('[开始推流]', group, group_id, encode.id, wowza.id);
+  //     this.props.startPushStream({ group, group_id, encodeDevice_id: encode.id, recvStreamServices_id: wowza.id });
+  //   } else if (this.state.currentStatus.label === 'streaming') {
+  //     this.setState({
+  //       currentStatus: this.statusCode['ready']
+  //     });
+  //     // 停止推流
+  //     this.props.finishPushStream({ group, group_id });
+  //   }
+  // };
 }
 
-export default GridCard;
+// +
+const mapStateToProps = (state, props) => {
+  // console.log('[gridcard]', state.toJS());
+  const getSingleGroup = makeSingleGroup();
+  return {
+    singleGroup: getSingleGroup(state, props), // 当前组信息
+    streamStatus: getStreamStatus(state), // 当前推流状态(是否正在推流)
+  }
+};
+
+// +
+const mapDispatchToProps = (dispatch) => {
+  return {
+    ...bindActionCreators(groupsActions, dispatch),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GridCard);
 
 /**
  * 1.开始推流后修改streamStatus = true, 开始获取推流信息
  * 2.停止推流后修改streamStatus = false, 停止获取推流信息
- * 3.
+ * 3.推流成功后, 如何获取当前的推流状态
+ *
+ * 4.在刷新时, componentWillMount >>> streamStatus = false, 没开启轮询
+ * 5.
 */

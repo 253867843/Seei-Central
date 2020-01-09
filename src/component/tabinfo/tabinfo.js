@@ -64,6 +64,7 @@ export class TabInfo extends Component {
 
     // 开始轮询
     startPoll = () => {
+        console.log('[开始轮询 tabinfo]');
         const { group, group_id, recvStreamServices_id } = this.props;
         this.timeout = setTimeout(() => {
             this.props.fetchWowzaInfo({ group, group_id, recvStreamServices_id });

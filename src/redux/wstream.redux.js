@@ -15,9 +15,9 @@ export const types = {
 export const actions = {
   fetchWowzaInfo: ({ group, group_id, recvStreamServices_id }) => {
     console.log('[fetchWowzaInfo]', group, group_id, recvStreamServices_id);
-    // + 
-    appActions.startFetching();
     return (dispatch) => {
+      // + 
+      appActions.startFetching();
       postAxios(url.fetchWowzaInfo(), { group, group_id, recvStreamServices_id }, dispatch)
         .then((data) => {
           // +
@@ -31,12 +31,12 @@ export const actions = {
             } else {
               // 获取失败
               // +
-              appActions.finishFetching();
+              // appActions.finishFetching();
             }
           } else {
             dispatch(appActions.setError(data.error));
             // + 
-            appActions.finishFetching();
+            // appActions.finishFetching();
           }
         }
         )

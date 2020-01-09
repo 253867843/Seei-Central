@@ -60,6 +60,8 @@ function handleResponse(response, dispatch) {
     // 路由跳转
     if (code === '-16000') {
       // 未登录
+      browserCookies.erase('login.user');
+      browserCookies.erase('connect.sid');
       dispatch(replace('/redirectToLogin'));
     } else if (code === '10051') {
       // 登出成功

@@ -1,6 +1,6 @@
-import {createSelector} from 'reselect';
+import { createSelector } from 'reselect';
 
-import {getGroupById} from '../redux/groups.redux';
+import { getGroupById } from '../redux/groups.redux';
 
 const getGroupByIdSelector = (state, props) => getGroupById(state, props.location.state.group_id);
 

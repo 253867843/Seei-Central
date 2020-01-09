@@ -1,13 +1,13 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 // 自定义组件
 import GridTable from '../gridtable/gridtable';
 import GridCard from '../gridcard/gridcard';
 
 // actions
-import {actions as groupsActions} from '../../redux/groups.redux';
+import { actions as groupsActions } from '../../redux/groups.redux';
 
 // styled-components
 import {
@@ -20,7 +20,8 @@ import {
 
 // reselect
 import makeUnitList from '../../selectors/listselector';
-import makeSingleGroup from '../../selectors/groupsingleselector';
+// -
+// import makeSingleGroup from '../../selectors/groupsingleselector';
 
 // lodash
 import _ from 'lodash';
@@ -50,17 +51,18 @@ class UnitList extends React.Component {
 
           </UnitListPageContentTable>
 
-          <Divider/>
+          <Divider />
 
           <UnitListPageContentCard>
 
             <GridCard
               record={this.state.record}
               modifyGroup={this.modifyGroup}
-              singleGroup={this.props.singleGroup}
+              // singleGroup={this.props.singleGroup}
               startPushStream={this.props.startPushStream}
               finishPushStream={this.props.finishPushStream}
               unitList={this.props.unitList}
+              {...this.props}
             />
 
           </UnitListPageContentCard>
@@ -71,7 +73,7 @@ class UnitList extends React.Component {
   }
 
   handleClick = (record) => {
-    this.setState({record});
+    this.setState({ record });
   };
 
   // 修改转发流Group
@@ -94,22 +96,23 @@ class UnitList extends React.Component {
       filteRet['encodeDevices'] = Array.of(_.pick(retainData[0], encodeFieldFilterList));
     }
 
-    const requestData = Object.assign({}, formValue, {group, description: ''}, filteRet);
+    const requestData = Object.assign({}, formValue, { group, description: '' }, filteRet);
     console.log('[requestData]', requestData);
 
     // 发起请求
     this.props.modifyGroup(requestData);
   }
-
 }
 
 const mapStateToProps = (state, props) => {
   const getUnitList = makeUnitList();
-  const getSingleGroup = makeSingleGroup();
+  // -
+  // const getSingleGroup = makeSingleGroup();
   // console.log('[getUnitList]', getUnitList(state, props));
   return {
     unitList: getUnitList(state, props),
-    singleGroup: getSingleGroup(state, props)
+    // -
+    // singleGroup: getSingleGroup(state, props)
   }
 };
 
@@ -120,3 +123,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UnitList);
+
+/**
+ * 1.获取组信息会从wowza设备跳转到encodes
+ * 2.刷新页面不会轮询获取组信息
+*/
