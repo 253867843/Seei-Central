@@ -17,12 +17,12 @@ import {
 // antd
 import { Row, Col } from 'antd';
 import { bindActionCreators } from 'redux';
-import { ThirdDashBoardLayout } from '../unit/style';
 
 // reselect
 import makeStreamList from '../../selectors/streamselector';
+import makeSingleGroup from '../../selectors/groupsingleselector';
 
-export class TabInfo extends Component {
+class TabInfo extends Component {
     static propTypes = {
         group: PropTypes.string.isRequired,
         group_id: PropTypes.string.isRequired,
@@ -35,7 +35,8 @@ export class TabInfo extends Component {
 
     render() {
         const { bytesIn, bytesInRate, totalConnections, bytesOut, bytesOutRate } = this.props.streamData;
-        const streamStatus = this.props.streamStatus;
+        // const streamStatus = this.props.streamStatus;
+        const streamStatus = this.props.singleGroup.status;
         const groupItemList = [
             { labelName: '累计视频流传入多少字节', unit: '字节', info: bytesIn },
             { labelName: '频流传入速率', unit: '字节/秒', info: bytesInRate },
@@ -64,7 +65,7 @@ export class TabInfo extends Component {
 
     // 开始轮询
     startPoll = () => {
-        console.log('[开始轮询 tabinfo]');
+        console.log('[开始轮询 流信息]');
         const { group, group_id, recvStreamServices_id } = this.props;
         this.timeout = setTimeout(() => {
             this.props.fetchWowzaInfo({ group, group_id, recvStreamServices_id });
@@ -81,30 +82,36 @@ export class TabInfo extends Component {
                 streamData: nextProps.streamData
             });
 
-            if (!nextProps.isFetching && nextProps.streamStatus) {
+            const streamStatus = nextProps.singleGroup.status;
+            if (!nextProps.isFetching && streamStatus) {
                 this.startPoll();
             }
         }
     }
 
     componentWillMount() {
-        const { group, group_id, recvStreamServices_id, streamStatus } = this.props;
+        const { group, group_id, recvStreamServices_id, singleGroup } = this.props;
+        const streamStatus = singleGroup.status;
         if (streamStatus) {
             this.props.fetchWowzaInfo({ group, group_id, recvStreamServices_id });
         }
     }
 
     componentWillUnmount() {
+        console.log('[结束轮询 流信息]');
         clearTimeout(this.timeout);
     }
 }
 
 const mapStateToProps = (state, props) => {
+    // console.log('[tabinfo props]', props);
     const getStreamList = makeStreamList();
+    const getSingleGroup = makeSingleGroup();
     return {
         streamData: getStreamList(state, props), // wowza数据流
         isFetching: getIsFetching(state), // 当前轮询状态(是否在轮询)
-        streamStatus: getStreamStatus(state), // 当前推流状态(是否正在推流)
+        // streamStatus: getStreamStatus(state), // 当前推流状态(是否正在推流)
+        singleGroup: getSingleGroup(state, props), // 当前组信息
     };
 };
 

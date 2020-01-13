@@ -142,14 +142,14 @@ export const actions = {
               dispatch(wstreamActions.fetchWowzaInfo({ group, group_id, recvStreamServices_id }));
               // + 
               // 置标志位: 开始获取推流信息
-              dispatch(uiActions.startStreamStatus());
+              // dispatch(uiActions.startStreamStatus());
               // + 
               // 查看转发流Group信息, 更新status
               // dispatch(actions.fetchGroupInfo({ group, group_id, }));
             } else {
               // 推流失败
               // -
-              dispatch(uiActions.finishStreamStatus());
+              // dispatch(uiActions.finishStreamStatus());
             }
           } else {
             dispatch(appActions.setError(data.error));
@@ -168,10 +168,10 @@ export const actions = {
               dispatch(finishPushStreamSuccess(group_id));
               // +
               // 置标志位: 停止获取推流信息
-              dispatch(uiActions.finishStreamStatus());
+              // dispatch(uiActions.finishStreamStatus());
             } else {
               // 停止推流失败
-              dispatch(uiActions.finishStreamStatus());
+              // dispatch(uiActions.finishStreamStatus());
             }
           } else {
             dispatch(appActions.setError(data.error));
@@ -367,6 +367,7 @@ const convertMatchGroupToPlain = (data) => {
 const byId = (state = Immutable.fromJS({}), action) => { // 记录groups信息
   switch (action.type) {
     case usersTypes.FETCH_USER_INFO: // 获取用户信息
+      return state.mergeDeep(Immutable.fromJS(action.groups));
     case authTypes.LOGIN: // 登录成功
       return state.merge(Immutable.fromJS(action.groups)); // 复杂数据类型
     case authTypes.LOGOUT: // 登出成功

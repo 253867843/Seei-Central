@@ -16,6 +16,8 @@ import './style.css';
 
 // immutable
 import Immutable from 'immutable';
+import ColumnGroup from 'antd/lib/table/ColumnGroup';
+import isEmpty from 'lodash/isEmpty';
 
 @withRouter
 class GridTable extends React.Component {
@@ -72,30 +74,40 @@ class GridTable extends React.Component {
     )
   }
 
-
+  // 选中行样式
   setTableRowClassName = (record) => {
     return record.id === this.state.rowId ? 'clickRowStyle' : '';
   };
 
+  // 选中行数据
   onClickTableRow = (record) => {
     return {
       onClick: (event) => {
-        // console.log('[gridtable 点击行响应]', record);
         this.setState({ rowId: record.id }); // 只影响css样式
         this.props.onClick(record);
       }
     }
   };
 
+  // 加载默认项, 选中table的第一个成员
+  loadDefaultTableItem = (unitList) => {
+    const firstItem = unitList[0];
+    this.setState({
+      rowId: firstItem.id,
+    }, () => {
+      // console.log('[加载默认项]', this.state)
+      this.onClickTableRow(firstItem); // 选中行数据
+      this.setTableRowClassName(firstItem); // 设置css样式
+      this.props.onClick(firstItem); // 执行点击第一项
+    });
+  };
+
+  // 首次加载, 默认选中table的第一个成员
   componentDidMount() {
-    if (this.props.unitList.length !== 0) {
-      this.setState({
-        rowId: this.props.unitList[0].id
-      }, () => {
-        this.onClickTableRow(this.props.unitList[0]);
-        this.setTableRowClassName(this.props.unitList[0]);
-        this.props.onClick(this.props.unitList[0]);
-      });
+    // console.log('[gridtable组件 componentDidMount]', this.props.unitList);
+    const unitList = this.props.unitList;
+    if (unitList.length !== 0) {
+      this.loadDefaultTableItem(unitList);
     }
   }
 
@@ -108,16 +120,23 @@ class GridTable extends React.Component {
     return true;
   }
 
+  // 更新时, 判断rowId是否存在unitList
+  // 存在: 不做任何操作
+  // 不存在: 默认加载unitList的第一个成员
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.unitList.length !== 0) {
-      this.setState({
-        rowId: this.props.unitList[0].id,
-      }, () => {
-        this.onClickTableRow(this.props.unitList[0]); //
-        this.setTableRowClassName(this.props.unitList[0]); // 设置css样式
-        this.props.onClick(this.props.unitList[0]); // 执行点击第一项
-      });
+    // console.log('[gridtable组件 componentDidUpdate]', this.props.unitList);
+    const unitList = this.props.unitList;
+    if (unitList.length !== 0) {
+      const rowId = this.state.rowId;
+      // console.log('[componentDidUpdate rowId]', rowId, isEmpty(rowId));
+      if (isEmpty(rowId)) {
+        this.loadDefaultTableItem(unitList);
+      }
     }
+  }
+
+  componentWillUnmount() {
+    // console.log('[离开gridtable组件]');
   }
 }
 

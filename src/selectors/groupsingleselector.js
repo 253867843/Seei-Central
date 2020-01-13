@@ -7,7 +7,10 @@ const getGroupByIdSelector = (state, props) => getGroupById(state, props.locatio
 const makeSingleGroup = () => {
   return createSelector(
     [getGroupByIdSelector],
-    (singleGroup) => singleGroup ? singleGroup.toJS() : {}
+    (singleGroup) => {
+      // console.log('[singleGroup]', singleGroup ? singleGroup.toJS() : {})
+      return singleGroup ? singleGroup.toJS() : {}
+    }
   )
 };
 

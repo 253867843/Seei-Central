@@ -17,7 +17,7 @@ import { updateEncodeList, updateWowzaList } from '../../utils/formFieldList';
 import makeSingleGroup from '../../selectors/groupsingleselector';
 
 // action creators
-import { getStreamStatus } from '../../redux/ui.redux';
+// import { getStreamStatus } from '../../redux/ui.redux';
 import { actions as groupsActions } from '../../redux/groups.redux';
 
 // immutable
@@ -67,7 +67,6 @@ class GridCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
       currentStatus: {},
     };
   }
@@ -81,6 +80,7 @@ class GridCard extends React.Component {
       recvStreamServices_id={recvStreamServices_id}
       group={group}
       group_id={group_id}
+      {...this.props}
     />;
   }
 
@@ -283,21 +283,21 @@ class GridCard extends React.Component {
   };
 
   // +
-  componentWillMount() {
-    console.log('[componentWillMount]', this.props.streamStatus);
-    // 如果正在推流, 执行轮询
-    const streamStatus = this.props.streamStatus;
-    if (streamStatus) {
-      const { group, group_id } = this.props.singleGroup;
-      if (!isEmpty(group) && !isEmpty(group_id)) {
-        this.props.fetchGroupInfo({ group, group_id });
-      }
-    }
-  }
+  // componentWillMount() {
+  //   console.log('[gridcard组件 componentWillMount]', this.props.streamStatus, this.props.singleGroup);
+  //   // 如果正在推流, 执行轮询
+  //   const streamStatus = this.props.streamStatus;
+  //   if (streamStatus) {
+  //     const { group, group_id } = this.props.singleGroup;
+  //     if (!isEmpty(group) && !isEmpty(group_id)) {
+  //       this.props.fetchGroupInfo({ group, group_id });
+  //     }
+  //   }
+  // }
 
   // +
   startPoll = () => {
-    console.log('[开始轮询 gridcard]');
+    console.log('[开始轮询 组信息]');
     const { group, group_id } = this.props.singleGroup;
     if (!isEmpty(group) && !isEmpty(group_id)) {
       this.timeout = setTimeout(() => {
@@ -308,8 +308,6 @@ class GridCard extends React.Component {
 
   // + 
   componentWillReceiveProps(nextProps) {
-    // console.log('[componentWillReceiveProps]', this.props.singleGroup);
-    // console.log('[componentWillReceiveProps nextProps]', nextProps.singleGroup);
     if (!Object.is(this.props.singleGroup, nextProps.singleGroup)) {
       clearTimeout(this.timeout);
 
@@ -319,7 +317,8 @@ class GridCard extends React.Component {
         status: nextProps.singleGroup.status
       });
 
-      if (!nextProps.isGroupInfoFetching && nextProps.streamStatus) {
+      // if (!nextProps.isGroupInfoFetching && (nextProps.streamStatus || nextProps.singleGroup.status)) {
+      if (!nextProps.isGroupInfoFetching && nextProps.singleGroup.status) {
         this.startPoll();
       }
     }
@@ -327,14 +326,12 @@ class GridCard extends React.Component {
 
   // + 
   componentWillUnmount() {
+    console.log('[结束轮询 组信息]');
     clearTimeout(this.timeout);
   }
 
   // + 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log('[componentDidUpdate]');
-    // console.log('[componentDidUpdate]', this.props.singleGroup);
-    // console.log('[componentDidUpdate prevProps]', prevProps.singleGroup);
     if (!Object.is(this.props.singleGroup, prevProps.singleGroup)) {
       this.setState({
         dState: this.props.singleGroup.dState,
@@ -342,26 +339,6 @@ class GridCard extends React.Component {
       });
     }
   }
-
-  // -
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   // console.log('[singleGroup]', this.props.singleGroup);
-  //   if (this.props.singleGroup !== prevProps.singleGroup) {
-  //     const singleGroup = this.props.singleGroup;
-  //     let ret;
-  //     if (singleGroup.dState === 'offline') {
-  //       ret = this.statusCode['offline'];
-  //     } else {
-  //       if (singleGroup.status) {
-  //         ret = this.statusCode['streaming'];
-  //       } else {
-  //         ret = this.statusCode['ready'];
-  //       }
-  //     }
-
-  //     this.setState({ currentStatus: ret });
-  //   }
-  // }
 
   showUpdateModal = () => {
     this.modalInstance.showModal();
@@ -398,7 +375,8 @@ class GridCard extends React.Component {
         label: 'streaming'
       }
     };
-    let mode = '';
+    let mode = statusCode['connection'];
+    // console.log('[dState, status]', dState, status);
     if (dState === 'offline') {
       // 未匹配
       mode = statusCode['offline'];
@@ -427,25 +405,6 @@ class GridCard extends React.Component {
     )
   };
 
-  // -
-  // toggleButtonStatus = () => {
-  //   const status = this.state.currentStatus;
-  //   return (
-  //     <StatusButtonLayout>
-  //       <MarginLeftAuto status={status}>
-  //         <Button
-  //           type='primary'
-  //           disabled={status.disabled}
-  //           onClick={this.pushFlow}
-  //           loading={this.state.loading}
-  //         >
-  //           {status.text}
-  //         </Button>
-  //       </MarginLeftAuto>
-  //     </StatusButtonLayout>
-  //   )
-  // };
-
   // + 
   pushFlow = () => {
     const { status } = this.state;
@@ -460,26 +419,6 @@ class GridCard extends React.Component {
       this.props.startPushStream({ group, group_id, encodeDevice_id: encode.id, recvStreamServices_id: wowza.id });
     }
   };
-
-  // -
-  // pushFlow = () => {
-  //   const { group, group_id } = this.props.singleGroup;
-  //   const [encode, wowza] = this.props.unitList;
-  //   if (this.state.currentStatus.label === 'ready') {
-  //     this.setState({
-  //       currentStatus: this.statusCode['streaming']
-  //     });
-  //     // 开始推流
-  //     // console.log('[开始推流]', group, group_id, encode.id, wowza.id);
-  //     this.props.startPushStream({ group, group_id, encodeDevice_id: encode.id, recvStreamServices_id: wowza.id });
-  //   } else if (this.state.currentStatus.label === 'streaming') {
-  //     this.setState({
-  //       currentStatus: this.statusCode['ready']
-  //     });
-  //     // 停止推流
-  //     this.props.finishPushStream({ group, group_id });
-  //   }
-  // };
 }
 
 // +
@@ -488,7 +427,7 @@ const mapStateToProps = (state, props) => {
   const getSingleGroup = makeSingleGroup();
   return {
     singleGroup: getSingleGroup(state, props), // 当前组信息
-    streamStatus: getStreamStatus(state), // 当前推流状态(是否正在推流)
+    // streamStatus: getStreamStatus(state), // 当前推流状态(是否正在推流)
   }
 };
 
