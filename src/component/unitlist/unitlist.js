@@ -57,7 +57,7 @@ class UnitList extends React.Component {
 
             <GridCard
               record={this.state.record}
-              modifyGroup={this.modifyGroup}
+              modifyGroupFunc={this.modifyGroupFunc}
               // singleGroup={this.props.singleGroup}
               startPushStream={this.props.startPushStream}
               finishPushStream={this.props.finishPushStream}
@@ -77,7 +77,7 @@ class UnitList extends React.Component {
   };
 
   // 修改转发流Group
-  modifyGroup = (formValue) => {
+  modifyGroupFunc = (formValue) => {
     const unitList = this.props.unitList;
     const group = this.props.location.state.group;
     const encodeFieldFilterList = ['domain', 'port', 'auth', 'recvServicePort'];

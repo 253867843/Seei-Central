@@ -63,6 +63,10 @@ class ModalForm extends React.Component {
       const encodes = Object.keys(values).filter((v) => (v.startsWith('encode'))).map((v) => values[v]);
       const wowzas = Object.keys(values).filter((v) => (v.startsWith('wowza'))).map((v) => values[v]);
 
+      // console.log('[groups]', groups);
+      // console.log('[encodes]', encodes);
+      // console.log('[wowzas]', wowzas);
+
       // 数据处理
       let requestData = composeData(...groups)(...encodes)(...wowzas);
       // console.log('[requestData]', requestData);
@@ -140,6 +144,8 @@ const GroupCreateForm = Form.create({ name: 'group_create_form' })(
         wrapperCol: { span: 14 },
       };
 
+      console.log('[defaultRecord]', defaultRecord);
+
       formList.forEach((v, i) => {
         children.push(
           <Col span={8} key={v.label} style={{ display: i < count ? 'block' : 'none' }}>
@@ -150,7 +156,8 @@ const GroupCreateForm = Form.create({ name: 'group_create_form' })(
                     {
                       getFieldDecorator(v.field, {
                         rules: [{ required: true, message: 'please select protocol' }],
-                        initialValue: 'srt'
+                        // initialValue: 'srt'
+                        initialValue: defaultRecord ? defaultRecord[v.text] : null
                       })(
                         <Select placeholder='please select a protocol'>
                           <Option value='srt'>srt</Option>

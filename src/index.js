@@ -119,7 +119,10 @@ ReactDOM.render(AppProvider, document.getElementById('root'));
 // http://211.161.196.204:8000/seeiCloud
 // 内网测试: http://192.168.1.142:3000
 // http://192.168.2.160:3000
-// K9eXQPZNfnKdcpZa15rtz2Ma183TtGfM
+// 9kP5NEk1h6m7XheJebYjStMYQhyp9diW
+// 192.168.2.146	7000 10000
+// 192.168.2.196	8087
+// http://192.168.2.196:1935/live/cloud_recv_stream_v1.stream/playlist.m3u8
 
 // console.log('[是否含有属性]', {name: 'dcj123'}.hasOwnProperty('age'));
 

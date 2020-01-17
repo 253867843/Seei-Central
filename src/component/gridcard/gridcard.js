@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 // 弹窗
-import ModelForm from '../../component/modalform/modalform';
+import ModalForm from '../../component/modalform/modalform';
 
 // 自定义组件
 import TabInfo from '../../component/tabinfo/tabinfo';
@@ -129,14 +129,14 @@ class GridCard extends React.Component {
 
           </Header>
 
-          <ModelForm
+          <ModalForm
             title={record.protocol ? '编码器修改' : 'S4000修改'}
             defaultRecord={record}
             formList={record.protocol ? updateEncodeList : updateWowzaList}
             ref={(modal) => this.modalInstance = modal}
             okText={'修改'}
             inputFormValue={(formValue) => {
-              this.props.modifyGroup(formValue);
+              this.props.modifyGroupFunc(formValue);
             }}
           />
 

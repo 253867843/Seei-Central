@@ -92,11 +92,12 @@ class GridTable extends React.Component {
   // 加载默认项, 选中table的第一个成员
   loadDefaultTableItem = (unitList) => {
     const firstItem = unitList[0];
+    console.log('[firstItem]', firstItem);
     this.setState({
       rowId: firstItem.id,
     }, () => {
       // console.log('[加载默认项]', this.state)
-      this.onClickTableRow(firstItem); // 选中行数据
+      // this.onClickTableRow(firstItem); // 选中行数据
       this.setTableRowClassName(firstItem); // 设置css样式
       this.props.onClick(firstItem); // 执行点击第一项
     });
@@ -121,16 +122,31 @@ class GridTable extends React.Component {
   }
 
   // 更新时, 判断rowId是否存在unitList
-  // 存在: 不做任何操作
+  // 存在: 不做任何操作, 加载rowId对应的成员
   // 不存在: 默认加载unitList的第一个成员
   componentDidUpdate(prevProps, prevState, snapshot) {
-    // console.log('[gridtable组件 componentDidUpdate]', this.props.unitList);
+    console.log('[gridtable组件 componentDidUpdate]', this.props.unitList);
     const unitList = this.props.unitList;
     if (unitList.length !== 0) {
       const rowId = this.state.rowId;
-      // console.log('[componentDidUpdate rowId]', rowId, isEmpty(rowId));
+      console.log('[componentDidUpdate rowId]', rowId, isEmpty(rowId));
       if (isEmpty(rowId)) {
+        // 不存在: 默认加载unitList的第一个成员
         this.loadDefaultTableItem(unitList);
+      } else {
+        // 存在: 加载rowId对应的成员
+        const index = unitList.findIndex((item) => item.id === rowId);
+        console.log('[index]', index);
+        if (index > -1) {
+          // 表示找到
+          const item = unitList[index];
+          console.log('[item]', item);
+          // 选中rowId对应的行
+          this.props.onClick(item);
+        }
+        else {
+          // 没有找到
+        }
       }
     }
   }

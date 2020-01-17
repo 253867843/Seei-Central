@@ -46,6 +46,7 @@ export const actions = {
     }
   },
   modifyGroup: (data) => {
+    console.log('[modifyGroup data]', data);
     return (dispatch) => {
       postAxios(url.modifyGroup(), data, dispatch)
         .then((data) => {
