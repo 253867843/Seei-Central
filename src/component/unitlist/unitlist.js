@@ -80,8 +80,8 @@ class UnitList extends React.Component {
   modifyGroupFunc = (formValue) => {
     const unitList = this.props.unitList;
     const group = this.props.location.state.group;
-    const encodeFieldFilterList = ['domain', 'port', 'auth', 'recvServicePort'];
-    const wowzaFieldFilterList = ['domain', 'port'];
+    const encodeFieldFilterList = ['domain', 'port', 'auth', 'recvServicePort', 'videoCodeRate'];
+    const wowzaFieldFilterList = ['domain', 'port', 'isForward', 'forwardPort','forwardAddress'];
 
     // 如果进入的是encode, 保留的是wowza
     // 如果进入的是wowza, 保留的是encode
@@ -97,6 +97,7 @@ class UnitList extends React.Component {
     }
 
     const requestData = Object.assign({}, formValue, { group, description: '' }, filteRet);
+
     console.log('[requestData]', requestData);
 
     // 发起请求

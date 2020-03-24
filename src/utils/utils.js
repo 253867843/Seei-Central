@@ -14,8 +14,10 @@ export const removeLocalStorage = (key) => {
 };
 
 export const composeData = (group, description) => {
-  return (e_domain, e_port, e_auth, e_recvServicePort, e_protocol) => {
-    return (w_domain, w_port) => {
+  return (
+    e_domain, e_port, e_auth, e_recvServicePort, e_protocol, e_videoCodeRate
+  ) => {
+    return (w_domain, w_port, w_forwardAddress, w_forwardPort, w_isForward) => {
       console.log('[composeData]', e_protocol);
       let requestData = {
         group,
@@ -26,13 +28,17 @@ export const composeData = (group, description) => {
             port: e_port,
             auth: e_auth,
             protocol: e_protocol,
-            recvServicePort: e_recvServicePort
+            recvServicePort: e_recvServicePort,
+            videoCodeRate: e_videoCodeRate
           }
         ],
         recvStreamServices: [
           {
             domain: w_domain,
-            port: w_port
+            port: w_port,
+            forwardAddress: w_forwardAddress,
+            forwardPort: w_forwardPort,
+            isForward: w_isForward
           }
         ]
       };
