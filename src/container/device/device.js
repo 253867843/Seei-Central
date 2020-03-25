@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {getGroupNameList} from '../../redux';
 import {actions as groupsActions} from '../../redux/groups.redux';
 import isEmpty from 'lodash/isEmpty';
-import {Result, Button, Icon, Spin} from 'antd';
+import {Result, Icon} from 'antd';
 import DevicePage from '../../component/devicePage/devicePage';
 import {actions as wstreamActions} from '../../redux/wstream.redux';
 import {getRequestQuantity} from '../../redux/app.redux';
@@ -16,7 +16,6 @@ import './style.css';
 class Device extends React.Component {
   render() {
     const {singleGroup, modifyGroup, fetchWowzaInfo, wowzaStreamInfo, requestQuantity} = this.props;
-    // console.log('[Device]', singleGroup, isEmpty(singleGroup));
     return (
       <div
         style={{height: '100%'}}
@@ -45,7 +44,6 @@ class Device extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  // console.log('[device mapStateToProps]');
   return {
     groupNameList: getGroupNameList(state), // 所有组名
     wowzaStreamInfo: getSingleGroupWowzaStreamInfo(state), // 获取指定group_id下的wowza流信息

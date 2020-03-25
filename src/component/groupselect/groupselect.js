@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 // 自定义组件
@@ -11,14 +11,13 @@ import BodyLogout from '../../component/bodylogout/bodylogout';
 import UserDropDownListFormModal from '../../component/userdropdownlistformmodal/userdropdownlistformmodal';
 
 // antd
-import { Form, Select, Popover, List, Typography, Modal, Button, Col } from 'antd';
+import { Form, Select, Popover, List, Typography } from 'antd';
 
 // styled-components
 import {
   GroupSelectLayout,
   MainGroupSelect,
   UserMenu,
-  DropDownPopover,
 } from './style.js';
 
 // utils
@@ -30,9 +29,6 @@ import IconFont from '../../iconFont/iconfont';
 
 // css
 import './style.css';
-
-// lodash
-import _ from 'lodash';
 
 @withRouter
 class GroupSelect extends React.Component {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Immutable from 'immutable';
 import { postAxios } from '../utils/request';
 import { actions as appActions } from './app.redux';

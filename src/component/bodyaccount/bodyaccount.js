@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Component, Fragment } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';

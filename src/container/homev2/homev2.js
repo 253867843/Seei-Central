@@ -14,8 +14,6 @@ import { actions as authActions } from '../../redux/auth.redux';
 import GroupSelect from '../../component/groupselect/groupselect';
 import NoGroupPage from '../../component/nogrouppage/nogrouppage';
 import Unit from '../../component/unit/unit';
-import ContentSideBar from '../../component/contentsidebar/contentsidebar';
-import Content from '../../component/content/content';
 
 // styled-components
 import {
@@ -26,13 +24,12 @@ import {
 } from './style.js';
 
 //utils
-import { setLocalStorage, getRouteParams, getLocalStorage } from '../../utils/utils';
+import { setLocalStorage, getRouteParams } from '../../utils/utils';
 import isEmpty from 'lodash/isEmpty';
 import apiPrefix from '../../apiPrefix';
 
 // antd
 import { Icon, Menu } from 'antd';
-import ColumnGroup from 'antd/lib/table/ColumnGroup';
 
 function Files() {
   return (
@@ -93,11 +90,9 @@ class HomeV2 extends React.Component {
   * 进入二级路由/三级路由, group_id必不为空
   * */
   render() {
-    // console.log('[HomeV2]', this.props);
     const { group_id } = this.props.location.state;
     const { menu } = this.props.match.params;
     const rootUrl = apiPrefix.rootUrl();
-    const nameListRaw = this.props.nameList.toJS();
     const menuList = [
       {
         path: `${rootUrl}/unit`,
@@ -167,7 +162,6 @@ class HomeV2 extends React.Component {
   };
 
   componentDidMount() {
-    // console.log('[componentDidMount]');
     const { group, group_id } = this.props.location.state;
     if (!isEmpty(group) && !isEmpty(group_id)) {
       this.props.fetchGroupInfo({ group, group_id });
@@ -181,10 +175,6 @@ class HomeV2 extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { group_id: currentGroupId, group: currentGroup } = this.props.location.state; // 切换后id和name
     const { group_id: prevGroupId } = prevProps.location.state; // 切换前id
-    // console.log('[homeV2.js currentGroupId]', currentGroupId);
-    // console.log('[homeV2.js prevGroupId]', prevGroupId);
-    // console.log('[this.state.group_id]', this.state.group_id);
-    // console.log('[currentGroupId]', currentGroupId);
     if (currentGroupId !== prevGroupId && this.state.group_id !== currentGroupId) {
       this.props.fetchGroupInfo({ group: currentGroup, group_id: currentGroupId });
       this.setState({ group_id: currentGroupId });

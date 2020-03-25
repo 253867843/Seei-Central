@@ -80,7 +80,7 @@ class UnitList extends React.Component {
   modifyGroupFunc = (formValue) => {
     const unitList = this.props.unitList;
     const group = this.props.location.state.group;
-    const encodeFieldFilterList = ['domain', 'port', 'auth', 'recvServicePort', 'videoCodeRate'];
+    const encodeFieldFilterList = ['domain', 'port', 'auth', 'recvServicePort', 'protocol', 'videoCodeRate'];
     const wowzaFieldFilterList = ['domain', 'port', 'isForward', 'forwardPort','forwardAddress'];
 
     // 如果进入的是encode, 保留的是wowza

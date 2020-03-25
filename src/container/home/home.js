@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -157,6 +158,7 @@ class Home extends React.PureComponent {
   componentDidMount() {
     // 第一次渲染
     const groupNameList = this.props.groupNameList.toJS();
+    // eslint-disable-next-line array-callback-return
     groupNameList.map((item) => {
       // 请求单一组信息
       this.props.fetchGroupInfo({group: item.group, group_id: item.group_id});
@@ -171,6 +173,7 @@ class Home extends React.PureComponent {
     // 刷新页面
     const groupNameList = this.props.groupNameList.toJS();
     if (groupNameList.length !== prevProps.groupNameList.size) {
+      // eslint-disable-next-line array-callback-return
       groupNameList.map((item) => {
         this.props.fetchGroupInfo({group: item.group, group_id: item.group_id});
       });

@@ -63,6 +63,7 @@ class ModalMatchForm extends React.Component {
 const GroupMatchForm = Form.create({ name: 'group_match_form' })(
   class extends React.Component {
     render() {
+      // eslint-disable-next-line no-unused-vars
       const { Option } = Select;
       const { getFieldDecorator } = this.props.form;
       const formItemLayout = {
@@ -114,21 +115,3 @@ const GroupMatchForm = Form.create({ name: 'group_match_form' })(
 
 
 export default ModalMatchForm;
-
-{/*<Select placeholder='Please select a group'>*/
-}
-{/*<Option value='china'>China</Option>*/
-}
-{/*<Option value='usa'>U.S.A</Option>*/
-}
-{/*</Select>*/
-}
-
-{/*<Select placeholder='Please select a group_id'>*/
-}
-{/*<Option value='china'>China</Option>*/
-}
-{/*<Option value='usa'>U.S.A</Option>*/
-}
-{/*</Select>*/
-}

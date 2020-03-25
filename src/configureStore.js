@@ -23,7 +23,7 @@ export default function configureStore(preloadedState) {
       applyMiddleware(
         routerMiddleware(history), // dispatch history actions(push, replace, go, goBack, goForward)
         thunk,
-        // logger,
+        logger,
         // ... 其他中间件
       )
     )

@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Fragment } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -19,9 +19,6 @@ import makeSingleGroup from '../../selectors/groupsingleselector';
 // action creators
 // import { getStreamStatus } from '../../redux/ui.redux';
 import { actions as groupsActions } from '../../redux/groups.redux';
-
-// immutable
-import Immutable from 'immutable';
 
 import {
   CardSideBar,
@@ -46,6 +43,7 @@ import {
 import { Icon, Button, Tabs } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 
+// eslint-disable-next-line no-unused-vars
 function Global() {
   return (<div>Global</div>)
 }
@@ -88,8 +86,6 @@ class GridCard extends React.Component {
     const { TabPane } = Tabs;
     const record = this.props.record;
     const singleGroup = this.props.singleGroup;
-    // console.log('[record]', record);
-    // console.log('[singleGroup]', singleGroup);
     const tabList = [
       {
         key: 'info',
@@ -283,19 +279,6 @@ class GridCard extends React.Component {
   };
 
   // +
-  // componentWillMount() {
-  //   console.log('[gridcard组件 componentWillMount]', this.props.streamStatus, this.props.singleGroup);
-  //   // 如果正在推流, 执行轮询
-  //   const streamStatus = this.props.streamStatus;
-  //   if (streamStatus) {
-  //     const { group, group_id } = this.props.singleGroup;
-  //     if (!isEmpty(group) && !isEmpty(group_id)) {
-  //       this.props.fetchGroupInfo({ group, group_id });
-  //     }
-  //   }
-  // }
-
-  // +
   startPoll = () => {
     console.log('[开始轮询 组信息]');
     const { group, group_id } = this.props.singleGroup;
@@ -376,7 +359,6 @@ class GridCard extends React.Component {
       }
     };
     let mode = statusCode['connection'];
-    // console.log('[dState, status]', dState, status);
     if (dState === 'offline') {
       // 未匹配
       mode = statusCode['offline'];
@@ -423,7 +405,6 @@ class GridCard extends React.Component {
 
 // +
 const mapStateToProps = (state, props) => {
-  // console.log('[gridcard]', state.toJS());
   const getSingleGroup = makeSingleGroup();
   return {
     singleGroup: getSingleGroup(state, props), // 当前组信息

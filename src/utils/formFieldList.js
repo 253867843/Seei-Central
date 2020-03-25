@@ -80,7 +80,7 @@ export const createFormList = [
     field: 'wowza-isForward',
     type: 'checkbox',
     message: '接收S4000是否需要转发',
-    isRequired: true, // 表示 该字段可以跳过 required 检查
+    isSkip: true, // 表示 该字段可以跳过 required 检查
   },
 ];
 

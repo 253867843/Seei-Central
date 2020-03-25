@@ -1,7 +1,7 @@
 import Immutable from 'immutable';
 import { types as authTypes } from './auth.redux';
 import { types as userTypes } from './users.redux';
-import { types as groupsTypes, getGroupIds } from './groups.redux';
+import { types as groupsTypes } from './groups.redux';
 import { getLocalStorage } from "../utils/utils";
 import isEmpty from 'lodash/isEmpty';
 

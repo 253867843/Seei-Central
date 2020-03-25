@@ -41,7 +41,7 @@ const removePending = (key, isRequest = false) => {
 * */
 
 // 配置
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 60000;
 axios.defaults.baseURL = apiPrefix.baseURL();
 axios.defaults.withCredentials = true;
 

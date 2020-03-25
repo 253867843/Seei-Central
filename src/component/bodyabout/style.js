@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { rootFontSize, rootColor } from '../../utils/cssConfig';
+import { rootColor } from '../../utils/cssConfig';
 
 // 用户信息/关于
 export const AboutModal = styled.div`

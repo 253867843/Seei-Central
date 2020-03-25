@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-pascal-case */
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -36,7 +38,6 @@ class Groups extends React.Component {
   render() {
     const {completeGroup, groupMatchStatus, groupStreamStatus = false} = this.props;
     const rawCompleteGroup = completeGroup.toJS();
-    // console.log('[Groups rawCompleteGroup]', rawCompleteGroup, Object.keys(rawCompleteGroup).length);
     const fieldsObj = ['group_id', 'group', 'description', 'dState', 'status', 'eMessage'];
     const fieldsArray = ['encodeDevices', 'recvStreamServices'];
     let groupInfoArray = {};
@@ -50,8 +51,6 @@ class Groups extends React.Component {
     } else {
       groupInfoArray = rawCompleteGroup;
     }
-    // const test = 'false';
-    // console.log('[groupStreamStatus]', groupStreamStatus);
     return (
       <MainLayout>
         <Header>

@@ -1,13 +1,11 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Button, Form, Select} from 'antd';
+import {Button} from 'antd';
 import {actions as appActions, getRequestQuantity, getError} from '../../redux/app.redux';
 import {actions as groupsActions, getGroupStreamStatus} from '../../redux/groups.redux';
 import {actions as testActions} from '../../redux/test.redux';
-import Immutable from 'immutable';
-import axios from 'axios';
-import {getAxios, postAxios} from '../../utils/request';
+
 
 // import NProgress from 'nprogress';
 

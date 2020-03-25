@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 // import moduleName from 'react-router';
 // BrowserRouter as Router 
 
@@ -21,15 +21,11 @@ import RedirectSyncToLogin from './component/redirectsynctologin/redirectsynctol
 import NotFound from './container/notfound/notFound';
 import AuthRouter from './component/authrouter/authrouter';
 import TestRedux from './container/testRedux/testRedux';
-import RcForm from './container/rcform/rcform';
 import Page403 from './container/page403/page403';
 import Page404 from './container/page404/page404';
 import Page500 from './container/page500/page500';
 import PageUser from './container/pageuser/pageuser';
-import AxiosFilter from './container/test/axiosfilter';
 import './config';
-
-import Immutable from 'immutable';
 
 // -
 // 移植到./configureStore.js里
@@ -123,8 +119,6 @@ ReactDOM.render(AppProvider, document.getElementById('root'));
 // 192.168.2.146	7000 10000
 // 192.168.2.196	8087
 // http://192.168.2.196:1935/live/cloud_recv_stream_v1.stream/playlist.m3u8
-
-// console.log('[是否含有属性]', {name: 'dcj123'}.hasOwnProperty('age'));
 
 // 修改的地方: 
 // 1.修复 --- 匹配不要显示group_id

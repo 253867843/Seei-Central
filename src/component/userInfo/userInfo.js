@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {
@@ -8,12 +9,10 @@ import {
   RegisterArea,
   Title,
   AddGroupLayout,
-  SpinWrapper
 } from './style';
-import {Select, Avatar, Icon, Form, Modal, Input, Divider, Empty, Spin, Button} from 'antd';
+import {Select, Avatar, Icon, Form, Modal, Input, Divider, Spin} from 'antd';
 import './style.css';
 import isEmpty from 'lodash/isEmpty';
-import Immutable from 'immutable';
 import browserCookies from 'browser-cookies';
 
 @withRouter
@@ -26,7 +25,6 @@ class UserInfo extends React.Component {
   render() {
     const {username} = this.props.user;
     const {groupNameList} = this.props;
-    // console.log('[UserInfo username]', username);
     return (
       <NavbarSelect>
         <span>组</span>
@@ -134,7 +132,6 @@ class UserInfo extends React.Component {
   }
 
   handleChange = (value) => {
-    // console.log(`selected ${value}`);
     this.props.onSelectedItem(value);
   };
 
@@ -150,7 +147,6 @@ class UserInfo extends React.Component {
       title: '退出登录',
       content: '确定退出登录???',
       onOk: () => {
-        // console.log('确认');
         // 1.清空cookie
         browserCookies.erase('login.user');
         // 2.调用auth.redux.logout方法
@@ -171,6 +167,7 @@ class UserInfo extends React.Component {
     // if (!isEmpty(group) && !isEmpty(group_id)) {
     //   this.props.onRefreshGroup({group, group_id});
     // }
+    // eslint-disable-next-line no-self-assign
     window.location.href = window.location.href;
   };
 
@@ -208,7 +205,6 @@ class UserInfo extends React.Component {
 
   getCurrentGroupData = () => {
     const {groupNameList, selectedItem} = this.props;
-    // console.log('[删除的selectedItem]', selectedItem);
     const index = groupNameList.findIndex((v) => v.group_id === selectedItem);
     if (index > -1) {
       const item = groupNameList[index];
@@ -234,7 +230,6 @@ class UserInfo extends React.Component {
       if (err) {
         return;
       }
-      // console.log('[Receive values of form]', values);
       form.resetFields(); // 清空表单
       this.setState({visible: false});// 隐藏窗口
       let requestData = {

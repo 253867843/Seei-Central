@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -27,10 +28,6 @@ class TabInfo extends Component {
         group: PropTypes.string.isRequired,
         group_id: PropTypes.string.isRequired,
         recvStreamServices_id: PropTypes.string.isRequired
-    }
-
-    constructor(props) {
-        super(props);
     }
 
     render() {

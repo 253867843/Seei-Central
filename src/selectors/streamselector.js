@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import Immutable from 'immutable';
 
 // selector
 import { getWowzaInfoById } from '../redux/wstream.redux';

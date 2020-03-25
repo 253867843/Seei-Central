@@ -17,7 +17,6 @@ export const actions = {
     return (dispatch) => {
       postAxios(url.getUserInfo(), dispatch)
         .then((data) => {
-          console.log('[users.redux fetchUserInfo]', data);
           if (!data.error) {
             if (data.status) {
               // 扁平化处理

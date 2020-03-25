@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, {Fragment} from 'react';
 
 // 自定义组件
@@ -51,6 +52,7 @@ class UnitOperator extends React.Component {
                 </Button>
 
                 <Button size='large' icon='sync'
+                        // eslint-disable-next-line no-self-assign
                         onClick={() => window.location.href = window.location.href}
                 />
 

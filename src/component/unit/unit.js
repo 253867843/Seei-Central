@@ -10,10 +10,9 @@ import UnitList from '../unitlist/unitlist';
 import UnitMultiView from '../unitmultiview/unitmultiview';
 import UnitFileUpload from '../unitfileupload/unitfileupload';
 import UnitMap from '../unitmap/unitmap';
-import ContentSideBar from '../../component/contentsidebar/contentsidebar';
 
 // actions
-import {actions as groupsActions, getGroupById} from '../../redux/groups.redux';
+import {actions as groupsActions} from '../../redux/groups.redux';
 
 // utils
 import apiPrefix from '../../apiPrefix';
@@ -37,7 +36,6 @@ import {UnitOperatorContext} from '../../context/unit-operator-context';
 
 class Unit extends React.Component {
   render() {
-    // console.log('[Unit]', this.props.groupList);
     const rootUrl = apiPrefix.rootUrl(); // 主路由
     const secondaryUrl = apiPrefix.secondaryUrl(); // 次级路由
     const {group, group_id} = this.props.location.state;

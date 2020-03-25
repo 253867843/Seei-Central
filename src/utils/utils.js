@@ -1,5 +1,4 @@
 // localStorage
-import React from "react";
 
 export const setLocalStorage = (key, value) => {
   return localStorage.setItem(key, value);
@@ -17,8 +16,7 @@ export const composeData = (group, description) => {
   return (
     e_domain, e_port, e_auth, e_recvServicePort, e_protocol, e_videoCodeRate
   ) => {
-    return (w_domain, w_port, w_forwardAddress, w_forwardPort, w_isForward) => {
-      console.log('[composeData]', e_protocol);
+    return (w_isForward, w_domain, w_port, w_forwardAddress, w_forwardPort) => {
       let requestData = {
         group,
         description,
@@ -36,9 +34,9 @@ export const composeData = (group, description) => {
           {
             domain: w_domain,
             port: w_port,
-            forwardAddress: w_forwardAddress,
-            forwardPort: w_forwardPort,
-            isForward: w_isForward
+            forwardAddress: w_forwardAddress == null ? '' : w_forwardAddress,
+            forwardPort: w_forwardPort == null ||  w_forwardPort === '' ? 0 : w_forwardPort,
+            isForward: w_isForward == null ? 0 : w_isForward
           }
         ]
       };
@@ -49,9 +47,6 @@ export const composeData = (group, description) => {
 
 export const getRouteParams = (namelist = [], targetId) => {
   return (rootUrl = '/homev2', menu = 'unit', smenu = 'list') => {
-    // console.log('[nameList]', namelist);
-    // console.log('[路径参数制作]');
-    const selectedItem = getLocalStorage('selectedItem');
     const selectedMenuItem = getLocalStorage('selectedMenuItem');
     const selectedUnitItem = getLocalStorage('selectedUnitItem');
     // let targetId;
@@ -69,18 +64,14 @@ export const getRouteParams = (namelist = [], targetId) => {
       //   targetId = first.group_id;
       // }
       const [first = {}] = namelist;
-      // console.log('[first]', first);
       targetId = first.group_id;
     }
-
-    // console.log('[targetId]', targetId);
 
     const index = namelist
       .findIndex((v) => (v.group_id === targetId));
     if (index > -1) {
       targetName = namelist[index].group;
     }
-    // console.log('[target]', targetId, targetName);
 
     targetMenu = menu ? menu : selectedMenuItem;
     pathname = rootUrl + '/' + targetMenu;
@@ -90,8 +81,6 @@ export const getRouteParams = (namelist = [], targetId) => {
       targetSMenu = smenu ? smenu : selectedUnitItem;
       pathname = pathname + '/' + targetSMenu;
     }
-
-    console.log('[pathname]', pathname, targetId, targetName);
 
     return {
       pathname,

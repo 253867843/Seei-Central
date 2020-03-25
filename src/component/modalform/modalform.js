@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 
 // antd
-import { Form, Modal, Row, Col, Input, Button, Icon, Select, Radio, Checkbox } from 'antd';
+import { Form, Modal, Row, Col, Input, Button, Icon, Select, Checkbox } from 'antd';
 
 import './style.css';
 
@@ -14,7 +15,7 @@ class ModalForm extends React.Component {
     isForward: false,
   };
 
-  render() {
+  render () {
     return (
       <GroupCreateForm
         wrappedComponentRef={this.saveCreateFormRef}
@@ -24,6 +25,7 @@ class ModalForm extends React.Component {
         onSelectChange={this.handleSelectChange}
         onCreate={this.handleCreate}
         onCancel={this.handleCancel}
+        setForward={this.setForward}
         {...this.props}
       />
     )
@@ -68,15 +70,12 @@ class ModalForm extends React.Component {
       const encodes = Object.keys(values).filter((v) => (v.startsWith('encode'))).map((v) => values[v]);
       const wowzas = Object.keys(values).filter((v) => (v.startsWith('wowza'))).map((v) => values[v]);
 
-      // console.log('[groups]', groups);
-      // console.log('[encodes]', encodes);
-      // console.log('[wowzas]', wowzas);
+      console.log('[wowzas]', wowzas)
 
       // 数据处理
       let requestData = composeData(...groups)(...encodes)(...wowzas);
-      // console.log('[requestData]', requestData);
 
-      // 回掉给unitoperator.js
+      // 回调给unitoperator.js
       this.props.inputFormValue(requestData);
     });
   };
@@ -90,36 +89,22 @@ class ModalForm extends React.Component {
   };
 
   handleIsForward = (e) => { 
-    const { form } = this.createFormRef.props;
-    this.setState({ isForward: e.target.checked }, () => { 
-      if (e.target.checked) {
-        form.setFieldsValue({ 'encode-protocol': 'mpegts'})
-      }else {
-        form.setFieldsValue({ 'encode-protocol': 'srt' })
-        this.initForward()
-      }
-    })
-  }
-
-  handleSelectChange = (value) => {   
-    console.log('handleSelectChange -> value', value)
-    const { form } = this.createFormRef.props;
-    if (value === 'srt') {
-      this.setState({ isForward: false })
+    this.setState({ isForward: e.target.checked })
+    if (!e.target.checked) {
       this.initForward()
-      form.setFieldsValue({ 'wowza-isForward': false })
-    } 
-    
-    if (value === "mpegts") { 
-      this.setState({ isForward: true })
-      form.setFieldsValue({ 'wowza-isForward': true })
     }
   }
+
+  handleSelectChange = (value) => {}
 
   initForward = () =>  { 
     const { form } = this.createFormRef.props;
     form.setFieldsValue({ 'wowza-forwardAddress': '' })
     form.setFieldsValue({ 'wowza-forwardPort': '' })
+  }
+
+  setForward = (val) => { 
+    this.setState({isForward: val})
   }
 }
 
@@ -175,13 +160,17 @@ const GroupCreateForm = Form.create({ name: 'group_create_form' })(
       const { getFieldDecorator } = this.props.form;
       const children = [];
       // const { Option } = Select;
+      const { form } = this.props;
+      let isForward = form.getFieldValue('wowza-isForward')
+      console.log('extends -> getFields -> isForward', isForward)
+      if (typeof isForward === undefined || isForward == null) { 
+          isForward = false
+      }
 
       const formItemLayout = {
         labelCol: { span: 12 },
         wrapperCol: { span: 14 },
       };
-
-      console.log('[defaultRecord]', defaultRecord);
 
       formList.forEach((v, i) => {
         children.push(
@@ -191,45 +180,17 @@ const GroupCreateForm = Form.create({ name: 'group_create_form' })(
                 {
                   getFieldDecorator(v.field, {
                     rules: [{
-                      required: !v.isRequired && !(v.isDisabled && !this.props.isForward),
+                      required: !v.isSkip && !(v.isDisabled && !isForward),
                       message: v.message
                     }],
-                    // initialValue: 'srt'
+                    valuePropName: v.type ==='checkbox'? 'checked': 'value',
                     initialValue: defaultRecord ? defaultRecord[v.text] : null
                   })(
-                    this.getFormItem(v)
+                    this.getFormItem(v, isForward)
                   )
                 }
-              </Form.Item>
-              /* {
-              v.type === 'select'
-                ? (
-                  <Form.Item label={v.label} {...formItemLayout}>
-                    {
-                      getFieldDecorator(v.field, {
-                        rules: [{ required: true, message: v.message }],
-                        // initialValue: 'srt'
-                        initialValue: defaultRecord ? defaultRecord[v.text] : null
-                      })(
-                        <Select placeholder='please select a protocol'>
-                          <Option value='srt'>srt</Option>
-                          <Option value='mpegts'>mpegts</Option>
-                        </Select>
-                      )
-                    }
-                  </Form.Item>
-                )
-                : (
-                  <Form.Item label={v.label} {...formItemLayout}>
-                    {
-                      getFieldDecorator(v.field, {
-                        rules: [{ required: true, message: v.message }],
-                        initialValue: defaultRecord ? defaultRecord[v.text] : null
-                      })(<Input placeholder={v.placeholder ? v.placeholder : '请输入...'} />)
-                    }
-                  </Form.Item>
-                )
-            } */}
+              </Form.Item> 
+             }
           </Col>
         );
       });
@@ -237,9 +198,10 @@ const GroupCreateForm = Form.create({ name: 'group_create_form' })(
       return children;
     };
 
-    getFormItem = (v) => {
+    getFormItem = (v, isForward) => {
       const { Option } = Select;
       let formItem;
+      
       switch (v.type) { 
         case 'select':
           formItem = (
@@ -259,7 +221,7 @@ const GroupCreateForm = Form.create({ name: 'group_create_form' })(
           formItem = (
             <Input
               placeholder={v.placeholder ? v.placeholder : '请输入...'}
-              disabled={v.isDisabled && !this.props.isForward}
+              disabled={v.isDisabled && !isForward}
             />
           )
           // false >>> srt >>> 禁用, disabled=true
@@ -291,5 +253,3 @@ export default ModalForm;
 // 12000
 // 127.0.0.1
 // 8087
-
-// {"status":true,"msg":"","code":"11031","info":{"type":"tip","title":"修改组信息","info":"修改成功","note":"修改成功","steps":"修改Group步骤"},"data":{"group_id":"5e7a388dcb864e2b78a1967a","group":"g1","dState":"offline","eMessage":"","encodeDevices":[{"id":"5e7a388dcb864e2b78a1967b","domain":"123","port":123,"auth":"123","protocol":"srt","videoCodeRate":50,"state":"abnormal","eMessage":""}],"recvStreamServices":[{"id":"5e7a388dcb864e2b78a1967c","domain":"45","port":6666,"isForward":0,"forwardAddress":"4444","forwardPort":3456,"state":"abnormal","eMessage":""}]}}

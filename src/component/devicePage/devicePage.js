@@ -21,7 +21,6 @@ import './style.css';
 class DevicePage extends React.Component {
   render() {
     const match = this.props.match;
-    const requestQuantity = this.props.requestQuantity;
     const singleGroup = this.props.singleGroup; // 普通js对象类型
     const wowzaStreamInfo = this.props.wowzaStreamInfo;
     const encodes = singleGroup.encodeDevices;
@@ -29,8 +28,6 @@ class DevicePage extends React.Component {
     const encodesWrapper = this.addComponentToArray(encodes, GroupEncodeSidebar);
     const wowzasWrapper = this.addComponentToArray(wowzas, GroupWowzaSidebar);
     const mergeData = [...encodesWrapper, ...wowzasWrapper];
-    // console.log('[DevicePage mergeData]', mergeData);
-    // console.log('[requestQuantity]', requestQuantity);
     return (
       <UnitDetailsLayout>
         <UnitDetailsHeaderGrid>

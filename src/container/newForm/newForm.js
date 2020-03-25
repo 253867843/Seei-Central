@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {bindActionCreators} from "redux";
 import {connect} from 'react-redux';
 import {actions as rcformActions, getEmail} from "../../redux/rcform.redux";

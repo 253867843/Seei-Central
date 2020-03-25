@@ -1,6 +1,5 @@
 import { fromJS } from 'immutable';
 import { types as authTypes } from './auth.redux';
-import isEmpty from 'lodash/isEmpty';
 
 const defaultState = fromJS({
   requestQuantity: 0, // 当前应用正在进行的API请求数
